@@ -17,6 +17,9 @@ public class Address extends SugarRecord<Address> {
     private String postal;
 
     // Constructors
+    public Address() {
+    }
+
     public Address(Location coords) {
         this.coords = coords;
     }

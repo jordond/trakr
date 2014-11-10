@@ -19,6 +19,9 @@ public class Account extends SugarRecord<Account> {
     private double total;
 
     // Constructors
+    public Account() {
+    }
+
     public Account(int number, String name, int branch) {
         this.number = number;
         this.name = name;

@@ -21,6 +21,9 @@ public class User extends SugarRecord<User> {
     private List<Address> locations;
 
     // Constructors
+    public User() {
+    }
+
     public User(String email, String password) {
         this.email = email;
         this.password = password;

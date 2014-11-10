@@ -13,6 +13,9 @@ public class Merchant extends SugarRecord<Merchant> {
     private String description;
 
     // Constructors
+    public Merchant() {
+    }
+
     public Merchant(String name, Address location) {
         this.name = name;
         this.location = location;

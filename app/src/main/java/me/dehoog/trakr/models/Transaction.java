@@ -17,6 +17,9 @@ public class Transaction extends SugarRecord<Transaction> {
     private String notes;
 
     // Constructors
+    public Transaction() {
+    }
+
     public Transaction(double amount, Category category, Date date, Merchant merchant) {
         this.amount = amount;
         this.category = category;

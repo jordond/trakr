@@ -13,6 +13,9 @@ public class Category extends SugarRecord<Category> {
     private byte[] icon;
 
     // Constructors
+    public Category() {
+    }
+
     public Category(String name, String description) {
         this.name = name;
         this.description = description;
