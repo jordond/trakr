@@ -1,6 +1,7 @@
 package me.dehoog.trakr.activities;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
@@ -26,12 +27,36 @@ public class MainActivity extends Activity {
         if (mLoggedIn) {
             String email = settings.getString("userEmail", "none");
             if (email != "none") {
-                mUser.find(User.class, "email = ?");
+                mUser.find(User.class, "email = ?", email);
+                if (mUser.getId() == 0) {
+                    mLoggedIn = false;
+                }
             }
         }
+    }// onCreate
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        if (!mLoggedIn) {
+            Intent i = new Intent(getApplication(), LoginActivity.class);
+            startActivity(i);
+        }
+    }// onStart
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+
+        SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+        SharedPreferences.Editor editor = settings.edit();
+        editor.putBoolean("loggedIn", mLoggedIn);
+        if (mLoggedIn) {
+            editor.putString("email", mUser.getEmail());
+        }
+        editor.commit();
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
