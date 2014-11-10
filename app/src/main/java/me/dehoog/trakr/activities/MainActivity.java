@@ -1,17 +1,35 @@
-package me.dehoog.trakr;
+package me.dehoog.trakr.activities;
 
 import android.app.Activity;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import me.dehoog.trakr.R;
+import me.dehoog.trakr.models.User;
+
 
 public class MainActivity extends Activity {
+
+    public static final String PREFS_NAME = "TrakrPrefs";
+    public boolean mLoggedIn = false;
+    public User mUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+        mLoggedIn = settings.getBoolean("loggedIn", false);
+        if (mLoggedIn) {
+            String email = settings.getString("userEmail", "none");
+            if (email != "none") {
+                mUser.find(User.class, "email = ?");
+            }
+        }
+
     }
 
 
