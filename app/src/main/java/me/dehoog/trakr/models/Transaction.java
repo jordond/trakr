@@ -2,7 +2,8 @@ package me.dehoog.trakr.models;
 
 import com.orm.SugarRecord;
 
-import java.util.Date;
+import java.sql.Date;
+
 
 /**
  * Created by jordon on 2014-11-09.
