@@ -7,6 +7,7 @@ import android.app.Activity;
 import android.app.LoaderManager.LoaderCallbacks;
 import android.content.ContentResolver;
 import android.content.CursorLoader;
+import android.content.Intent;
 import android.content.Loader;
 import android.content.SharedPreferences;
 import android.database.Cursor;
@@ -76,8 +77,9 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
         populateAutoComplete();
 
         //debug user
-        mUser.find(User.class, "email = ?", "t@t");
-        if (mUser != null) {
+        List<User> findUser = mUser.find(User.class, "email = ?", "t@t");
+        if (!findUser.isEmpty()) {
+            mUser = findUser.get(0);
             mUser.delete();
         }
         mUser = new User("t@t", "test123");
@@ -220,8 +222,9 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
         @Override
         protected Boolean doInBackground(Void... params) {
 
-            mUser.find(User.class, "email = ?", mEmail);
-            if (mUser != null) {
+            List<User> users = mUser.find(User.class, "email = ?", mEmail);
+            if (!users.isEmpty()) {
+                mUser = users.get(0);
                 User u = new User(mEmail, mPassword, mUser.getSalt());
                 if (u.getEmail().equals(mUser.getEmail())) {
                     return u.getPassword().equals(mUser.getPassword());
@@ -239,6 +242,10 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
                 editor.putBoolean("loggedIn", true);
                 editor.putString("email", mUser.getEmail());
                 editor.commit();
+
+                Intent data = new Intent();
+                data.putExtra("user", mUser);
+                setResult(RESULT_OK, data);
                 finish();
             } else {
                 mPasswordView.setError(getString(R.string.error_incorrect_password));

@@ -6,7 +6,14 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Button;
+import android.widget.TextView;
 
+import java.util.List;
+
+import butterknife.ButterKnife;
+import butterknife.InjectView;
+import butterknife.OnClick;
 import me.dehoog.trakr.R;
 import me.dehoog.trakr.models.User;
 
@@ -14,36 +21,67 @@ import me.dehoog.trakr.models.User;
 public class MainActivity extends Activity {
 
     public static final String PREFS_NAME = "TrakrPrefs";
+    public static final int REQUEST_LOGIN_CODE = 0;
+
     public boolean mLoggedIn = false;
     public User mUser;
+
+    // UI Components
+    @InjectView(R.id.test) TextView mTestTextView;
+    @InjectView(R.id.buttontest) Button mTestButton;
+
+    @OnClick(R.id.buttontest) void onClick() {
+        SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+        SharedPreferences.Editor editor = settings.edit();
+        editor.putBoolean("loggedIn", false);
+        editor.remove("email");
+        editor.commit();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
-        mLoggedIn = settings.getBoolean("loggedIn", false);
-        if (mLoggedIn) {
-            String email = settings.getString("userEmail", "none");
-            if (email != "none") {
-                mUser.find(User.class, "email = ?", email);
-                if (mUser.getId() == 0) {
-                    mLoggedIn = false;
-                }
-            }
-        }
     }// onCreate
+
 
     @Override
     protected void onStart() {
         super.onStart();
 
+        getLoggedInState();
         if (!mLoggedIn) {
             Intent i = new Intent(getApplication(), LoginActivity.class);
-            startActivity(i);
+            startActivityForResult(i, REQUEST_LOGIN_CODE);
+        } else {
+            ButterKnife.inject(this);
+            mTestTextView.setText("EMAIL: " + mUser.getEmail() + " PASSWORD: " + mUser.getPassword());
         }
+
     }// onStart
+    //TODO need to set mUser to the object from shared prefs, as it null apparently.
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == REQUEST_LOGIN_CODE) {
+            if (resultCode == RESULT_OK) {
+                mUser = (User) data.getSerializableExtra("user");
+            }
+        }
+    }
+
+
+    public void getLoggedInState() {
+        SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+        mLoggedIn = settings.getBoolean("loggedIn", false);
+        if (mLoggedIn) {
+            if (mUser == null) {
+                mLoggedIn = false;
+            }
+        }
+    }
 
     @Override
     protected void onStop() {

@@ -5,6 +5,7 @@ import com.orm.dsl.Ignore;
 import com.orm.query.Condition;
 import com.orm.query.Select;
 
+import java.io.Serializable;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
@@ -15,7 +16,7 @@ import java.util.List;
 /**
  * Created by jordon on 2014-11-09.
  */
-public class User extends SugarRecord<User> {
+public class User extends SugarRecord<User> implements Serializable {
 
     // Properties
     private String email;
@@ -82,6 +83,14 @@ public class User extends SugarRecord<User> {
             e.printStackTrace();
         }
         return sb.toString();
+    }
+
+    public User findUser() {
+
+    }
+
+    public void logout() {
+        
     }
 
     // Accessors
