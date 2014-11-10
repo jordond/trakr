@@ -8,7 +8,7 @@ import java.sql.Date;
 /**
  * Created by jordon on 2014-11-09.
  */
-public class Transaction extends SugarRecord<Transaction> {
+public class Purchase extends SugarRecord<Purchase> {
 
     // Properties
     private double amount;
@@ -18,10 +18,10 @@ public class Transaction extends SugarRecord<Transaction> {
     private String notes;
 
     // Constructors
-    public Transaction() {
+    public Purchase() {
     }
 
-    public Transaction(double amount, Category category, Date date, Merchant merchant) {
+    public Purchase(double amount, Category category, Date date, Merchant merchant) {
         this.amount = amount;
         this.category = category;
         this.date = date;

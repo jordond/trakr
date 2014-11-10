@@ -15,7 +15,7 @@ public class Account extends SugarRecord<Account> {
     private String name;
     private String description;
     private int branch;
-    private List<Transaction> transactions;
+    private List<Purchase> purchases;
     private double total;
 
     // Constructors
@@ -26,7 +26,7 @@ public class Account extends SugarRecord<Account> {
         this.number = number;
         this.name = name;
         this.branch = branch;
-        this.transactions = new ArrayList<Transaction>();
+        this.purchases = new ArrayList<Purchase>();
     }
 
     // Accessor
@@ -62,12 +62,12 @@ public class Account extends SugarRecord<Account> {
         this.branch = branch;
     }
 
-    public List<Transaction> getTransactions() {
-        return transactions;
+    public List<Purchase> getPurchases() {
+        return purchases;
     }
 
-    public void setTransactions(List<Transaction> transactions) {
-        this.transactions = transactions;
+    public void setPurchases(List<Purchase> purchases) {
+        this.purchases = purchases;
     }
 
     public double getTotal() {

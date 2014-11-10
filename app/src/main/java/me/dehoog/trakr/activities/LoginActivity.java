@@ -74,10 +74,9 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
         ButterKnife.inject(this); // all your injects belong to us
         populateAutoComplete();
 
-        String salt= getSalt();
-        mUser = new User("test@test.com", getHash("test123", salt), salt);
-        mUser.save();
-        int tes = 0;
+        //String salt= getSalt();
+        //mUser = new User("test@test.com", getHash("test123", salt), salt);
+       // mUser.save();
 
     }
 
