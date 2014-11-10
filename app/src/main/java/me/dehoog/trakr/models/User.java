@@ -2,6 +2,10 @@ package me.dehoog.trakr.models;
 
 import com.orm.SugarRecord;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.security.NoSuchProviderException;
+import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,22 +30,48 @@ public class User extends SugarRecord<User> {
     public User() {
     }
 
-    public User(String email, String password, String salt) {
+    public User(String email, String password) {
         this.email = email;
-        this.password = password;
-        this.salt = salt;
+        this.salt = generateSalt();
+        this.password = generateHash(password);
         this.accounts = new ArrayList<Account>();
         this.locations = new ArrayList<Address>();
     }
 
-    public User(String email, String password, String salt, String firstName, String lastName) {
+    public User(String email, String password, String salt) {
         this.email = email;
-        this.password = password;
         this.salt = salt;
-        this.firstName = firstName;
-        this.lastName = lastName;
+        this.password = generateHash(password);
         this.accounts = new ArrayList<Account>();
         this.locations = new ArrayList<Address>();
+    }
+
+    // Helper methods
+    public String generateSalt() {
+        SecureRandom sr;
+        byte[] salt = new byte[16];
+        try {
+            sr = SecureRandom.getInstance("SHA1PRNG");
+            sr.nextBytes(salt);
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+        return salt.toString();
+    }
+
+    public String generateHash(String password) {
+        StringBuilder sb = new StringBuilder();
+        try {
+            MessageDigest md = MessageDigest.getInstance("SHA-256");
+            md.update(getSalt().getBytes());
+            byte[] bytes = md.digest(password.getBytes());
+            for (int i = 0; i < bytes.length; i++) {
+                sb.append(Integer.toString((bytes[i] & 0xff) + 0x100, 16).substring(1));
+            }
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+        return sb.toString();
     }
 
     // Accessors
@@ -110,6 +140,9 @@ public class User extends SugarRecord<User> {
     }
 
     public String getSalt() {
+        if (salt.isEmpty()) {
+            this.salt = generateSalt();
+        }
         return salt;
     }
 

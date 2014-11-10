@@ -74,9 +74,13 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
         ButterKnife.inject(this); // all your injects belong to us
         populateAutoComplete();
 
-        //String salt= getSalt();
-        //mUser = new User("test@test.com", getHash("test123", salt), salt);
-       // mUser.save();
+        //debug user
+        mUser.find(User.class, "email = ?", "t@t");
+        if (mUser != null) {
+            mUser.delete();
+        }
+        mUser = new User("t@t", "test123");
+        mUser.save();
 
     }
 
@@ -131,35 +135,6 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
             mAuthTask = new UserLoginTask(email, password);
             mAuthTask.execute((Void) null);
         }
-    }
-
-    private String getHash(String password, String salt) {
-        StringBuilder sb = new StringBuilder();
-        try {
-            MessageDigest md = MessageDigest.getInstance("MD5");
-            md.update(salt.getBytes());
-            byte[] bytes = md.digest(password.getBytes());
-            for (int i = 0; i < bytes.length; i++) {
-                sb.append(Integer.toString((bytes[i] & 0xff) + 0x100, 16).substring(1));
-            }
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        }
-        return sb.toString();
-    }
-
-    private String getSalt() {
-        SecureRandom sr;
-        byte[] salt = new byte[16];
-        try {
-            sr = SecureRandom.getInstance("SHA1PRNG", "SUN");
-            sr.nextBytes(salt);
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        } catch (NoSuchProviderException e) {
-            e.printStackTrace();
-        }
-        return salt.toString();
     }
 
     private boolean isEmailValid(String email) {
@@ -234,7 +209,6 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
 
         private final String mEmail;
         private String mPassword;
-        private String mSalt;
 
         UserLoginTask(String email, String password) {
             mEmail = email;
@@ -246,11 +220,9 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
 
             mUser.find(User.class, "email = ?", mEmail);
             if (mUser != null) {
-                mSalt = mUser.getSalt();
-                mPassword = getHash(mPassword, mSalt);
-
-                if (mEmail.equals(mUser.getEmail())) {
-                    return mPassword.equals(mUser.getPassword());
+                User u = new User(mEmail, mPassword, mUser.getSalt());
+                if (u.getEmail().equals(mUser.getEmail())) {
+                    return u.getPassword().equals(mUser.getPassword());
                 }
             }
             return false;
