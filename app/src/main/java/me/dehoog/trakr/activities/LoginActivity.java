@@ -8,6 +8,7 @@ import android.app.LoaderManager.LoaderCallbacks;
 import android.content.ContentResolver;
 import android.content.CursorLoader;
 import android.content.Loader;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -213,6 +214,7 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
         UserLoginTask(String email, String password) {
             mEmail = email;
             mPassword = password;
+            mUser = null;
         }
 
         @Override
@@ -232,6 +234,11 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
         protected void onPostExecute(final Boolean success) {
             mAuthTask = null;
             if (success) {
+                SharedPreferences settings = getSharedPreferences(MainActivity.PREFS_NAME, 0);
+                SharedPreferences.Editor editor = settings.edit();
+                editor.putBoolean("loggedIn", true);
+                editor.putString("email", mUser.getEmail());
+                editor.commit();
                 finish();
             } else {
                 mPasswordView.setError(getString(R.string.error_incorrect_password));

@@ -1,6 +1,9 @@
 package me.dehoog.trakr.models;
 
 import com.orm.SugarRecord;
+import com.orm.dsl.Ignore;
+import com.orm.query.Condition;
+import com.orm.query.Select;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,8 +18,10 @@ public class Account extends SugarRecord<Account> {
     private String name;
     private String description;
     private int branch;
-    private List<Purchase> purchases;
     private double total;
+
+    @Ignore
+    private List<Purchase> purchases;
 
     // Constructors
     public Account() {
@@ -26,9 +31,7 @@ public class Account extends SugarRecord<Account> {
         this.number = number;
         this.name = name;
         this.branch = branch;
-        this.purchases = new ArrayList<Purchase>();
     }
-
     // Accessor
     public int getNumber() {
         return number;
@@ -62,19 +65,21 @@ public class Account extends SugarRecord<Account> {
         this.branch = branch;
     }
 
-    public List<Purchase> getPurchases() {
-        return purchases;
-    }
-
-    public void setPurchases(List<Purchase> purchases) {
-        this.purchases = purchases;
-    }
-
     public double getTotal() {
         return total;
     }
 
     public void setTotal(double total) {
         this.total = total;
+    }
+
+    public List<Purchase> getPurchases() {
+        return Select.from(Purchase.class)
+                .where(Condition.prop("account").eq(this.getId().toString()))
+                .list();
+    }
+
+    public void setPurchases(List<Purchase> purchases) {
+        this.purchases = purchases;
     }
 }

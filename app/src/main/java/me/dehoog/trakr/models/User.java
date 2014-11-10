@@ -1,6 +1,9 @@
 package me.dehoog.trakr.models;
 
 import com.orm.SugarRecord;
+import com.orm.dsl.Ignore;
+import com.orm.query.Condition;
+import com.orm.query.Select;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -22,9 +25,20 @@ public class User extends SugarRecord<User> {
     private String lastName;
     private String phone;
     private Address address;
-    private List<Account> accounts;
-    private List<Address> locations;
     private boolean firstLogin;
+
+    @Ignore
+    private List<Account> accounts;
+
+    public List<Account> getAccounts() {
+        return Select.from(Account.class)
+                .where(Condition.prop("user").eq(this.getId().toString()))
+                .list();
+    }
+
+    public void setAccounts(List<Account> accounts) {
+        this.accounts = accounts;
+    }
 
     // Constructors
     public User() {
@@ -34,16 +48,12 @@ public class User extends SugarRecord<User> {
         this.email = email;
         this.salt = generateSalt();
         this.password = generateHash(password);
-        this.accounts = new ArrayList<Account>();
-        this.locations = new ArrayList<Address>();
     }
 
     public User(String email, String password, String salt) {
         this.email = email;
         this.salt = salt;
         this.password = generateHash(password);
-        this.accounts = new ArrayList<Account>();
-        this.locations = new ArrayList<Address>();
     }
 
     // Helper methods
@@ -121,22 +131,6 @@ public class User extends SugarRecord<User> {
 
     public void setAddress(Address address) {
         this.address = address;
-    }
-
-    public List<Account> getAccounts() {
-        return accounts;
-    }
-
-    public void setAccounts(List<Account> accounts) {
-        this.accounts = accounts;
-    }
-
-    public List<Address> getLocations() {
-        return locations;
-    }
-
-    public void setLocations(List<Address> locations) {
-        this.locations = locations;
     }
 
     public String getSalt() {
