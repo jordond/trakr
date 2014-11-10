@@ -13,27 +13,31 @@ public class User extends SugarRecord<User> {
     // Properties
     private String email;
     private String password;
+    private String salt;
     private String firstName;
     private String lastName;
     private String phone;
     private Address address;
     private List<Account> accounts;
     private List<Address> locations;
+    private boolean firstLogin;
 
     // Constructors
     public User() {
     }
 
-    public User(String email, String password) {
+    public User(String email, String password, String salt) {
         this.email = email;
         this.password = password;
+        this.salt = salt;
         this.accounts = new ArrayList<Account>();
         this.locations = new ArrayList<Address>();
     }
 
-    public User(String email, String password, String firstName, String lastName) {
+    public User(String email, String password, String salt, String firstName, String lastName) {
         this.email = email;
         this.password = password;
+        this.salt = salt;
         this.firstName = firstName;
         this.lastName = lastName;
         this.accounts = new ArrayList<Account>();
@@ -103,5 +107,21 @@ public class User extends SugarRecord<User> {
 
     public void setLocations(List<Address> locations) {
         this.locations = locations;
+    }
+
+    public String getSalt() {
+        return salt;
+    }
+
+    public void setSalt(String salt) {
+        this.salt = salt;
+    }
+
+    public boolean isFirstLogin() {
+        return firstLogin;
+    }
+
+    public void setFirstLogin(boolean firstLogin) {
+        this.firstLogin = firstLogin;
     }
 }
