@@ -25,4 +25,7 @@ dependencies {
     compile 'com.google.android.gms:play-services:6.1.11'
     compile 'com.android.support:appcompat-v7:21.0.0'
     compile 'com.jakewharton:butterknife:6.0.0'
+    compile('de.keyboardsurfer.android.widget:crouton:1.8.5@aar') {
+        exclude group: 'com.google.android', module: 'support-v4'
+    }
 }
