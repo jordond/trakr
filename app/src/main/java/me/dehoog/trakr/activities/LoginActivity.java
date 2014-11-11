@@ -122,7 +122,7 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
 
         // Check for a valid email address.
         if (TextUtils.isEmpty(email)) {
-            croutonMessage = getString(R.string.error_field_required);
+            croutonMessage = getString(R.string.error_email_required);
             focusView = mEmailView;
             cancel = true;
         } else if (!isEmailValid(email)) {
@@ -249,6 +249,8 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
                 finish();
             } else {
                 Crouton.makeText(mActivity, R.string.message_login_failed, Style.ALERT).show();
+                mEmailView.setText("");
+                mPasswordView.setText("");
             }
         }
 
