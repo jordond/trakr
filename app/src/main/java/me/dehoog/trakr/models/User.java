@@ -1,7 +1,5 @@
 package me.dehoog.trakr.models;
 
-import android.content.SharedPreferences;
-
 import com.orm.SugarRecord;
 import com.orm.dsl.Ignore;
 import com.orm.query.Condition;
@@ -12,8 +10,6 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.util.List;
-
-import me.dehoog.trakr.activities.MainActivity;
 
 /**
  * Created by jordon on 2014-11-09.
