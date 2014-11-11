@@ -36,9 +36,10 @@ public class MainActivity extends Activity {
     @OnClick(R.id.buttontest) void onClick() {
         SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
         SharedPreferences.Editor editor = settings.edit();
-        editor.putBoolean("loggedIn", false);
-        editor.remove("email");
-        editor.apply();
+        editor.remove("loggedIn").apply();
+        editor.remove("email").apply();
+        mUser = null;
+        mLoggedIn = false;
         mLoggingOut = true;
         login();
     }
