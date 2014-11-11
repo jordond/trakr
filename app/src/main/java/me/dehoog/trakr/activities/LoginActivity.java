@@ -132,7 +132,7 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
         }
 
         if (cancel) {
-            Crouton.makeText(this, croutonMessage, Style.ALERT);
+            Crouton.makeText(this, croutonMessage, Style.ALERT).show();
             focusView.requestFocus();
         } else {
             mAuthTask = new UserLoginTask(this, email, password);
