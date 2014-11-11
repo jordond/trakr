@@ -35,7 +35,7 @@ public class MainActivity extends Activity {
         SharedPreferences.Editor editor = settings.edit();
         editor.putBoolean("loggedIn", false);
         editor.remove("email");
-        editor.commit();
+        editor.apply();
         login();
     }
 
@@ -78,7 +78,10 @@ public class MainActivity extends Activity {
         mLoggedIn = settings.getBoolean("loggedIn", false);
         if (mLoggedIn) {
             if (mUser == null) {
-                mLoggedIn = false;
+                mUser = new User().findUser(settings.getString("email", "none"));
+                if (mUser == null) {
+                    mLoggedIn = false;
+                }
             }
         }
     }

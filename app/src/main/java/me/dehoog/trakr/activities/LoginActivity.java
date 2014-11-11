@@ -226,7 +226,7 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
                 SharedPreferences.Editor editor = settings.edit();
                 editor.putBoolean("loggedIn", true);
                 editor.putString("email", mUser.getEmail());
-                editor.commit();
+                editor.apply();
 
                 Intent data = new Intent();
                 data.putExtra("user", mUser);
