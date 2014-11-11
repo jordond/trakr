@@ -14,6 +14,8 @@ import java.util.List;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
+import de.keyboardsurfer.android.widget.crouton.Crouton;
+import de.keyboardsurfer.android.widget.crouton.Style;
 import me.dehoog.trakr.R;
 import me.dehoog.trakr.models.User;
 
@@ -24,6 +26,7 @@ public class MainActivity extends Activity {
     public static final int REQUEST_LOGIN_CODE = 0;
 
     public boolean mLoggedIn = false;
+    public boolean mLoggingOut = false;
     public User mUser;
 
     // UI Components
@@ -36,6 +39,7 @@ public class MainActivity extends Activity {
         editor.putBoolean("loggedIn", false);
         editor.remove("email");
         editor.apply();
+        mLoggingOut = true;
         login();
     }
 
@@ -81,7 +85,11 @@ public class MainActivity extends Activity {
                 mUser = new User().findUser(settings.getString("email", "none"));
                 if (mUser == null) {
                     mLoggedIn = false;
+                } else {
+                    Crouton.makeText(this, getString(R.string.message_logged_in) + " " + mUser.getEmail(), Style.INFO).show();
                 }
+            } else {
+                Crouton.makeText(this, mUser.getEmail() + " " + getString(R.string.message_login_success), Style.CONFIRM).show();
             }
         }
     }
@@ -96,11 +104,12 @@ public class MainActivity extends Activity {
         if (mLoggedIn) {
             editor.putString("email", mUser.getEmail());
         }
-        editor.commit();
+        editor.apply();
     }
 
     public void login() {
         Intent i = new Intent(getApplication(), LoginActivity.class);
+        i.putExtra("loggingOut", mLoggingOut);
         startActivityForResult(i, REQUEST_LOGIN_CODE);
     }
 
@@ -124,5 +133,12 @@ public class MainActivity extends Activity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        Crouton.cancelAllCroutons();
     }
 }

@@ -27,6 +27,8 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
 import butterknife.OnEditorAction;
+import de.keyboardsurfer.android.widget.crouton.Crouton;
+import de.keyboardsurfer.android.widget.crouton.Style;
 import me.dehoog.trakr.R;
 import me.dehoog.trakr.models.User;
 
@@ -63,6 +65,11 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
 
         ButterKnife.inject(this); // all your injects belong to us
         populateAutoComplete();
+
+        boolean loggingOut = getIntent().getExtras().getBoolean("loggingOut");
+        if (loggingOut) {
+           Crouton.makeText(this, R.string.message_logging_out, Style.INFO).show();
+        }
 
         //debug user
         mUser = mUser.findUser("t@t");

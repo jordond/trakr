@@ -12,4 +12,9 @@
     <string name="error_incorrect_password">This password is incorrect</string>
     <string name="error_field_required">This field is required</string>
     <string name="error_invalid_login">Email or Password is incorrect.</string>
+
+    <string name="message_login_failed">Email or Password is incorrect</string>
+    <string name="message_login_success">Successfully Logged in</string>
+    <string name="message_logged_in">Welcome Back</string>
+    <string name="message_logging_out">Come back anytime!</string>
 </resources>
