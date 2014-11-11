@@ -1,11 +1,7 @@
 package me.dehoog.trakr.activities;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
-import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.LoaderManager.LoaderCallbacks;
-import android.content.ContentResolver;
 import android.content.CursorLoader;
 import android.content.Intent;
 import android.content.Loader;
@@ -14,24 +10,16 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.AsyncTask;
 
-import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.text.TextUtils;
-import android.view.KeyEvent;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.inputmethod.EditorInfo;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.security.NoSuchProviderException;
-import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -48,7 +36,7 @@ import me.dehoog.trakr.models.User;
 public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
 
     private UserLoginTask mAuthTask = null;
-    private User mUser = null;
+    private User mUser = new User();
 
     // UI references.
     @InjectView(R.id.email) AutoCompleteTextView mEmailView;
@@ -56,7 +44,7 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
     @InjectView(R.id.login_form) View mLoginFormView;
 
     // Butter knife listeners
-    @OnClick(R.id.email_sign_in_button) void login() {
+    @OnClick(R.id.email_sign_in_button) void onClickLogin() {
         attemptLogin();
     }
 
@@ -77,13 +65,11 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
         populateAutoComplete();
 
         //debug user
-        List<User> findUser = mUser.find(User.class, "email = ?", "t@t");
-        if (!findUser.isEmpty()) {
-            mUser = findUser.get(0);
-            mUser.delete();
+        mUser = mUser.findUser("t@t");
+        if (mUser == null) {
+            mUser = new User("t@t", "test123");
+            mUser.save();
         }
-        mUser = new User("t@t", "test123");
-        mUser.save();
 
     }
 
@@ -216,15 +202,14 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
         UserLoginTask(String email, String password) {
             mEmail = email;
             mPassword = password;
-            mUser = null;
+            mUser = new User();
         }
 
         @Override
         protected Boolean doInBackground(Void... params) {
 
-            List<User> users = mUser.find(User.class, "email = ?", mEmail);
-            if (!users.isEmpty()) {
-                mUser = users.get(0);
+            mUser = mUser.findUser(mEmail);
+            if (mUser != null) {
                 User u = new User(mEmail, mPassword, mUser.getSalt());
                 if (u.getEmail().equals(mUser.getEmail())) {
                     return u.getPassword().equals(mUser.getPassword());
@@ -248,7 +233,7 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
                 setResult(RESULT_OK, data);
                 finish();
             } else {
-                mPasswordView.setError(getString(R.string.error_incorrect_password));
+                mPasswordView.setError(getString(R.string.error_invalid_login));
                 mPasswordView.requestFocus();
             }
         }

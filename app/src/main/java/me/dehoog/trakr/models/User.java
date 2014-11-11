@@ -1,5 +1,7 @@
 package me.dehoog.trakr.models;
 
+import android.content.SharedPreferences;
+
 import com.orm.SugarRecord;
 import com.orm.dsl.Ignore;
 import com.orm.query.Condition;
@@ -8,10 +10,10 @@ import com.orm.query.Select;
 import java.io.Serializable;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.security.NoSuchProviderException;
 import java.security.SecureRandom;
-import java.util.ArrayList;
 import java.util.List;
+
+import me.dehoog.trakr.activities.MainActivity;
 
 /**
  * Created by jordon on 2014-11-09.
@@ -85,12 +87,13 @@ public class User extends SugarRecord<User> implements Serializable {
         return sb.toString();
     }
 
-    public User findUser() {
-
-    }
-
-    public void logout() {
-        
+    public User findUser(String email) {
+        User found = null;
+        List<User> request = User.find(User.class, "email = ?", email);
+        if (!request.isEmpty()) {
+            found = request.get(0);
+        }
+        return found;
     }
 
     // Accessors

@@ -36,6 +36,7 @@ public class MainActivity extends Activity {
         editor.putBoolean("loggedIn", false);
         editor.remove("email");
         editor.commit();
+        login();
     }
 
     @Override
@@ -52,8 +53,7 @@ public class MainActivity extends Activity {
 
         getLoggedInState();
         if (!mLoggedIn) {
-            Intent i = new Intent(getApplication(), LoginActivity.class);
-            startActivityForResult(i, REQUEST_LOGIN_CODE);
+            login();
         } else {
             ButterKnife.inject(this);
             mTestTextView.setText("EMAIL: " + mUser.getEmail() + " PASSWORD: " + mUser.getPassword());
@@ -94,6 +94,11 @@ public class MainActivity extends Activity {
             editor.putString("email", mUser.getEmail());
         }
         editor.commit();
+    }
+
+    public void login() {
+        Intent i = new Intent(getApplication(), LoginActivity.class);
+        startActivityForResult(i, REQUEST_LOGIN_CODE);
     }
 
     @Override
