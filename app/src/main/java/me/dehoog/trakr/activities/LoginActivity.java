@@ -17,6 +17,7 @@ import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -44,11 +45,25 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
     @InjectView(R.id.email) AutoCompleteTextView mEmailView;
     @InjectView(R.id.password) EditText mPasswordView;
     @InjectView(R.id.login_form) View mLoginFormView;
+    @InjectView(R.id.debug_login_button) Button mDebugLogin;
 
     // Butter knife listeners
     @OnClick(R.id.email_sign_in_button) void onClickLogin() {
         attemptLogin();
     }
+
+    // DEBUG CODE
+    @OnClick(R.id.debug_login_button) void debugLogin() {
+        //debug user
+        mUser = mUser.findUser("t@t");
+        if (mUser == null) {
+            mUser = new User("t@t", "test123");
+            mUser.save();
+        }
+        mAuthTask = new UserLoginTask("t@t", "test123");
+        mAuthTask.execute((Void) null);
+    }
+    // DEBUG CODE
 
     @OnEditorAction(R.id.password) boolean onEditorAction(int id) {
         if (id == R.id.login || id == EditorInfo.IME_NULL) {
@@ -70,14 +85,6 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
         if (loggingOut) {
            Crouton.makeText(this, R.string.message_logging_out, Style.INFO).show();
         }
-
-        //debug user
-        mUser = mUser.findUser("t@t");
-        if (mUser == null) {
-            mUser = new User("t@t", "test123");
-            mUser.save();
-        }
-
     }
 
     private void populateAutoComplete() {

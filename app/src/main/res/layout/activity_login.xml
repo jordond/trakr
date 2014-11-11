@@ -30,6 +30,12 @@
                 android:layout_marginTop="16dp" android:text="@string/action_sign_in"
                 android:textStyle="bold" />
 
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Debug login"
+                android:id="@+id/debug_login_button"/>
+
         </LinearLayout>
     </ScrollView>
 

@@ -26,7 +26,10 @@ public class MainActivity extends Activity {
     public static final int REQUEST_LOGIN_CODE = 0;
 
     public boolean mLoggedIn = false;
-    public boolean mLoggingOut = false;
+
+    public boolean mLoggingOut = false; // for Crouton on login activity
+    public boolean mFirstOpen = true;
+
     public User mUser;
 
     // UI Components
@@ -72,7 +75,10 @@ public class MainActivity extends Activity {
 
         if (requestCode == REQUEST_LOGIN_CODE) {
             if (resultCode == RESULT_OK) {
-                mUser = (User) data.getSerializableExtra("user");
+                if (data.hasExtra("user")) {
+                    mUser = (User) data.getSerializableExtra("user");
+                    Crouton.makeText(this, mUser.getEmail() + " " + getString(R.string.message_login_success), Style.CONFIRM).show();
+                }
             }
         }
     }
@@ -87,10 +93,12 @@ public class MainActivity extends Activity {
                 if (mUser == null) {
                     mLoggedIn = false;
                 } else {
-                    Crouton.makeText(this, getString(R.string.message_logged_in) + " " + mUser.getEmail(), Style.INFO).show();
+                    if (mFirstOpen) {
+                        Crouton.makeText(this, getString(R.string.message_logged_in) + " " + mUser.getEmail(), Style.INFO).show();
+                        mFirstOpen = false;
+                    }
                 }
             } else {
-                Crouton.makeText(this, mUser.getEmail() + " " + getString(R.string.message_login_success), Style.CONFIRM).show();
             }
         }
     }
