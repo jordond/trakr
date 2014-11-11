@@ -60,7 +60,7 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
             mUser = new User("t@t", "test123");
             mUser.save();
         }
-        mAuthTask = new UserLoginTask("t@t", "test123");
+        mAuthTask = new UserLoginTask(this, "t@t", "test123");
         mAuthTask.execute((Void) null);
     }
     // DEBUG CODE
@@ -135,7 +135,7 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
         if (cancel) {
             focusView.requestFocus();
         } else {
-            mAuthTask = new UserLoginTask(email, password);
+            mAuthTask = new UserLoginTask(this, email, password);
             mAuthTask.execute((Void) null);
         }
     }
@@ -210,12 +210,14 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
      */
     public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
 
-        private final String mEmail;
+        private Activity mActivity;
+        private String mEmail;
         private String mPassword;
 
-        UserLoginTask(String email, String password) {
-            mEmail = email;
-            mPassword = password;
+        UserLoginTask(Activity activity, String email, String password) {
+            this.mActivity = activity;
+            this.mEmail = email;
+            this.mPassword = password;
             mUser = new User();
         }
 
@@ -247,8 +249,7 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
                 setResult(RESULT_OK, data);
                 finish();
             } else {
-                mPasswordView.setError(getString(R.string.error_invalid_login));
-                mPasswordView.requestFocus();
+                Crouton.makeText(mActivity, R.string.message_login_failed, Style.ALERT).show();
             }
         }
 
