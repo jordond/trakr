@@ -12,7 +12,9 @@ import java.security.SecureRandom;
 import java.util.List;
 
 /**
- * Created by jordon on 2014-11-09.
+ * Author:  jordon
+ * Created: November, 11, 2014
+ *          3:21 PM
  */
 public class User extends SugarRecord<User> implements Serializable {
 
