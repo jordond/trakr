@@ -3,51 +3,34 @@ package me.dehoog.trakr.activities;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
-import android.app.LoaderManager.LoaderCallbacks;
-import android.content.CursorLoader;
-import android.content.Intent;
-import android.content.Loader;
-import android.content.SharedPreferences;
-import android.database.Cursor;
-import android.net.Uri;
-import android.os.AsyncTask;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.text.TextUtils;
-import android.util.Patterns;
 import android.view.View;
-import android.view.inputmethod.EditorInfo;
-import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.TextView;
 
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.regex.Pattern;
-
-import butterknife.ButterKnife;
-import butterknife.InjectView;
-import butterknife.OnClick;
-import butterknife.OnEditorAction;
 import de.keyboardsurfer.android.widget.crouton.Crouton;
 import de.keyboardsurfer.android.widget.crouton.Style;
 import me.dehoog.trakr.R;
 import me.dehoog.trakr.fragments.LoginFragment;
 import me.dehoog.trakr.fragments.RegisterFragment;
+import me.dehoog.trakr.interfaces.OnTaskResult;
 import me.dehoog.trakr.models.User;
+import me.dehoog.trakr.tasks.UserLoginTask;
+import me.dehoog.trakr.tasks.UserRegisterTask;
 //TODO implement attempLogin() and attemptRegister(), then handle only clicking the button once, don't allow multiple clicks
 /**
  * A login screen that offers login via email/password.
  */
-public class LoginActivity extends Activity implements LoginFragment.OnFragmentInteractionListener {
+public class LoginActivity extends Activity implements LoginFragment.OnFragmentInteractionListener, OnTaskResult {
 
-    private UserLoginTask mAuthTask = null;
+    private UserLoginTask mLoginTask = null;
+    private UserRegisterTask mRegisterTask = null;
+    private OnTaskResult mOnTaskResult;
     private User mUser = new User();
 
     private FragmentTransaction ft;
@@ -62,8 +45,8 @@ public class LoginActivity extends Activity implements LoginFragment.OnFragmentI
             mUser = new User("t@t.com", "test123");
             mUser.save();
         }
-        mAuthTask = new UserLoginTask(this, "t@t.com", "test123");
-        mAuthTask.execute((Void) null);
+        mLoginTask = new UserLoginTask("t@t.com", "test123", mOnTaskResult);
+        mLoginTask.execute((Void) null);
     }
     // DEBUG CODE
 
@@ -85,7 +68,7 @@ public class LoginActivity extends Activity implements LoginFragment.OnFragmentI
 
         boolean loggingOut = getIntent().getExtras().getBoolean("loggingOut");
         if (loggingOut) {
-           Crouton.makeText(this, R.string.message_logging_out, Style.INFO).show();
+            Crouton.makeText(this, R.string.message_logging_out, Style.INFO).show();
         }
     }
 
@@ -98,7 +81,7 @@ public class LoginActivity extends Activity implements LoginFragment.OnFragmentI
             launchAnimatedFragment(mRegisterFragment);
         } else if (action.equals("create")) {
             attemptRegister(bundle.getStringArray("credentials"));
-        } else if (action.equals("switch_login")){
+        } else if (action.equals("switch_login")) {
             launchAnimatedFragment(mLoginFragment);
         } else if (action.equals("debug")) {
             debugLogin();
@@ -117,7 +100,7 @@ public class LoginActivity extends Activity implements LoginFragment.OnFragmentI
     }
 
     public void attemptLogin(String[] credentials) {
-        if (mAuthTask != null) { // prevent multiple login attempts
+        if (mLoginTask != null) { // prevent multiple login attempts
             return;
         }
 
@@ -159,44 +142,20 @@ public class LoginActivity extends Activity implements LoginFragment.OnFragmentI
                     .duration(500)
                     .playOn(focusView);
         } else {
-            mAuthTask = new UserLoginTask(this, email, password);
-            mAuthTask.execute((Void) null);
+            mLoginTask = new UserLoginTask(email, password, mOnTaskResult);
+            mLoginTask.execute((Void) null);
         }
     }
 
     private void attemptRegister(String[] credentials) {
-        Crouton.makeText(this, "Username: " + credentials[0] + " Email: " + credentials[1] + " Password: " + credentials[2], Style.CONFIRM).show();
+        if (mRegisterTask != null) {
+            return;
+        }
     }
 
-    public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
-
-        private Activity mActivity;
-        private String mEmail;
-        private String mPassword;
-
-        UserLoginTask(Activity activity, String email, String password) {
-            this.mActivity = activity;
-            this.mEmail = email;
-            this.mPassword = password;
-            mUser = new User();
-        }
-
-        @Override
-        protected Boolean doInBackground(Void... params) {
-
-            mUser = mUser.findUser(mEmail);
-            if (mUser != null) {
-                User u = new User(mEmail, mPassword, mUser.getSalt());
-                if (u.getEmail().equals(mUser.getEmail())) {
-                    return u.getPassword().equals(mUser.getPassword());
-                }
-            }
-            return false;
-        }
-
-        @Override
-        protected void onPostExecute(final Boolean success) {
-            mAuthTask = null;
+    @Override
+    public void onTaskCompleted(String action, boolean success) {
+        if (action.equals("login")) {
             if (success) {
                 SharedPreferences settings = getSharedPreferences(MainActivity.PREFS_NAME, 0);
                 SharedPreferences.Editor editor = settings.edit();
@@ -209,18 +168,27 @@ public class LoginActivity extends Activity implements LoginFragment.OnFragmentI
                 setResult(RESULT_OK, data);
                 finish();
             } else {
-                Crouton.makeText(mActivity, R.string.message_login_failed, Style.ALERT).show();
+                Crouton.makeText(this, R.string.message_login_failed, Style.ALERT).show();
                 mLoginFragment.clearAllEditTexts();
                 mLoginFragment.getView("email").requestFocus();
             }
-        }
+        } else if (action.equals("register")) {
+            if (success) {
 
-        @Override
-        protected void onCancelled() {
-            mAuthTask = null;
+            } else {
+
+            }
+        }
+    }
+
+    @Override
+    public void onTaskCancelled(String action) {
+        if (action.equals("login")) {
+            mLoginTask = null;
+        } else if (action.equals("register")) {
+            mRegisterTask = null;
         }
     }
 }
-
 
 
