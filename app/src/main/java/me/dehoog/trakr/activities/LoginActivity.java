@@ -38,7 +38,7 @@ import me.dehoog.trakr.R;
 import me.dehoog.trakr.fragments.LoginFragment;
 import me.dehoog.trakr.fragments.RegisterFragment;
 import me.dehoog.trakr.models.User;
-
+//TODO implement attempLogin() and attemptRegister(), then handle only clicking the button once, don't allow multiple clicks
 /**
  * A login screen that offers login via email/password.
  */
