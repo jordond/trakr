@@ -22,6 +22,7 @@ import java.util.regex.Pattern;
 public class User extends SugarRecord<User> implements Serializable {
 
     // Properties
+    private String username;
     private String email;
     private String password;
     private String salt;
@@ -55,6 +56,13 @@ public class User extends SugarRecord<User> implements Serializable {
     }
 
     public User(String email, String password, String salt) {
+        this.email = email;
+        this.salt = salt;
+        this.password = generateHash(password);
+    }
+
+    public User(String username, String email, String password, String salt) {
+        this.username = username;
         this.email = email;
         this.salt = salt;
         this.password = generateHash(password);
@@ -97,16 +105,25 @@ public class User extends SugarRecord<User> implements Serializable {
         return found;
     }
 
-    public boolean isEmailValid(String email) {
+    public static boolean isEmailValid(String email) {
         Pattern pattern = Patterns.EMAIL_ADDRESS;
         return pattern.matcher(email).matches();
     }
 
-    public boolean isPasswordValid(String password) {
+    public static boolean isPasswordValid(String password) {
         return password.length() > 4;
     }
 
     // Accessors
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
     public String getEmail() {
         return email;
     }

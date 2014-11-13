@@ -24,6 +24,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.daimajia.androidanimations.library.Techniques;
+import com.daimajia.androidanimations.library.YoYo;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
@@ -49,28 +52,32 @@ public class LoginActivity extends Activity implements LoginFragment.OnFragmentI
 
     private FragmentTransaction ft;
     private LoginFragment mLoginFragment;
+    private RegisterFragment mRegisterFragment;
 
-//    // DEBUG CODE
-//    @OnClick(R.id.debug_login_button) void debugLogin() {
-//        //debug user
-//        mUser = mUser.findUser("t@t");
-//        if (mUser == null) {
-//            mUser = new User("t@t", "test123");
-//            mUser.save();
-//        }
-//        mAuthTask = new UserLoginTask(this, "t@t", "test123");
-//        mAuthTask.execute((Void) null);
-//    }
-//    // DEBUG CODE
+    // TODO DEBUG CODE remove after
+    public void debugLogin() {
+        //debug user
+        mUser = mUser.findUser("t@t.com");
+        if (mUser == null) {
+            mUser = new User("t@t.com", "test123");
+            mUser.save();
+        }
+        mAuthTask = new UserLoginTask(this, "t@t.com", "test123");
+        mAuthTask.execute((Void) null);
+    }
+    // DEBUG CODE
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        getActionBar().hide();
+        if (getActionBar() != null) {
+            getActionBar().hide();
+        }
 
-        mLoginFragment = mLoginFragment.newInstance();
+        mLoginFragment = LoginFragment.newInstance();
+        mRegisterFragment = RegisterFragment.newInstance();
 
         ft = getFragmentManager().beginTransaction();
         ft.replace(R.id.container_login, mLoginFragment);
@@ -88,63 +95,73 @@ public class LoginActivity extends Activity implements LoginFragment.OnFragmentI
         if (action.equals("login")) {
             attemptLogin(bundle.getStringArray("credentials"));
         } else if (action.equals("switch_register")) {
-            launchAnimatedFragment(RegisterFragment.newInstance());
+            launchAnimatedFragment(mRegisterFragment);
         } else if (action.equals("create")) {
             attemptRegister(bundle.getStringArray("credentials"));
         } else if (action.equals("switch_login")){
-            launchAnimatedFragment(LoginFragment.newInstance());
+            launchAnimatedFragment(mLoginFragment);
+        } else if (action.equals("debug")) {
+            debugLogin();
         }
     }
 
     public void launchAnimatedFragment(Fragment fragment) {
-        ft = getFragmentManager().beginTransaction();
+        if (fragment != null) {
+            ft = getFragmentManager().beginTransaction();
 
-        ft.setCustomAnimations(R.animator.slide_up, R.animator.slide_down,R.animator.slide_up, R.animator.slide_down)
-                .replace(R.id.container_login, fragment)
-                .addToBackStack(null)
-                .commit();
+            ft.setCustomAnimations(R.animator.slide_up, R.animator.slide_down, R.animator.slide_up, R.animator.slide_down)
+                    .replace(R.id.container_login, fragment)
+                    .addToBackStack(null)
+                    .commit();
+        }
     }
 
     public void attemptLogin(String[] credentials) {
-        Crouton.makeText(this, "Email: " + credentials[0] + " Password: " + credentials[1], Style.CONFIRM).show();
-//        if (mAuthTask != null) { // prevent multiple login attempts
-//            return;
-//        }
-//
-//        // Store values at the time of the login attempt.
-//        String email = mEmailView.getText().toString();
-//        String password = mPasswordView.getText().toString();
-//
-//        String croutonMessage = "";
-//        boolean cancel = false;
-//        View focusView = null;
-//
-//
-//        // Check for a valid password, if the user entered one.
-//        if (!TextUtils.isEmpty(password) && !isPasswordValid(password)) {
-//            croutonMessage = getString(R.string.error_invalid_password);
-//            focusView = mPasswordView;
-//            cancel = true;
-//        }
-//
-//        // Check for a valid email address.
-//        if (TextUtils.isEmpty(email)) {
-//            croutonMessage = getString(R.string.error_email_required);
-//            focusView = mEmailView;
-//            cancel = true;
-//        } else if (!isEmailValid(email)) {
-//            croutonMessage = getString(R.string.error_invalid_email);
-//            focusView = mEmailView;
-//            cancel = true;
-//        }
-//
-//        if (cancel) {
-//            Crouton.makeText(this, croutonMessage, Style.ALERT).show();
-//            focusView.requestFocus();
-//        } else {
-//            mAuthTask = new UserLoginTask(this, email, password);
-//            mAuthTask.execute((Void) null);
-//        }
+        if (mAuthTask != null) { // prevent multiple login attempts
+            return;
+        }
+
+        // Store values at the time of the login attempt.
+        String email = credentials[0];
+        String password = credentials[1];
+
+        String croutonMessage = "";
+        boolean cancel = false;
+        View focusView = null;
+
+
+        // Check for a valid password, if the user entered one.
+        if (TextUtils.isEmpty(password)) {
+            croutonMessage = getString(R.string.error_password_required);
+            focusView = mLoginFragment.getView("password");
+            cancel = true;
+        } else if (!User.isPasswordValid(password)) {
+            croutonMessage = getString(R.string.error_invalid_password);
+            focusView = mLoginFragment.getView("password");
+            cancel = true;
+        }
+
+        // Check for a valid email address.
+        if (TextUtils.isEmpty(email)) {
+            croutonMessage = getString(R.string.error_email_required);
+            focusView = mLoginFragment.getView("email");
+            cancel = true;
+        } else if (!User.isEmailValid(email)) {
+            croutonMessage = getString(R.string.error_invalid_email);
+            focusView = mLoginFragment.getView("email");
+            cancel = true;
+        }
+
+        if (cancel) {
+            Crouton.makeText(this, croutonMessage, Style.ALERT).show();
+            focusView.requestFocus();
+            YoYo.with(Techniques.Shake)
+                    .duration(500)
+                    .playOn(focusView);
+        } else {
+            mAuthTask = new UserLoginTask(this, email, password);
+            mAuthTask.execute((Void) null);
+        }
     }
 
     private void attemptRegister(String[] credentials) {
@@ -193,8 +210,8 @@ public class LoginActivity extends Activity implements LoginFragment.OnFragmentI
                 finish();
             } else {
                 Crouton.makeText(mActivity, R.string.message_login_failed, Style.ALERT).show();
-                //mEmailView.setText("");
-                //mPasswordView.setText("");
+                mLoginFragment.clearAllEditTexts();
+                mLoginFragment.getView("email").requestFocus();
             }
         }
 

@@ -22,7 +22,7 @@
             android:layout_height="150dp"
             android:paddingTop="30dp"
             android:layout_marginBottom="20dp"
-
+            android:id="@+id/login_logo"
             android:src="@drawable/login_logo_cyan_white_fill"/>
 
         <LinearLayout
@@ -68,7 +68,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 style="?android:textAppearanceSmall"
-                android:text="@string/action_sign_in"
+                android:text="@string/fragment_login_signin"
                 android:textColor="#ffcdcdcd"
                 android:textStyle="bold"
                 android:hint="@string/fragment_login_signin"

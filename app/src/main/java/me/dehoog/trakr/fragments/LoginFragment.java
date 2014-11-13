@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -22,7 +23,7 @@ public class LoginFragment extends Fragment {
     @InjectView(R.id.login_email) EditText userEmail;
     @InjectView(R.id.login_password) EditText userPassword;
 
-    @OnClick({ R.id.action_login, R.id.action_register})
+    @OnClick({ R.id.action_login, R.id.action_register })
     public void buttonClicked(Button button) {
         Bundle b = new Bundle();
         switch (button.getId()) {
@@ -39,6 +40,13 @@ public class LoginFragment extends Fragment {
         if (!b.getString("action", "none").equals("none")) {
             sendBundle(b);
         }
+    }
+
+    @OnClick(R.id.login_logo) // TODO remove after testing
+    public void debug() {
+        Bundle b = new Bundle();
+        b.putString("action", "debug");
+        sendBundle(b);
     }
 
     public LoginFragment() {
@@ -82,6 +90,32 @@ public class LoginFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    public View getView(String view) {
+        if (view.equals("email")) {
+            return userEmail;
+        } else if (view.equals("password")) {
+            return userPassword;
+        }
+        return null;
+    }
+
+    public void clearAllEditTexts() {
+        if (userEmail != null && userPassword != null) {
+            userEmail.setText("");
+            userPassword.setText("");
+        }
+    }
+
+    public void setText(int id, String text) {
+        switch (id) {
+            case R.id.login_email:
+                userEmail.setText(text);
+                break;
+            case R.id.login_password:
+                userPassword.setText(text);
+        }
     }
 
     public interface OnFragmentInteractionListener {

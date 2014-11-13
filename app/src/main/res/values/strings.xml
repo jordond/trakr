@@ -12,5 +12,6 @@
     <string name="action_cancel">cancel</string>
     <string name="text_register_heading">CREATE A NEW TRAKR ACCOUNT TODAY!</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="error_password_required">Password is required</string>
 
 </resources>

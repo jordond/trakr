@@ -115,7 +115,7 @@
                 android:layout_marginTop="16dp"
                 style="?android:textAppearanceSmall"
                 android:text="@string/action_cancel"
-                android:textColor="#ff000000"
+                android:textColor="#ffcdcdcd"
                 android:textStyle="bold"
                 android:background="@drawable/button_cancel"
                 android:id="@+id/action_cancel"/>
