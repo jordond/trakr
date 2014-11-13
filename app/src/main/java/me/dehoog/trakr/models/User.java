@@ -1,5 +1,7 @@
 package me.dehoog.trakr.models;
 
+import android.util.Patterns;
+
 import com.orm.SugarRecord;
 import com.orm.dsl.Ignore;
 import com.orm.query.Condition;
@@ -10,6 +12,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.util.List;
+import java.util.regex.Pattern;
 
 /**
  * Author:  jordon
@@ -92,6 +95,15 @@ public class User extends SugarRecord<User> implements Serializable {
             found = request.get(0);
         }
         return found;
+    }
+
+    public boolean isEmailValid(String email) {
+        Pattern pattern = Patterns.EMAIL_ADDRESS;
+        return pattern.matcher(email).matches();
+    }
+
+    public boolean isPasswordValid(String password) {
+        return password.length() > 4;
     }
 
     // Accessors

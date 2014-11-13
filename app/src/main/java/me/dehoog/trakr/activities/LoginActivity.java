@@ -1,6 +1,8 @@
 package me.dehoog.trakr.activities;
 
 import android.app.Activity;
+import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.app.LoaderManager.LoaderCallbacks;
 import android.content.CursorLoader;
 import android.content.Intent;
@@ -33,15 +35,19 @@ import butterknife.OnEditorAction;
 import de.keyboardsurfer.android.widget.crouton.Crouton;
 import de.keyboardsurfer.android.widget.crouton.Style;
 import me.dehoog.trakr.R;
+import me.dehoog.trakr.fragments.LoginFragment;
 import me.dehoog.trakr.models.User;
 
 /**
  * A login screen that offers login via email/password.
  */
-public class LoginActivity extends Activity {
+public class LoginActivity extends Activity implements LoginFragment.OnFragmentInteractionListener {
 
     private UserLoginTask mAuthTask = null;
     private User mUser = new User();
+
+    private FragmentTransaction ft;
+    private LoginFragment mLoginFragment;
 
 //    // DEBUG CODE
 //    @OnClick(R.id.debug_login_button) void debugLogin() {
@@ -61,12 +67,33 @@ public class LoginActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        ButterKnife.inject(this); // all your injects belong to us
+        mLoginFragment = mLoginFragment.newInstance();
+
+        ft = getFragmentManager().beginTransaction();
+        ft.replace(R.id.container_login, mLoginFragment);
+        ft.commit();
 
         boolean loggingOut = getIntent().getExtras().getBoolean("loggingOut");
         if (loggingOut) {
            Crouton.makeText(this, R.string.message_logging_out, Style.INFO).show();
         }
+    }
+
+    @Override
+    public void onFragmentInteraction(Bundle bundle) {
+        String action = bundle.getString("action", "none");
+        if (action.equals("login")) {
+
+        } else if (action.equals("register")) {
+            
+        } else if (action.equals("cancel")){
+
+        }
+
+    }
+
+    public void launchAnimatedFragment(Fragment fragment) {
+
     }
 
 //    public void attemptLogin() {
@@ -109,15 +136,6 @@ public class LoginActivity extends Activity {
 //            mAuthTask.execute((Void) null);
 //        }
 //    }
-
-    private boolean isEmailValid(String email) {
-        Pattern pattern = Patterns.EMAIL_ADDRESS;
-        return pattern.matcher(email).matches();
-    }
-
-    private boolean isPasswordValid(String password) {
-        return password.length() > 4;
-    }
 
     public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
 
