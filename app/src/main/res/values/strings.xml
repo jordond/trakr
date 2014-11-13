@@ -8,5 +8,8 @@
     <string name="fragment_login_password_text">password</string>
     <string name="fragment_login_signin">sign in</string>
     <string name="action_register">create account</string>
+    <string name="action_create">create</string>
+    <string name="action_cancel">cancel</string>
+    <string name="text_register_heading">CREATE A NEW TRAKR ACCOUNT TODAY!</string>
 
 </resources>
