@@ -72,7 +72,7 @@
                 android:textColor="#ffcdcdcd"
                 android:textStyle="bold"
                 android:hint="@string/fragment_login_signin"
-                android:background="#c8006064"
+                android:background="@drawable/button_confirm"
                 android:id="@+id/action_login"/>
 
             </LinearLayout>
@@ -96,7 +96,7 @@
             style="?android:textAppearanceSmall"
             android:text="@string/action_register"
             android:textStyle="bold"
-            android:background="#b400a5ba"
+            android:background="@drawable/button_cancel"
             android:id="@+id/action_register"/>
     </LinearLayout>
 
