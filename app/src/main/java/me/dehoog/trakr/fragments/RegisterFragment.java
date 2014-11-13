@@ -9,7 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -21,9 +20,9 @@ public class RegisterFragment extends Fragment {
     private LoginFragment.OnFragmentInteractionListener mListener;
 
     // UI stuff
-    @InjectView(R.id.create_username) EditText registerUsername;
-    @InjectView(R.id.create_email) EditText registerEmail;
-    @InjectView(R.id.create_password) EditText registerPassword;
+    @InjectView(R.id.create_username) EditText userUsername;
+    @InjectView(R.id.create_email) EditText userEmail;
+    @InjectView(R.id.create_password) EditText userPassword;
 
     @OnClick({ R.id.action_create_account, R.id.action_cancel })
     public void buttonClicked(Button button) {
@@ -32,9 +31,9 @@ public class RegisterFragment extends Fragment {
             case R.id.action_create_account:
                 b.putString("action", "create");
                 String[] credentials = new String[3];
-                credentials[0] = registerUsername.getText().toString();
-                credentials[1] = registerEmail.getText().toString();
-                credentials[2] =  registerPassword.getText().toString();
+                credentials[0] = userUsername.getText().toString();
+                credentials[1] = userEmail.getText().toString();
+                credentials[2] =  userPassword.getText().toString();
                 b.putStringArray("credentials", credentials);
                 break;
             case R.id.action_cancel:
@@ -87,6 +86,38 @@ public class RegisterFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    public View getView(String view) {
+        if (view.equals("username")){
+            return userUsername;
+        } else if (view.equals("email")) {
+            return userEmail;
+        } else if (view.equals("password")) {
+            return userPassword;
+        }
+        return null;
+    }
+
+    public void clearAllEditTexts() {
+        if (userUsername != null && userEmail != null && userPassword != null) {
+            userUsername.setText("");
+            userEmail.setText("");
+            userPassword.setText("");
+        }
+    }
+
+    public void setText(int id, String text) {
+        switch (id) {
+            case R.id.create_username:
+                userUsername.setText(text);
+                break;
+            case R.id.create_email:
+                userEmail.setText(text);
+                break;
+            case R.id.create_password:
+                userPassword.setText(text);
+        }
     }
 
 }

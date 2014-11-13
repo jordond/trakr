@@ -61,11 +61,12 @@ public class User extends SugarRecord<User> implements Serializable {
         this.password = generateHash(password);
     }
 
-    public User(String username, String email, String password, String salt) {
+    public User(String username, String email, String password, boolean firstLogin) {
         this.username = username;
         this.email = email;
-        this.salt = salt;
+        this.salt = generateSalt();
         this.password = generateHash(password);
+        this.firstLogin = firstLogin;
     }
 
     // Helper methods
@@ -105,6 +106,16 @@ public class User extends SugarRecord<User> implements Serializable {
         return found;
     }
 
+    public boolean usernameExists(String username) {
+        List<User> request = User.find(User.class, "username = ?", username);
+        return request.isEmpty();
+    }
+
+    public boolean emailExists(String email) {
+        List<User> request = User.find(User.class, "email = ?", email);
+        return request.isEmpty();
+    }
+
     public static boolean isEmailValid(String email) {
         Pattern pattern = Patterns.EMAIL_ADDRESS;
         return pattern.matcher(email).matches();
@@ -137,7 +148,8 @@ public class User extends SugarRecord<User> implements Serializable {
     }
 
     public void setPassword(String password) {
-        this.password = password;
+        getSalt();
+        this.password = generateHash(password);
     }
 
     public String getFirstName() {

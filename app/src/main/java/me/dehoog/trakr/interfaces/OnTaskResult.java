@@ -1,5 +1,7 @@
 package me.dehoog.trakr.interfaces;
 
+import android.os.Bundle;
+
 /**
  * Author:  jordon
  * Created: November, 13, 2014
@@ -7,7 +9,7 @@ package me.dehoog.trakr.interfaces;
  */
 public interface OnTaskResult {
 
-    void onTaskCompleted(String action, boolean success);
+    void onTaskCompleted(Bundle bundle);
     void onTaskCancelled(String action);
 
 }

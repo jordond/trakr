@@ -15,7 +15,6 @@ import com.daimajia.androidanimations.library.YoYo;
 
 import de.keyboardsurfer.android.widget.crouton.Crouton;
 import de.keyboardsurfer.android.widget.crouton.Style;
-import me.dehoog.trakr.R;
 import me.dehoog.trakr.fragments.LoginFragment;
 import me.dehoog.trakr.fragments.RegisterFragment;
 import me.dehoog.trakr.interfaces.OnTaskResult;
@@ -26,7 +25,7 @@ import me.dehoog.trakr.tasks.UserRegisterTask;
 /**
  * A login screen that offers login via email/password.
  */
-public class LoginActivity extends Activity implements LoginFragment.OnFragmentInteractionListener, OnTaskResult {
+public class LoginActivity extends Activity implements LoginFragment.OnFragmentInteractionListener {
 
     private UserLoginTask mLoginTask = null;
     private UserRegisterTask mRegisterTask = null;
@@ -61,6 +60,17 @@ public class LoginActivity extends Activity implements LoginFragment.OnFragmentI
 
         mLoginFragment = LoginFragment.newInstance();
         mRegisterFragment = RegisterFragment.newInstance();
+        mOnTaskResult = new OnTaskResult() {
+            @Override
+            public void onTaskCompleted(Bundle bundle) {
+                taskCompleted(bundle);
+            }
+
+            @Override
+            public void onTaskCancelled(String action) {
+                taskCancelled(action);
+            }
+        };
 
         ft = getFragmentManager().beginTransaction();
         ft.replace(R.id.container_login, mLoginFragment);
@@ -78,10 +88,16 @@ public class LoginActivity extends Activity implements LoginFragment.OnFragmentI
         if (action.equals("login")) {
             attemptLogin(bundle.getStringArray("credentials"));
         } else if (action.equals("switch_register")) {
+            if (mLoginTask != null) {
+                mLoginTask.cancel(true);
+            }
             launchAnimatedFragment(mRegisterFragment);
         } else if (action.equals("create")) {
             attemptRegister(bundle.getStringArray("credentials"));
         } else if (action.equals("switch_login")) {
+            if (mRegisterTask != null) {
+                mRegisterTask.cancel(true);
+            }
             launchAnimatedFragment(mLoginFragment);
         } else if (action.equals("debug")) {
             debugLogin();
@@ -153,20 +169,29 @@ public class LoginActivity extends Activity implements LoginFragment.OnFragmentI
         }
     }
 
-    @Override
-    public void onTaskCompleted(String action, boolean success) {
+    public void saveUserAndLogin(User user) {
+        SharedPreferences settings = getSharedPreferences(MainActivity.PREFS_NAME, 0);
+        SharedPreferences.Editor editor = settings.edit();
+        Intent data = new Intent();
+
+        editor.putBoolean("loggedIn", true);
+        editor.putString("email", user.getEmail());
+        editor.apply();
+
+        data.putExtra("user", user);
+        setResult(RESULT_OK, data);
+        finish();
+    }
+
+    public void taskCompleted(Bundle bundle) {
+        String action = bundle.getString("action", "none");
+        boolean success = bundle.getBoolean("success", false);
+
         if (action.equals("login")) {
             if (success) {
-                SharedPreferences settings = getSharedPreferences(MainActivity.PREFS_NAME, 0);
-                SharedPreferences.Editor editor = settings.edit();
-                editor.putBoolean("loggedIn", true);
-                editor.putString("email", mUser.getEmail());
-                editor.apply();
+                User user = (User) bundle.getSerializable("user");
+                saveUserAndLogin(user);
 
-                Intent data = new Intent();
-                data.putExtra("user", mUser);
-                setResult(RESULT_OK, data);
-                finish();
             } else {
                 Crouton.makeText(this, R.string.message_login_failed, Style.ALERT).show();
                 mLoginFragment.clearAllEditTexts();
@@ -174,15 +199,17 @@ public class LoginActivity extends Activity implements LoginFragment.OnFragmentI
             }
         } else if (action.equals("register")) {
             if (success) {
-
+                User user = (User) bundle.getSerializable("user");
+                saveUserAndLogin(user);
             } else {
-
+                Crouton.makeText(this, bundle.getString("message"), Style.ALERT).show();
+                mRegisterFragment.clearAllEditTexts();
+                mRegisterFragment.getView("email").requestFocus();
             }
         }
     }
 
-    @Override
-    public void onTaskCancelled(String action) {
+    public void taskCancelled(String action) {
         if (action.equals("login")) {
             mLoginTask = null;
         } else if (action.equals("register")) {

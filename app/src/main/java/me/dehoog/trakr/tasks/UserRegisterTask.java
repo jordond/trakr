@@ -1,6 +1,7 @@
 package me.dehoog.trakr.tasks;
 
 import android.os.AsyncTask;
+import android.os.Bundle;
 
 import me.dehoog.trakr.interfaces.OnTaskResult;
 import me.dehoog.trakr.models.User;
@@ -10,7 +11,7 @@ import me.dehoog.trakr.models.User;
  * Created: November, 13, 2014
  * 1:25 PM
  */
-public class UserRegisterTask extends AsyncTask<Void, Void, Boolean> {
+public class UserRegisterTask extends AsyncTask<Void, Void, Bundle> {
     private User mUser;
     private String mUsername;
     private String mEmail;
@@ -26,17 +27,47 @@ public class UserRegisterTask extends AsyncTask<Void, Void, Boolean> {
     }
 
     @Override
-    protected Boolean doInBackground(Void... params) {
-        return null;
+    protected Bundle doInBackground(Void... params) {
+
+        Bundle b = new Bundle();
+        String message = "";
+        boolean error = false;
+
+        if (mUser.usernameExists(mUsername)) {
+            message = "Username already exists";
+            error = true;
+        }
+
+        if (mUser.emailExists(mEmail)) {
+            message = "Email already exists";
+            error = true;
+        }
+
+        if (!error) {
+            User u = new User();
+            u.setUsername(mUsername);
+            u.setEmail(mEmail);
+            u.setPassword(mPassword);
+            u.save();
+
+            b.putBoolean("success", true);
+            b.putSerializable("user", u);
+        } else {
+            b.putBoolean("success", false);
+            b.putString("message", message);
+        }
+
+        return b;
     }
 
     @Override
-    protected void onPostExecute(final Boolean success) {
-        mListener.onTaskCompleted("login", success);
+    protected void onPostExecute(final Bundle bundle) {
+        bundle.putString("action", "register");
+        mListener.onTaskCompleted(bundle);
     }
 
     @Override
     protected void onCancelled() {
-        mListener.onTaskCancelled("login");
+        mListener.onTaskCancelled("register");
     }
 }
