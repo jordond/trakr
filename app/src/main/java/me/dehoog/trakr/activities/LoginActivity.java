@@ -15,6 +15,7 @@ import com.daimajia.androidanimations.library.YoYo;
 
 import de.keyboardsurfer.android.widget.crouton.Crouton;
 import de.keyboardsurfer.android.widget.crouton.Style;
+import me.dehoog.trakr.R;
 import me.dehoog.trakr.fragments.LoginFragment;
 import me.dehoog.trakr.fragments.RegisterFragment;
 import me.dehoog.trakr.interfaces.OnTaskResult;
@@ -197,6 +198,7 @@ public class LoginActivity extends Activity implements LoginFragment.OnFragmentI
                 mLoginFragment.clearAllEditTexts();
                 mLoginFragment.getView("email").requestFocus();
             }
+            mLoginTask = null;
         } else if (action.equals("register")) {
             if (success) {
                 User user = (User) bundle.getSerializable("user");
@@ -206,6 +208,13 @@ public class LoginActivity extends Activity implements LoginFragment.OnFragmentI
                 mRegisterFragment.clearAllEditTexts();
                 mRegisterFragment.getView("email").requestFocus();
             }
+            mRegisterTask = null;
+        }
+
+        if (!success) {
+            YoYo.with(Techniques.Wobble)
+                .duration(500)
+                .playOn(findViewById(R.id.ui_container));
         }
     }
 

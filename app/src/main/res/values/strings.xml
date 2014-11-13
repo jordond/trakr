@@ -16,5 +16,6 @@
 
     <string name="register_error_email">Email already exists</string>
     <string name="register_error_username">Username already exists</string>
+    <string name="logo_description">trakR</string>
 
 </resources>
