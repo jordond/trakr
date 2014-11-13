@@ -36,6 +36,7 @@ import de.keyboardsurfer.android.widget.crouton.Crouton;
 import de.keyboardsurfer.android.widget.crouton.Style;
 import me.dehoog.trakr.R;
 import me.dehoog.trakr.fragments.LoginFragment;
+import me.dehoog.trakr.fragments.RegisterFragment;
 import me.dehoog.trakr.models.User;
 
 /**
@@ -83,20 +84,26 @@ public class LoginActivity extends Activity implements LoginFragment.OnFragmentI
     public void onFragmentInteraction(Bundle bundle) {
         String action = bundle.getString("action", "none");
         if (action.equals("login")) {
-
+            attemptLogin(bundle.getStringArray("credentials"));
         } else if (action.equals("register")) {
-            
+            launchAnimatedFragment(RegisterFragment.newInstance());
+        } else if (action.equals("create")) {
+            attemptRegister(bundle.getStringArray("credentials"));
         } else if (action.equals("cancel")){
-
+            launchAnimatedFragment(LoginFragment.newInstance());
         }
-
     }
 
     public void launchAnimatedFragment(Fragment fragment) {
+        ft = getFragmentManager().beginTransaction();
 
+        ft.setCustomAnimations(R.animator.slide_up, R.animator.slide_down,R.animator.slide_up, R.animator.slide_down)
+                .replace(R.id.container_login, fragment)
+                .addToBackStack(null)
+                .commit();
     }
 
-//    public void attemptLogin() {
+    public void attemptLogin(String[] credentials) {
 //        if (mAuthTask != null) { // prevent multiple login attempts
 //            return;
 //        }
@@ -135,7 +142,11 @@ public class LoginActivity extends Activity implements LoginFragment.OnFragmentI
 //            mAuthTask = new UserLoginTask(this, email, password);
 //            mAuthTask.execute((Void) null);
 //        }
-//    }
+    }
+
+    private void attemptRegister(String[] credentials) {
+
+    }
 
     public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
 

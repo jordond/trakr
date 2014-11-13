@@ -1,7 +1,6 @@
 package me.dehoog.trakr.fragments;
 
 import android.app.Activity;
-import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.view.LayoutInflater;
@@ -31,21 +30,21 @@ public class LoginFragment extends Fragment {
                 b.putString("action", "register");
                 break;
             case R.id.action_login:
-                b.putString("action", "login");
-                b.putString("email", userEmail.getText().toString());
-                b.putString("password", userPassword.getText().toString());
+                String[] credentials = new String[2];
+                credentials[0] = userEmail.getText().toString();
+                credentials[1] =  userPassword.getText().toString();
+                b.putStringArray("credentials", credentials);
         }
-        if (b.getString("action", "none") != "none") {
+        if (!b.getString("action", "none").equals("none")) {
             sendBundle(b);
         }
     }
 
-    public static LoginFragment newInstance() {
-        LoginFragment fragment = new LoginFragment();
-        return fragment;
+    public LoginFragment() {
     }
 
-    public LoginFragment() {
+    public static LoginFragment newInstance() {
+        return new LoginFragment();
     }
 
     @Override

@@ -106,7 +106,8 @@
                 android:text="@string/action_create"
                 android:textColor="#ffcdcdcd"
                 android:textStyle="bold"
-                android:background="#c8006064" />
+                android:background="#c8006064"
+                android:id="@+id/action_create_account"/>
 
             <Button
                 android:layout_width="match_parent"
