@@ -23,7 +23,7 @@
             android:paddingTop="30dp"
             android:layout_marginBottom="20dp"
 
-            android:src="@drawable/login_logo_cyan"/>
+            android:src="@drawable/login_logo_cyan_white_fill"/>
 
         <LinearLayout
             android:layout_width="match_parent"
