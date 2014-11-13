@@ -37,7 +37,8 @@
         </activity>
         <activity
             android:name="me.dehoog.trakr.activities.LoginActivity"
-            android:label="@string/title_activity_login" >
+            android:label="@string/title_activity_login"
+            android:screenOrientation="portrait">
         </activity>
     </application>
 
