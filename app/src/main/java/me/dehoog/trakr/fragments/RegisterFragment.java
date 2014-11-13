@@ -38,7 +38,7 @@ public class RegisterFragment extends Fragment {
                 b.putStringArray("credentials", credentials);
                 break;
             case R.id.action_cancel:
-                b.putString("action", "cancel");
+                b.putString("action", "switch_login");
         }
         if (!b.getString("action", "none").equals("none")) {
             sendBundle(b);

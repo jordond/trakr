@@ -27,9 +27,10 @@ public class LoginFragment extends Fragment {
         Bundle b = new Bundle();
         switch (button.getId()) {
             case R.id.action_register:
-                b.putString("action", "register");
+                b.putString("action", "switch_register");
                 break;
             case R.id.action_login:
+                b.putString("action", "login");
                 String[] credentials = new String[2];
                 credentials[0] = userEmail.getText().toString();
                 credentials[1] =  userPassword.getText().toString();

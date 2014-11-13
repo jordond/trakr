@@ -68,6 +68,8 @@ public class LoginActivity extends Activity implements LoginFragment.OnFragmentI
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        getActionBar().hide();
+
         mLoginFragment = mLoginFragment.newInstance();
 
         ft = getFragmentManager().beginTransaction();
@@ -85,11 +87,11 @@ public class LoginActivity extends Activity implements LoginFragment.OnFragmentI
         String action = bundle.getString("action", "none");
         if (action.equals("login")) {
             attemptLogin(bundle.getStringArray("credentials"));
-        } else if (action.equals("register")) {
+        } else if (action.equals("switch_register")) {
             launchAnimatedFragment(RegisterFragment.newInstance());
         } else if (action.equals("create")) {
             attemptRegister(bundle.getStringArray("credentials"));
-        } else if (action.equals("cancel")){
+        } else if (action.equals("switch_login")){
             launchAnimatedFragment(LoginFragment.newInstance());
         }
     }
@@ -104,6 +106,7 @@ public class LoginActivity extends Activity implements LoginFragment.OnFragmentI
     }
 
     public void attemptLogin(String[] credentials) {
+        Crouton.makeText(this, "Email: " + credentials[0] + " Password: " + credentials[1], Style.CONFIRM).show();
 //        if (mAuthTask != null) { // prevent multiple login attempts
 //            return;
 //        }
@@ -145,7 +148,7 @@ public class LoginActivity extends Activity implements LoginFragment.OnFragmentI
     }
 
     private void attemptRegister(String[] credentials) {
-
+        Crouton.makeText(this, "Username: " + credentials[0] + " Email: " + credentials[1] + " Password: " + credentials[2], Style.CONFIRM).show();
     }
 
     public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
