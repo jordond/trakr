@@ -92,15 +92,6 @@ public class LoginFragment extends Fragment {
         mListener = null;
     }
 
-    public View getView(String view) {
-        if (view.equals("email")) {
-            return userEmail;
-        } else if (view.equals("password")) {
-            return userPassword;
-        }
-        return null;
-    }
-
     public void clearAllEditTexts() {
         if (userEmail != null && userPassword != null) {
             userEmail.setText("");

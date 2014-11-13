@@ -18,4 +18,7 @@
     <string name="register_error_username">Username already exists</string>
     <string name="logo_description">trakR</string>
 
+    <string name="error_username_required">Username is required</string>
+    <string name="error_username_invalid">Username need to be longer than 4 characters</string>
+
 </resources>

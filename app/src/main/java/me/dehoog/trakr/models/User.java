@@ -108,12 +108,17 @@ public class User extends SugarRecord<User> implements Serializable {
 
     public boolean usernameExists(String username) {
         List<User> request = User.find(User.class, "username = ?", username);
-        return request.isEmpty();
+        return !request.isEmpty();
     }
 
     public boolean emailExists(String email) {
         List<User> request = User.find(User.class, "email = ?", email);
-        return request.isEmpty();
+        return !request.isEmpty();
+    }
+
+    // Validators
+    public static boolean isUsernameValid(String username) {
+        return username.length() > 4;
     }
 
     public static boolean isEmailValid(String email) {
@@ -148,7 +153,6 @@ public class User extends SugarRecord<User> implements Serializable {
     }
 
     public void setPassword(String password) {
-        getSalt();
         this.password = generateHash(password);
     }
 

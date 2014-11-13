@@ -87,14 +87,18 @@ public class LoginActivity extends Activity implements LoginFragment.OnFragmentI
     public void onFragmentInteraction(Bundle bundle) {
         String action = bundle.getString("action", "none");
         if (action.equals("login")) {
-            attemptLogin(bundle.getStringArray("credentials"));
+            if (mLoginTask == null) {
+                attemptAction("login", bundle.getStringArray("credentials"));
+            }
         } else if (action.equals("switch_register")) {
             if (mLoginTask != null) {
                 mLoginTask.cancel(true);
             }
             launchAnimatedFragment(mRegisterFragment);
         } else if (action.equals("create")) {
-            attemptRegister(bundle.getStringArray("credentials"));
+            if (mRegisterTask == null) {
+                attemptAction("register", bundle.getStringArray("credentials"));
+            }
         } else if (action.equals("switch_login")) {
             if (mRegisterTask != null) {
                 mRegisterTask.cancel(true);
@@ -110,47 +114,66 @@ public class LoginActivity extends Activity implements LoginFragment.OnFragmentI
             ft = getFragmentManager().beginTransaction();
 
             ft.setCustomAnimations(R.animator.slide_up, R.animator.slide_down, R.animator.slide_up, R.animator.slide_down)
-                    .replace(R.id.container_login, fragment)
-                    .addToBackStack(null)
-                    .commit();
+                .replace(R.id.container_login, fragment)
+                .addToBackStack(null)
+                .commit();
         }
     }
 
-    public void attemptLogin(String[] credentials) {
+    public void attemptAction(String action, String[] credentials) {
         if (mLoginTask != null) { // prevent multiple login attempts
             return;
         }
 
-        // Store values at the time of the login attempt.
-        String email = credentials[0];
-        String password = credentials[1];
+        String username = "", email, password;
+        if (action.equals("register")) {
+            username = credentials[0];
+            email = credentials[1];
+            password = credentials[2];
+        } else {
+            email = credentials[0];
+            password = credentials[1];
+        }
 
         String croutonMessage = "";
         boolean cancel = false;
         View focusView = null;
 
-
         // Check for a valid password, if the user entered one.
         if (TextUtils.isEmpty(password)) {
             croutonMessage = getString(R.string.error_password_required);
-            focusView = mLoginFragment.getView("password");
+            focusView = findViewById(R.id.login_password);
             cancel = true;
         } else if (!User.isPasswordValid(password)) {
             croutonMessage = getString(R.string.error_invalid_password);
-            focusView = mLoginFragment.getView("password");
+            focusView = findViewById(R.id.login_password);
             cancel = true;
         }
 
         // Check for a valid email address.
         if (TextUtils.isEmpty(email)) {
             croutonMessage = getString(R.string.error_email_required);
-            focusView = mLoginFragment.getView("email");
+            focusView = findViewById(R.id.login_email);
             cancel = true;
         } else if (!User.isEmailValid(email)) {
             croutonMessage = getString(R.string.error_invalid_email);
-            focusView = mLoginFragment.getView("email");
+            focusView = findViewById(R.id.login_email);
             cancel = true;
         }
+
+        // Check for valid username
+        if (action.equals("register")) {
+            if (TextUtils.isEmpty(username)) {
+                croutonMessage = getString(R.string.error_username_required);
+                focusView = findViewById(R.id.register_username);
+                cancel = true;
+            } else if (!User.isUsernameValid(username)) {
+                croutonMessage = getString(R.string.error_username_invalid);
+                focusView = findViewById(R.id.register_username);
+                cancel = true;
+            }
+        }
+
 
         if (cancel) {
             Crouton.makeText(this, croutonMessage, Style.ALERT).show();
@@ -159,14 +182,13 @@ public class LoginActivity extends Activity implements LoginFragment.OnFragmentI
                     .duration(500)
                     .playOn(focusView);
         } else {
-            mLoginTask = new UserLoginTask(email, password, mOnTaskResult);
-            mLoginTask.execute((Void) null);
-        }
-    }
-
-    private void attemptRegister(String[] credentials) {
-        if (mRegisterTask != null) {
-            return;
+            if (action.equals("login")) {
+                mLoginTask = new UserLoginTask(email, password, mOnTaskResult);
+                mLoginTask.execute((Void) null);
+            } else {
+                mRegisterTask = new UserRegisterTask(username, email, password, mOnTaskResult);
+                mRegisterTask.execute((Void) null);
+            }
         }
     }
 
@@ -196,7 +218,7 @@ public class LoginActivity extends Activity implements LoginFragment.OnFragmentI
             } else {
                 Crouton.makeText(this, R.string.message_login_failed, Style.ALERT).show();
                 mLoginFragment.clearAllEditTexts();
-                mLoginFragment.getView("email").requestFocus();
+                findViewById(R.id.login_email).requestFocus();
             }
             mLoginTask = null;
         } else if (action.equals("register")) {
@@ -206,7 +228,7 @@ public class LoginActivity extends Activity implements LoginFragment.OnFragmentI
             } else {
                 Crouton.makeText(this, bundle.getString("message"), Style.ALERT).show();
                 mRegisterFragment.clearAllEditTexts();
-                mRegisterFragment.getView("email").requestFocus();
+                findViewById(R.id.register_username).requestFocus();
             }
             mRegisterTask = null;
         }

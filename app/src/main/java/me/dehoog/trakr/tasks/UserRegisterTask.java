@@ -44,10 +44,8 @@ public class UserRegisterTask extends AsyncTask<Void, Void, Bundle> {
         }
 
         if (!error) {
-            User u = new User();
+            User u = new User(mEmail, mPassword);
             u.setUsername(mUsername);
-            u.setEmail(mEmail);
-            u.setPassword(mPassword);
             u.save();
 
             b.putBoolean("success", true);

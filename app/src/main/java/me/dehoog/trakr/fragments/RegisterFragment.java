@@ -20,9 +20,9 @@ public class RegisterFragment extends Fragment {
     private LoginFragment.OnFragmentInteractionListener mListener;
 
     // UI stuff
-    @InjectView(R.id.create_username) EditText userUsername;
-    @InjectView(R.id.create_email) EditText userEmail;
-    @InjectView(R.id.create_password) EditText userPassword;
+    @InjectView(R.id.register_username) EditText userUsername;
+    @InjectView(R.id.login_email) EditText userEmail;
+    @InjectView(R.id.login_password) EditText userPassword;
 
     @OnClick({ R.id.action_create_account, R.id.action_cancel })
     public void buttonClicked(Button button) {
@@ -88,17 +88,6 @@ public class RegisterFragment extends Fragment {
         mListener = null;
     }
 
-    public View getView(String view) {
-        if (view.equals("username")){
-            return userUsername;
-        } else if (view.equals("email")) {
-            return userEmail;
-        } else if (view.equals("password")) {
-            return userPassword;
-        }
-        return null;
-    }
-
     public void clearAllEditTexts() {
         if (userUsername != null && userEmail != null && userPassword != null) {
             userUsername.setText("");
@@ -109,13 +98,13 @@ public class RegisterFragment extends Fragment {
 
     public void setText(int id, String text) {
         switch (id) {
-            case R.id.create_username:
+            case R.id.register_username:
                 userUsername.setText(text);
                 break;
-            case R.id.create_email:
+            case R.id.login_email:
                 userEmail.setText(text);
                 break;
-            case R.id.create_password:
+            case R.id.login_password:
                 userPassword.setText(text);
         }
     }
