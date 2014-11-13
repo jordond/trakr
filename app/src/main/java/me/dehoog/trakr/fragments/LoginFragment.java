@@ -15,14 +15,6 @@ import butterknife.InjectView;
 import butterknife.OnClick;
 import me.dehoog.trakr.R;
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link LoginFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link LoginFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class LoginFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
@@ -30,15 +22,21 @@ public class LoginFragment extends Fragment {
     // UI stuff
     @InjectView(R.id.login_email) EditText userEmail;
     @InjectView(R.id.login_password) EditText userPassword;
-    @InjectView(R.id.action_login) Button login;
-    @InjectView(R.id.action_register) Button createAccount;
 
     @OnClick({ R.id.action_login, R.id.action_register})
     public void buttonClicked(Button button) {
+        Bundle b = new Bundle();
         switch (button.getId()) {
             case R.id.action_register:
+                b.putString("action", "register");
                 break;
             case R.id.action_login:
+                b.putString("action", "login");
+                b.putString("email", userEmail.getText().toString());
+                b.putString("password", userPassword.getText().toString());
+        }
+        if (b.getString("action", "none") != "none") {
+            sendBundle(b);
         }
     }
 
@@ -63,7 +61,6 @@ public class LoginFragment extends Fragment {
         return view;
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
     public void sendBundle(Bundle bundle) {
         if (mListener != null) {
             mListener.onFragmentInteraction(bundle);
@@ -88,7 +85,6 @@ public class LoginFragment extends Fragment {
     }
 
     public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
         public void onFragmentInteraction(Bundle bundle);
     }
 
