@@ -38,42 +38,23 @@ import me.dehoog.trakr.models.User;
 /**
  * A login screen that offers login via email/password.
  */
-public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
+public class LoginActivity extends Activity {
 
     private UserLoginTask mAuthTask = null;
     private User mUser = new User();
 
-    // UI references.
-    @InjectView(R.id.email) AutoCompleteTextView mEmailView;
-    @InjectView(R.id.password) EditText mPasswordView;
-    @InjectView(R.id.login_form) View mLoginFormView;
-    @InjectView(R.id.debug_login_button) Button mDebugLogin;
-
-    // Butter knife listeners
-    @OnClick(R.id.email_sign_in_button) void onClickLogin() {
-        attemptLogin();
-    }
-
-    // DEBUG CODE
-    @OnClick(R.id.debug_login_button) void debugLogin() {
-        //debug user
-        mUser = mUser.findUser("t@t");
-        if (mUser == null) {
-            mUser = new User("t@t", "test123");
-            mUser.save();
-        }
-        mAuthTask = new UserLoginTask(this, "t@t", "test123");
-        mAuthTask.execute((Void) null);
-    }
-    // DEBUG CODE
-
-    @OnEditorAction(R.id.password) boolean onEditorAction(int id) {
-        if (id == R.id.login || id == EditorInfo.IME_NULL) {
-            attemptLogin();
-            return true;
-        }
-        return false;
-    }
+//    // DEBUG CODE
+//    @OnClick(R.id.debug_login_button) void debugLogin() {
+//        //debug user
+//        mUser = mUser.findUser("t@t");
+//        if (mUser == null) {
+//            mUser = new User("t@t", "test123");
+//            mUser.save();
+//        }
+//        mAuthTask = new UserLoginTask(this, "t@t", "test123");
+//        mAuthTask.execute((Void) null);
+//    }
+//    // DEBUG CODE
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,7 +62,6 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
         setContentView(R.layout.activity_login);
 
         ButterKnife.inject(this); // all your injects belong to us
-        populateAutoComplete();
 
         boolean loggingOut = getIntent().getExtras().getBoolean("loggingOut");
         if (loggingOut) {
@@ -89,56 +69,46 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
         }
     }
 
-    private void populateAutoComplete() {
-        getLoaderManager().initLoader(0, null, this);
-    }
-
-
-    /**
-     * Attempts to sign in or register the account specified by the login form.
-     * If there are form errors (invalid email, missing fields, etc.), the
-     * errors are presented and no actual login attempt is made.
-     */
-    public void attemptLogin() {
-        if (mAuthTask != null) { // prevent multiple login attempts
-            return;
-        }
-
-        // Store values at the time of the login attempt.
-        String email = mEmailView.getText().toString();
-        String password = mPasswordView.getText().toString();
-
-        String croutonMessage = "";
-        boolean cancel = false;
-        View focusView = null;
-
-
-        // Check for a valid password, if the user entered one.
-        if (!TextUtils.isEmpty(password) && !isPasswordValid(password)) {
-            croutonMessage = getString(R.string.error_invalid_password);
-            focusView = mPasswordView;
-            cancel = true;
-        }
-
-        // Check for a valid email address.
-        if (TextUtils.isEmpty(email)) {
-            croutonMessage = getString(R.string.error_email_required);
-            focusView = mEmailView;
-            cancel = true;
-        } else if (!isEmailValid(email)) {
-            croutonMessage = getString(R.string.error_invalid_email);
-            focusView = mEmailView;
-            cancel = true;
-        }
-
-        if (cancel) {
-            Crouton.makeText(this, croutonMessage, Style.ALERT).show();
-            focusView.requestFocus();
-        } else {
-            mAuthTask = new UserLoginTask(this, email, password);
-            mAuthTask.execute((Void) null);
-        }
-    }
+//    public void attemptLogin() {
+//        if (mAuthTask != null) { // prevent multiple login attempts
+//            return;
+//        }
+//
+//        // Store values at the time of the login attempt.
+//        String email = mEmailView.getText().toString();
+//        String password = mPasswordView.getText().toString();
+//
+//        String croutonMessage = "";
+//        boolean cancel = false;
+//        View focusView = null;
+//
+//
+//        // Check for a valid password, if the user entered one.
+//        if (!TextUtils.isEmpty(password) && !isPasswordValid(password)) {
+//            croutonMessage = getString(R.string.error_invalid_password);
+//            focusView = mPasswordView;
+//            cancel = true;
+//        }
+//
+//        // Check for a valid email address.
+//        if (TextUtils.isEmpty(email)) {
+//            croutonMessage = getString(R.string.error_email_required);
+//            focusView = mEmailView;
+//            cancel = true;
+//        } else if (!isEmailValid(email)) {
+//            croutonMessage = getString(R.string.error_invalid_email);
+//            focusView = mEmailView;
+//            cancel = true;
+//        }
+//
+//        if (cancel) {
+//            Crouton.makeText(this, croutonMessage, Style.ALERT).show();
+//            focusView.requestFocus();
+//        } else {
+//            mAuthTask = new UserLoginTask(this, email, password);
+//            mAuthTask.execute((Void) null);
+//        }
+//    }
 
     private boolean isEmailValid(String email) {
         Pattern pattern = Patterns.EMAIL_ADDRESS;
@@ -149,64 +119,6 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
         return password.length() > 4;
     }
 
-    @Override
-    public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
-        return new CursorLoader(this,
-                // Retrieve data rows for the device user's 'profile' contact.
-                Uri.withAppendedPath(ContactsContract.Profile.CONTENT_URI,
-                        ContactsContract.Contacts.Data.CONTENT_DIRECTORY), ProfileQuery.PROJECTION,
-
-                // Select only email addresses.
-                ContactsContract.Contacts.Data.MIMETYPE +
-                        " = ?", new String[]{ContactsContract.CommonDataKinds.Email
-                .CONTENT_ITEM_TYPE},
-
-                // Show primary email addresses first. Note that there won't be
-                // a primary email address if the user hasn't specified one.
-                ContactsContract.Contacts.Data.IS_PRIMARY + " DESC");
-    }
-
-    @Override
-    public void onLoadFinished(Loader<Cursor> cursorLoader, Cursor cursor) {
-        List<String> emails = new ArrayList<String>();
-        cursor.moveToFirst();
-        while (!cursor.isAfterLast()) {
-            emails.add(cursor.getString(ProfileQuery.ADDRESS));
-            cursor.moveToNext();
-        }
-
-        addEmailsToAutoComplete(emails);
-    }
-
-    @Override
-    public void onLoaderReset(Loader<Cursor> cursorLoader) {
-
-    }
-
-    private interface ProfileQuery {
-        String[] PROJECTION = {
-                ContactsContract.CommonDataKinds.Email.ADDRESS,
-                ContactsContract.CommonDataKinds.Email.IS_PRIMARY,
-        };
-
-        int ADDRESS = 0;
-        int IS_PRIMARY = 1;
-    }
-
-
-    private void addEmailsToAutoComplete(List<String> emailAddressCollection) {
-        //Create adapter to tell the AutoCompleteTextView what to show in its dropdown list.
-        ArrayAdapter<String> adapter =
-                new ArrayAdapter<String>(LoginActivity.this,
-                        android.R.layout.simple_dropdown_item_1line, emailAddressCollection);
-
-        mEmailView.setAdapter(adapter);
-    }
-
-    /**
-     * Represents an asynchronous login/registration task used to authenticate
-     * the user.
-     */
     public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
 
         private Activity mActivity;
@@ -249,8 +161,8 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
                 finish();
             } else {
                 Crouton.makeText(mActivity, R.string.message_login_failed, Style.ALERT).show();
-                mEmailView.setText("");
-                mPasswordView.setText("");
+                //mEmailView.setText("");
+                //mPasswordView.setText("");
             }
         }
 
