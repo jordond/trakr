@@ -38,7 +38,8 @@
 
         <activity
             android:name="me.dehoog.trakr.activities.MainActivity"
-            android:label="@string/app_name" >
+            android:label=""
+            android:icon="@drawable/logo_all_white">
         </activity>
 
     </application>

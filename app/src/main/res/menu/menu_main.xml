@@ -12,4 +12,10 @@
         android:title="@string/action_logout"
         android:orderInCategory="1"
         app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_contact"
+        android:icon="@drawable/ic_action_user"
+        android:showAsAction="ifRoom"
+        android:title="@string/action_profile"/>
 </menu>

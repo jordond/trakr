@@ -23,5 +23,6 @@
     <string name="register_username_hint">username</string>
     <string name="logo_letters_description" />
     <string name="action_logout">Logout</string>
+    <string name="action_profile">Profile</string>
 
 </resources>
