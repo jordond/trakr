@@ -66,6 +66,8 @@ public class LoginActivity extends Activity implements LoginFragment.OnFragmentI
 
             Intent intent = new Intent(getApplicationContext(), MainActivity.class);
             intent.putExtra("user", mUser);
+            startActivity(intent);
+            finish();
         }
 
         if (getActionBar() != null) {
@@ -227,6 +229,7 @@ public class LoginActivity extends Activity implements LoginFragment.OnFragmentI
         intent.putExtra("user", user);
         intent.putExtra("loggingIn", true);
         startActivity(intent);
+        finish();
     }
 
     public void taskCompleted(Bundle bundle) {
@@ -274,8 +277,6 @@ public class LoginActivity extends Activity implements LoginFragment.OnFragmentI
     @Override
     protected void onDestroy() {
         super.onDestroy();
-
-        Crouton.cancelAllCroutons();
     }
 }
 

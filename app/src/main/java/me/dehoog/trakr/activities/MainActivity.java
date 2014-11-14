@@ -22,8 +22,6 @@ public class MainActivity extends Activity {
     public static final String PREFS_NAME = "TrakrPrefs";
     public SharedPreferences mSettings;
 
-    public boolean mLoggedIn = false;
-
     public User mUser;
 
     // UI Components
@@ -44,7 +42,9 @@ public class MainActivity extends Activity {
             logout();
         } else {
             if (getIntent().getBooleanExtra("loggingIn", false)) {
-                Crouton.makeText(this, "Signed into TrakR as " + mUser.getUsername() + "!", Style.CONFIRM);
+                Crouton.makeText(this, "Signed into TrakR as " + mUser.getUsername() + "!", Style.CONFIRM).show();
+            } else {
+                Crouton.makeText(this, "Welcome back " + mUser.getUsername() + "!", Style.INFO).show();
             }
         }
 
