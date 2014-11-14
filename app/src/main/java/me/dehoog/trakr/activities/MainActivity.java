@@ -6,7 +6,6 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Button;
 import android.widget.TextView;
 
 import butterknife.ButterKnife;
@@ -21,12 +20,9 @@ import me.dehoog.trakr.models.User;
 public class MainActivity extends Activity {
 
     public static final String PREFS_NAME = "TrakrPrefs";
-    public static final int REQUEST_LOGIN_CODE = 0;
+    public SharedPreferences mSettings;
 
     public boolean mLoggedIn = false;
-
-    public boolean mLoggingOut = false; // for Crouton on login activity
-    public boolean mFirstOpen = true;
 
     public User mUser;
 
@@ -34,89 +30,51 @@ public class MainActivity extends Activity {
     @InjectView(R.id.test) TextView mTestTextView;
 
     @OnClick(R.id.buttontest) void onClick() {
-        SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
-        SharedPreferences.Editor editor = settings.edit();
-        editor.remove("loggedIn").apply();
-        editor.remove("email").apply();
-        mUser = null;
-        mLoggedIn = false;
-        mLoggingOut = true;
-        login();
+        logout();
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        mSettings = getSharedPreferences(PREFS_NAME, 0);
 
+        mUser = (User) getIntent().getSerializableExtra("user");
+        if (mUser == null) {
+            logout();
+        } else {
+            if (getIntent().getBooleanExtra("loggingIn", false)) {
+                Crouton.makeText(this, "Signed into TrakR as " + mUser.getUsername() + "!", Style.CONFIRM);
+            }
+        }
+
+        //TODO display crouton asking to setup profile, if User.isFirstLogin()
     }// onCreate
+
+    private void logout() {
+        mSettings.edit()
+                .remove("loggedIn")
+                .remove("email")
+                .apply();
+
+        Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+        startActivity(intent);
+        finish();
+    }
 
 
     @Override
     protected void onStart() {
         super.onStart();
 
-        getLoggedInState();
-        if (!mLoggedIn) {
-            login();
-        } else {
-            ButterKnife.inject(this);
-            mTestTextView.setText("EMAIL: " + mUser.getEmail() + " PASSWORD: " + mUser.getPassword());
-        }
+        ButterKnife.inject(this);
+        mTestTextView.setText("EMAIL: " + mUser.getEmail() + " PASSWORD: " + mUser.getPassword());
 
     }// onStart
-    //TODO need to set mUser to the object from shared prefs, as it null apparently.
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if (requestCode == REQUEST_LOGIN_CODE) {
-            if (resultCode == RESULT_OK) {
-                if (data.hasExtra("user")) {
-                    mUser = (User) data.getSerializableExtra("user");
-                    Crouton.makeText(this, mUser.getUsername() + " " + getString(R.string.message_login_success), Style.CONFIRM).show();
-                }
-            }
-        }
-    }
-
-
-    public void getLoggedInState() {
-        SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
-        mLoggedIn = settings.getBoolean("loggedIn", false);
-        if (mLoggedIn) {
-            if (mUser == null) {
-                mUser = new User().findUser(settings.getString("email", "none"));
-                if (mUser == null) {
-                    mLoggedIn = false;
-                } else {
-                    if (mFirstOpen) {
-                        Crouton.makeText(this, getString(R.string.message_logged_in) + " " + mUser.getEmail(), Style.INFO).show();
-                        mFirstOpen = false;
-                    }
-                }
-            } else {
-            }
-        }
-    }
 
     @Override
     protected void onStop() {
         super.onStop();
-
-        SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
-        SharedPreferences.Editor editor = settings.edit();
-        editor.putBoolean("loggedIn", mLoggedIn);
-        if (mLoggedIn) {
-            editor.putString("email", mUser.getEmail());
-        }
-        editor.apply();
-    }
-
-    public void login() {
-        Intent i = new Intent(getApplication(), LoginActivity.class);
-        i.putExtra("loggingOut", mLoggingOut);
-        startActivityForResult(i, REQUEST_LOGIN_CODE);
     }
 
     @Override
@@ -128,12 +86,7 @@ public class MainActivity extends Activity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
         }
@@ -144,7 +97,6 @@ public class MainActivity extends Activity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-
         Crouton.cancelAllCroutons();
     }
 }

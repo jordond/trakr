@@ -25,14 +25,18 @@ import me.dehoog.trakr.tasks.UserRegisterTask;
 
 public class LoginActivity extends Activity implements LoginFragment.OnFragmentInteractionListener {
 
+    public static final String PREFS_NAME = "TrakrPrefs";
+    public SharedPreferences mSettings;
+
     private UserLoginTask mLoginTask = null;
     private UserRegisterTask mRegisterTask = null;
     private OnTaskResult mOnTaskResult;
-    private User mUser = new User();
 
     private FragmentTransaction ft;
     private LoginFragment mLoginFragment;
     private RegisterFragment mRegisterFragment;
+
+    private User mUser = new User();
 
     // TODO DEBUG CODE remove after
     public void debugLogin() {
@@ -52,6 +56,17 @@ public class LoginActivity extends Activity implements LoginFragment.OnFragmentI
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        mSettings = getSharedPreferences(PREFS_NAME, 0);
+        if (getLoggedInState()) {
+            mSettings.edit()
+                    .putBoolean("loggedIn", true)
+                    .putString("email", mUser.getEmail())
+                    .apply();
+
+            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+            intent.putExtra("user", mUser);
+        }
 
         if (getActionBar() != null) {
             getActionBar().hide();
@@ -75,10 +90,22 @@ public class LoginActivity extends Activity implements LoginFragment.OnFragmentI
         ft.replace(R.id.container_login, mLoginFragment);
         ft.commit();
 
-        boolean loggingOut = getIntent().getExtras().getBoolean("loggingOut");
+        boolean loggingOut = mSettings.getBoolean("loggingOut", false);
         if (loggingOut) {
             Crouton.makeText(this, R.string.message_logging_out, Style.INFO).show();
         }
+    }
+
+    public boolean getLoggedInState() {
+        boolean loggedIn = mSettings.getBoolean("loggedIn", false);
+        if (loggedIn) {
+            mUser = new User().findUser(mSettings.getString("email", "none"));
+            if (mUser == null) {
+                return false;
+            }
+            return true;
+        }
+        return false;
     }
 
     @Override
@@ -191,17 +218,15 @@ public class LoginActivity extends Activity implements LoginFragment.OnFragmentI
     }
 
     public void saveUserAndLogin(User user) {
-        SharedPreferences settings = getSharedPreferences(MainActivity.PREFS_NAME, 0);
-        SharedPreferences.Editor editor = settings.edit();
-        Intent data = new Intent();
+        mSettings.edit()
+                .putBoolean("loggedIn", true)
+                .putString("email", user.getEmail())
+                .apply();
 
-        editor.putBoolean("loggedIn", true);
-        editor.putString("email", user.getEmail());
-        editor.apply();
-
-        data.putExtra("user", user);
-        setResult(RESULT_OK, data);
-        finish();
+        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+        intent.putExtra("user", user);
+        intent.putExtra("loggingIn", true);
+        startActivity(intent);
     }
 
     public void taskCompleted(Bundle bundle) {
