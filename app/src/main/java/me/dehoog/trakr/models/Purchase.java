@@ -2,14 +2,17 @@ package me.dehoog.trakr.models;
 
 import com.orm.SugarRecord;
 
-import java.util.Date;
+import java.sql.Date;
+import java.util.List;
+
 
 /**
  * Created by jordon on 2014-11-09.
  */
-public class Transaction extends SugarRecord<Transaction> {
+public class Purchase extends SugarRecord<Purchase> {
 
     // Properties
+    private User user;
     private double amount;
     private Merchant merchant;
     private Category category;
@@ -17,10 +20,10 @@ public class Transaction extends SugarRecord<Transaction> {
     private String notes;
 
     // Constructors
-    public Transaction() {
+    public Purchase() {
     }
 
-    public Transaction(double amount, Category category, Date date, Merchant merchant) {
+    public Purchase(double amount, Category category, Date date, Merchant merchant) {
         this.amount = amount;
         this.category = category;
         this.date = date;
@@ -28,6 +31,13 @@ public class Transaction extends SugarRecord<Transaction> {
     }
 
     // Accessors
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
     public double getAmount() {
         return amount;
     }

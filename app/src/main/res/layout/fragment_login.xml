@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent">
+
+    <!--<ImageView-->
+        <!--android:layout_width="fill_parent"-->
+        <!--android:layout_height="fill_parent"-->
+        <!--android:scaleType="fitXY"-->
+        <!--android:src="@drawable/bg_new_york_cab_edited"-->
+        <!--android:contentDescription="@string/description_login_background" />-->
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent" android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:paddingTop="25dp"
+        android:paddingLeft="25dp"
+        android:paddingRight="25dp"
+        android:gravity="center_horizontal">
+
+        <ImageView
+            android:layout_width="250dp"
+            android:layout_height="150dp"
+            android:paddingTop="30dp"
+            android:layout_marginBottom="20dp"
+            android:id="@+id/login_logo"
+            android:src="@drawable/login_logo_cyan_white_fill"
+            android:contentDescription="@string/logo_description" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center_vertical"
+            android:padding="15dp"
+            android:background="#aa424242"
+            android:id="@+id/ui_container">
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/login_email"
+                android:paddingTop="@dimen/activity_vertical_margin"
+                android:paddingBottom="@dimen/activity_vertical_margin"
+                android:hint="@string/fragment_login_email_text"
+                android:inputType="textNoSuggestions|textEmailAddress"
+                android:textColor="#e0f7fa"
+                android:textColorHint="#ffb6b6b6"
+                android:textCursorDrawable="@null"
+                android:maxLines="1"
+                android:singleLine="true"
+                android:textStyle="italic" />
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="@dimen/activity_vertical_margin"
+                android:paddingBottom="@dimen/activity_vertical_margin"
+                android:id="@+id/login_password"
+                android:hint="@string/fragment_login_password_text"
+                android:inputType="textPassword"
+                android:textColorHint="#ffb6b6b6"
+                android:textColor="#e0f7fa"
+                android:textCursorDrawable="@null"
+                android:maxLines="1"
+                android:singleLine="true"
+                android:textStyle="italic"/>
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                style="?android:textAppearanceSmall"
+                android:text="@string/fragment_login_signin"
+                android:textColor="#ffcdcdcd"
+                android:textStyle="bold"
+                android:hint="@string/fragment_login_signin"
+                android:background="@drawable/button_confirm"
+                android:id="@+id/action_login"/>
+
+            </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:gravity="bottom"
+        android:paddingLeft="35dp"
+        android:paddingRight="35dp"
+        android:paddingBottom="20dp">
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            style="?android:textAppearanceSmall"
+            android:text="@string/action_register"
+            android:textColor="#ffcdcdcd"
+            android:textStyle="bold"
+            android:background="@drawable/button_cancel"
+            android:id="@+id/action_register"/>
+    </LinearLayout>
+
+</RelativeLayout>
+
