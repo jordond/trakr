@@ -57,12 +57,6 @@ public class MainActivity extends FragmentActivity {
         mUser = (User) getIntent().getSerializableExtra("user");
         if (mUser == null) {
             logout();
-        } else {
-            if (getIntent().getBooleanExtra("loggingIn", false)) {
-                Crouton.makeText(this, "Signed into TrakR as " + mUser.getUsername() + "!", Style.CONFIRM).show();
-            } else {
-                Crouton.makeText(this, "Welcome back " + mUser.getUsername() + "!", Style.INFO).show();
-            }
         }
 
         ButterKnife.inject(this); // get all dem views
