@@ -3,10 +3,17 @@ package me.dehoog.trakr.activities;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.view.ViewPager;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.TextView;
+
+import com.astuetz.PagerSlidingTabStrip;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -14,15 +21,23 @@ import butterknife.OnClick;
 import de.keyboardsurfer.android.widget.crouton.Crouton;
 import de.keyboardsurfer.android.widget.crouton.Style;
 import me.dehoog.trakr.R;
+import me.dehoog.trakr.adapters.MainPagerAdapter;
 import me.dehoog.trakr.models.User;
 
 
-public class MainActivity extends Activity {
+public class MainActivity extends FragmentActivity {
 
     public static final String PREFS_NAME = "TrakrPrefs";
     public SharedPreferences mSettings;
 
     public User mUser;
+
+    // Tab pager components
+    @InjectView(R.id.tabs) public PagerSlidingTabStrip mTabs;
+    @InjectView(R.id.pager) public ViewPager mPager;
+    private MainPagerAdapter mAdapter;
+
+    private int barColor = 0xFF3f9fe0;
 
     // UI Components
 
@@ -31,6 +46,13 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mSettings = getSharedPreferences(PREFS_NAME, 0);
+
+        //Change actionbar color
+        //TODO implement color chooser ?
+        Drawable color = new ColorDrawable(barColor);
+        if (getActionBar() != null) {
+            getActionBar().setBackgroundDrawable(color);
+        }
 
         mUser = (User) getIntent().getSerializableExtra("user");
         if (mUser == null) {
@@ -42,6 +64,14 @@ public class MainActivity extends Activity {
                 Crouton.makeText(this, "Welcome back " + mUser.getUsername() + "!", Style.INFO).show();
             }
         }
+
+        ButterKnife.inject(this); // get all dem views
+        mTabs.setIndicatorColor(barColor);
+        mAdapter = new MainPagerAdapter(getSupportFragmentManager());
+        mPager.setAdapter(mAdapter);
+        mTabs.setViewPager(mPager);
+
+
 
         //TODO display crouton asking to setup profile, if User.isFirstLogin()
     }// onCreate
