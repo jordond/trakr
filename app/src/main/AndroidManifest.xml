@@ -27,19 +27,21 @@
             android:value="me.dehoog" />
 
         <activity
-            android:name="me.dehoog.trakr.activities.MainActivity"
-            android:label="@string/app_name" >
+            android:name="me.dehoog.trakr.activities.LoginActivity"
+            android:label="@string/title_activity_login"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name="me.dehoog.trakr.activities.LoginActivity"
-            android:label="@string/title_activity_login"
-            android:screenOrientation="portrait">
-        </activity>
-    </application>
 
+        <activity
+            android:name="me.dehoog.trakr.activities.MainActivity"
+            android:label="@string/app_name" >
+
+        </activity>
+
+    </application>
 </manifest>

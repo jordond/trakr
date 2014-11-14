@@ -9,8 +9,6 @@ import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.TextView;
 
-import java.util.List;
-
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
@@ -34,7 +32,6 @@ public class MainActivity extends Activity {
 
     // UI Components
     @InjectView(R.id.test) TextView mTestTextView;
-    @InjectView(R.id.buttontest) Button mTestButton;
 
     @OnClick(R.id.buttontest) void onClick() {
         SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
@@ -77,7 +74,7 @@ public class MainActivity extends Activity {
             if (resultCode == RESULT_OK) {
                 if (data.hasExtra("user")) {
                     mUser = (User) data.getSerializableExtra("user");
-                    Crouton.makeText(this, mUser.getEmail() + " " + getString(R.string.message_login_success), Style.CONFIRM).show();
+                    Crouton.makeText(this, mUser.getUsername() + " " + getString(R.string.message_login_success), Style.CONFIRM).show();
                 }
             }
         }

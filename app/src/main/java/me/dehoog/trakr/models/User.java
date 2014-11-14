@@ -61,14 +61,6 @@ public class User extends SugarRecord<User> implements Serializable {
         this.password = generateHash(password);
     }
 
-    public User(String username, String email, String password, boolean firstLogin) {
-        this.username = username;
-        this.email = email;
-        this.salt = generateSalt();
-        this.password = generateHash(password);
-        this.firstLogin = firstLogin;
-    }
-
     // Helper methods
     public String generateSalt() {
         SecureRandom sr;

@@ -22,10 +22,7 @@ import me.dehoog.trakr.interfaces.OnTaskResult;
 import me.dehoog.trakr.models.User;
 import me.dehoog.trakr.tasks.UserLoginTask;
 import me.dehoog.trakr.tasks.UserRegisterTask;
-//TODO implement attempLogin() and attemptRegister(), then handle only clicking the button once, don't allow multiple clicks
-/**
- * A login screen that offers login via email/password.
- */
+
 public class LoginActivity extends Activity implements LoginFragment.OnFragmentInteractionListener {
 
     private UserLoginTask mLoginTask = null;
@@ -43,6 +40,7 @@ public class LoginActivity extends Activity implements LoginFragment.OnFragmentI
         mUser = mUser.findUser("t@t.com");
         if (mUser == null) {
             mUser = new User("t@t.com", "test123");
+            mUser.setUsername("testacc");
             mUser.save();
         }
         mLoginTask = new UserLoginTask("t@t.com", "test123", mOnTaskResult);
@@ -246,6 +244,13 @@ public class LoginActivity extends Activity implements LoginFragment.OnFragmentI
         } else if (action.equals("register")) {
             mRegisterTask = null;
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        Crouton.cancelAllCroutons();
     }
 }
 
