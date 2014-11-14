@@ -3,7 +3,7 @@ package me.dehoog.trakr.fragments;
 import android.app.Activity;
 import android.net.Uri;
 import android.os.Bundle;
-import android.app.Fragment;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,7 +21,7 @@ public class SpendingFragment extends Fragment {
     private SpendingInteraction mListener;
 
     // TODO: Rename and change types and number of parameters
-    public static SpendingFragment newInstance(String param1, String param2) {
+    public static SpendingFragment newInstance(String param1) {
         SpendingFragment fragment = new SpendingFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);

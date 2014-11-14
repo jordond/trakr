@@ -23,11 +23,10 @@ public class AccountsFragment extends Fragment {
     private AccountsInteraction mListener;
 
     // TODO: Rename and change types and number of parameters
-    public static AccountsFragment newInstance(String param1, String param2) {
+    public static AccountsFragment newInstance(String param1) {
         AccountsFragment fragment = new AccountsFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
     }
