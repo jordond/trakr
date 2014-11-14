@@ -20,5 +20,7 @@
 
     <string name="error_username_required">Username is required</string>
     <string name="error_username_invalid">Username need to be longer than 4 characters</string>
+    <string name="register_username_hint">username</string>
+    <string name="logo_letters_description" />
 
 </resources>
