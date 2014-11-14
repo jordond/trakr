@@ -25,11 +25,6 @@ public class MainActivity extends Activity {
     public User mUser;
 
     // UI Components
-    @InjectView(R.id.test) TextView mTestTextView;
-
-    @OnClick(R.id.buttontest) void onClick() {
-        logout();
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,7 +63,6 @@ public class MainActivity extends Activity {
         super.onStart();
 
         ButterKnife.inject(this);
-        mTestTextView.setText("EMAIL: " + mUser.getEmail() + " PASSWORD: " + mUser.getPassword());
 
     }// onStart
 
