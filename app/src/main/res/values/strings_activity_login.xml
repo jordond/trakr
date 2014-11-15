@@ -1,20 +1,20 @@
 <resources>
-    <string type="title_activity_login">Sign in</string>
+    <string name="title_activity_login">Sign in</string>
 
     <!-- Strings related to login -->
-    <string type="prompt_email">Email</string>
-    <string type="prompt_password">Password</string>
-    <string type="action_sign_in">Sign in</string>
-    <string type="action_sign_in_short">Sign in</string>
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password</string>
+    <string name="action_sign_in">Sign in</string>
+    <string name="action_sign_in_short">Sign in</string>
 
-    <string type="error_invalid_email">This email address is invalid</string>
-    <string type="error_invalid_password">This password is too short</string>
-    <string type="error_incorrect_password">This password is incorrect</string>
-    <string type="error_email_required">Email is required</string>
-    <string type="error_invalid_login">Email or Password is incorrect.</string>
+    <string name="error_invalid_email">This email address is invalid</string>
+    <string name="error_invalid_password">This password is too short</string>
+    <string name="error_incorrect_password">This password is incorrect</string>
+    <string name="error_email_required">Email is required</string>
+    <string name="error_invalid_login">Email or Password is incorrect.</string>
 
-    <string type="message_login_failed">Login failed! Invalid email or password</string>
-    <string type="message_login_success">Successfully Logged in</string>
-    <string type="message_logged_in">Welcome Back</string>
-    <string type="message_logging_out">Come back anytime!</string>
+    <string name="message_login_failed">Login failed! Invalid email or password</string>
+    <string name="message_login_success">Successfully Logged in</string>
+    <string name="message_logged_in">Welcome Back</string>
+    <string name="message_logging_out">Come back anytime!</string>
 </resources>

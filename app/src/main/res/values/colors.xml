@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color type="primary_dark_cyan">#FF006064</color>
-    <color type="primary_dark_cyan_transparent">#C8006064</color>
-    <color type="primary_dark_cyan_pressed">#00838F</color>
+    <color name="primary_dark_cyan">#FF006064</color>
+    <color name="primary_dark_cyan_transparent">#C8006064</color>
+    <color name="primary_dark_cyan_pressed">#00838F</color>
 
-    <color type="primary_cyan">#FF00A5BA</color>
-    <color type="primary_cyan_transparent">#B400A5BA</color>
-    <color type="primary_cyan_pressed">#00ACC1</color>
+    <color name="primary_cyan">#FF00A5BA</color>
+    <color name="primary_cyan_transparent">#B400A5BA</color>
+    <color name="primary_cyan_pressed">#00ACC1</color>
 
-    <color type="accent_very_light_cyan_transparent">#7BB2EBF2</color>
-    <color type="accent_light_cyan">#FFC6EFFF</color>
-    <color type="accent_light_cyan_pressed">#80DEEA</color>
+    <color name="accent_very_light_cyan_transparent">#7BB2EBF2</color>
+    <color name="accent_light_cyan">#FFC6EFFF</color>
+    <color name="accent_light_cyan_pressed">#80DEEA</color>
 
-    <color type="inputs_background">#FF424242</color>
-    <color type="inputs_background_transparent">#AA424242</color>
+    <color name="inputs_background">#FF424242</color>
+    <color name="inputs_background_transparent">#AA424242</color>
 
-    <color type="logo_light_cyan">#00bcd4</color>
-    <color type="logo_dark_cyan">#FF006064</color>
+    <color name="logo_light_cyan">#00bcd4</color>
+    <color name="logo_dark_cyan">#FF006064</color>
 </resources>
