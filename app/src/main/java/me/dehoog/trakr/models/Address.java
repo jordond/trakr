@@ -2,6 +2,7 @@ package me.dehoog.trakr.models;
 
 import android.location.Location;
 
+import com.google.android.gms.maps.model.LatLng;
 import com.orm.SugarRecord;
 
 /**
@@ -10,7 +11,7 @@ import com.orm.SugarRecord;
 public class Address extends SugarRecord<Address> {
 
     // Properties
-    private Location coords;
+    private LatLng coords;
     private String address;
     private String province;
     private String country;
@@ -20,16 +21,16 @@ public class Address extends SugarRecord<Address> {
     public Address() {
     }
 
-    public Address(Location coords) {
+    public Address(LatLng coords) {
         this.coords = coords;
     }
 
-    public Address(Location coords, String address) {
+    public Address(LatLng coords, String address) {
         this.coords = coords;
         this.address = address;
     }
 
-    public Address(Location coords, String address, String province, String country, String postal) {
+    public Address(LatLng coords, String address, String province, String country, String postal) {
         this.coords = coords;
         this.address = address;
         this.province = province;
@@ -38,11 +39,11 @@ public class Address extends SugarRecord<Address> {
     }
 
     // Accessors
-    public Location getCoords() {
+    public LatLng getCoords() {
         return coords;
     }
 
-    public void setCoords(Location coords) {
+    public void setCoords(LatLng coords) {
         this.coords = coords;
     }
 

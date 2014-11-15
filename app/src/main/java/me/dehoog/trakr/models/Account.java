@@ -47,6 +47,17 @@ public class Account extends SugarRecord<Account> {
         this.type = name;
         this.branch = branch;
     }
+
+    // Helper methods
+    public Account findAccount(String accountNumber) {
+        Account found = null;
+        List<Account> request = Account.find(Account.class, "number = ?", accountNumber);
+        if (!request.isEmpty()) {
+            found = request.get(0);
+        }
+        return found;
+    }
+
     // Accessor
     public String getNumber() {
         return number;

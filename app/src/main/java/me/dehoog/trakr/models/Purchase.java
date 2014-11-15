@@ -12,7 +12,7 @@ import java.util.List;
 public class Purchase extends SugarRecord<Purchase> {
 
     // Properties
-    private User user;
+    private Account account;
     private double amount;
     private Merchant merchant;
     private Category category;
@@ -23,6 +23,11 @@ public class Purchase extends SugarRecord<Purchase> {
     public Purchase() {
     }
 
+    public Purchase(Account account, double amount) {
+        this.account = account;
+        this.amount = amount;
+    }
+
     public Purchase(double amount, Category category, Date date, Merchant merchant) {
         this.amount = amount;
         this.category = category;
@@ -30,14 +35,18 @@ public class Purchase extends SugarRecord<Purchase> {
         this.merchant = merchant;
     }
 
+    // Helper methods
+
+
     // Accessors
-    public User getUser() {
-        return user;
+    public Account getAccount() {
+        return account;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setAccount(Account account) {
+        this.account = account;
     }
+
     public double getAmount() {
         return amount;
     }

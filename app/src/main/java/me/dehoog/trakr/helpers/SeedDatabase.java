@@ -1,8 +1,15 @@
 package me.dehoog.trakr.helpers;
 
+import com.google.android.gms.maps.model.LatLng;
+
+import java.util.Date;
 import java.util.List;
 
 import me.dehoog.trakr.models.Account;
+import me.dehoog.trakr.models.Address;
+import me.dehoog.trakr.models.Category;
+import me.dehoog.trakr.models.Merchant;
+import me.dehoog.trakr.models.Purchase;
 import me.dehoog.trakr.models.User;
 
 /**
@@ -17,12 +24,13 @@ public class SeedDatabase {
     }
 
     public void all() {
-        users();
-        accounts();
-        merchents();
-        purchases();
-        categories();
-        addresses();
+        if (users()) {
+            if (accounts()) {
+                if (purchases()) {
+                    categories();
+                }
+            }
+        }
     }
 
     public boolean users() {
@@ -71,20 +79,47 @@ public class SeedDatabase {
         return accs.size() == 4;
     }
 
-    public void merchents() {
+    public boolean purchases() {
+        Account a = new Account().findAccount("91237912397132");
+        if (a == null) {
+            return false;
+        }
 
-    }
+        LatLng ll = new LatLng(-11.77455, 66.89461);
+        Address address = new Address(ll);
+        address.setCountry("Canada");
+        address.setProvince("ON");
+        address.setPostal("N4E1R2");
 
-    public void purchases() {
+        Merchant m = new Merchant("Tim Hortons", address);
 
+        Purchase p = new Purchase(a, 14.99);
+        p.setMerchant(m);
+
+        Category c = new Category().findOrCreate("fast_food");
+        p.setCategory(c);
+
+        Date d = new Date();
+        p.setDate((java.sql.Date) d);
+
+        p.save();
+
+        return true;
     }
 
     public void categories() {
-
-    }
-
-    public void addresses() {
-
+        Category c = new Category("gym");
+        c.save();
+        c = new Category("fast_food");
+        c.save();
+        c = new Category("bank");
+        c.save();
+        c = new Category("theatre");
+        c.save();
+        c = new Category("mall");
+        c.save();
+        c = new Category("garbage_dump");
+        c.save();
     }
 
 }
