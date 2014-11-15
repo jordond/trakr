@@ -5,7 +5,6 @@ import com.orm.dsl.Ignore;
 import com.orm.query.Condition;
 import com.orm.query.Select;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -14,11 +13,14 @@ import java.util.List;
 public class Account extends SugarRecord<Account> {
 
     // Properties
-    private int number;
-    private String name;
+    private String number;
+    private User user;
+    private String category; // cash, credit, debit
+    private String type; // mastercard, visa, american express
     private String description;
     private int branch;
     private double total;
+    private String expires;
 
     @Ignore
     private List<Purchase> purchases;
@@ -27,26 +29,39 @@ public class Account extends SugarRecord<Account> {
     public Account() {
     }
 
-    public Account(int number, String name, int branch) {
+    public Account(String number, String category, String type, String expires) { //card reader
         this.number = number;
-        this.name = name;
+        this.category = category;
+        this.type = type;
+        this.expires = expires;
+    }
+
+    public Account(User user, String number, String category) {
+        this.user = user;
+        this.number = number;
+        this.category = category;
+    }
+
+    public Account(String number, String name, int branch) {
+        this.number = number;
+        this.type = name;
         this.branch = branch;
     }
     // Accessor
-    public int getNumber() {
+    public String getNumber() {
         return number;
     }
 
-    public void setNumber(int number) {
+    public void setNumber(String number) {
         this.number = number;
     }
 
-    public String getName() {
-        return name;
+    public String getType() {
+        return type;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setType(String type) {
+        this.type = type;
     }
 
     public String getDescription() {
@@ -71,6 +86,30 @@ public class Account extends SugarRecord<Account> {
 
     public void setTotal(double total) {
         this.total = total;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    public String getExpires() {
+        return expires;
+    }
+
+    public void setExpires(String expires) {
+        this.expires = expires;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public List<Purchase> getPurchases() {

@@ -1,12 +1,12 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="android:Theme.Holo.Light.DarkActionBar">
-        <item name="android:actionBarWidgetTheme">@style/WhiteActionBar</item>
+    <style type="AppTheme" parent="android:Theme.Holo.Light.DarkActionBar">
+        <item type="android:actionBarWidgetTheme">@style/WhiteActionBar</item>
     </style>
-    <style name="WhiteActionBar"
+    <style type="WhiteActionBar"
         parent="android:Theme.Holo.Light">
-        <item name="android:popupMenuStyle">@android:style/Widget.Holo.Light.PopupMenu</item>
-        <item name="android:dropDownListViewStyle">@android:style/Widget.Holo.Light.ListView.DropDown</item>
+        <item type="android:popupMenuStyle">@android:style/Widget.Holo.Light.PopupMenu</item>
+        <item type="android:dropDownListViewStyle">@android:style/Widget.Holo.Light.ListView.DropDown</item>
     </style>
 </resources>

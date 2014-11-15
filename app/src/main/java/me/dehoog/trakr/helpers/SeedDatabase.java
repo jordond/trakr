@@ -1,5 +1,8 @@
 package me.dehoog.trakr.helpers;
 
+import java.util.List;
+
+import me.dehoog.trakr.models.Account;
 import me.dehoog.trakr.models.User;
 
 /**
@@ -22,16 +25,50 @@ public class SeedDatabase {
         addresses();
     }
 
-    public void users() {
-        for (int i = 0; i < 6; i++) {
+    public boolean users() {
+        for (int i = 0; i < 2; i++) {
             User u = new User("test" + String.valueOf(i) + "@test.com", "password");
             u.setUsername("username" + String.valueOf(i));
             u.save();
         }
+        List<User> users = User.listAll(User.class);
+        return users.size() == 2;
     }
 
-    public void accounts() {
+    public boolean accounts() {
+        User u = new User().findUser("test0@test.com");
+        if (u == null) {
+            return false;
+        }
+        Account a = new Account(u, "91237912397132", "Cash");
+        a.setDescription("Seeded account #1");
+        a.setBranch(32);
+        a.setExpires("10/10");
+        a.save();
 
+        a = new Account(u, "2343222232322", "Debit");
+        a.setType("Visa");
+        a.setDescription("Seeded account #2");
+        a.setBranch(12);
+        a.setExpires("1/12");
+        a.save();
+
+        a = new Account(u, "111111111112", "Credit");
+        a.setType("Visa");
+        a.setDescription("Seeded account #3");
+        a.setBranch(11);
+        a.setExpires("4/12");
+        a.save();
+
+        a = new Account(u, "9999999999999", "Credit");
+        a.setType("Master Card");
+        a.setDescription("Seeded account #4");
+        a.setBranch(33);
+        a.setExpires("24/10");
+        a.save();
+
+        List<Account> accs = Account.listAll(Account.class);
+        return accs.size() == 4;
     }
 
     public void merchents() {
