@@ -8,6 +8,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.ArrayList;
+
+import it.gmariotti.cardslib.library.internal.Card;
+import it.gmariotti.cardslib.library.internal.CardHeader;
+import it.gmariotti.cardslib.library.view.CardViewNative;
 import me.dehoog.trakr.R;
 import me.dehoog.trakr.interfaces.AccountsInteraction;
 
@@ -47,8 +52,10 @@ public class AccountsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_accounts, container, false);
+        View view = inflater.inflate(R.layout.fragment_accounts, container, false);
+
+
+        return view;
     }
 
     // TODO: Rename method, update argument and hook method into UI event
