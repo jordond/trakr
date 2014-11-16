@@ -97,6 +97,8 @@ public class SeedDatabase {
         m.save();
 
         Purchase p = new Purchase(a, 14.99);
+        a.addToTotal(p.getAmount());
+        a.save();
         p.setMerchant(m);
 
         Category c = new Category().findOrCreate("fast_food");
