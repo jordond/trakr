@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -53,6 +54,7 @@ public class ExpandAccountCard extends CardExpand {
         listView.setAdapter(adapter);
         listView.setDivider(mContext.getResources().getDrawable(R.drawable.transperent_color));
         listView.setDividerHeight(0);
+        setListViewHeight(listView);
 
         TextView totalAmount = (TextView) view.findViewById(R.id.total_spent_text);
         String total = new DecimalFormat("$###,###,###.00").format(mAccount.getTotal());
@@ -60,5 +62,24 @@ public class ExpandAccountCard extends CardExpand {
             total = "zero";
         }
         totalAmount.setText(total);
+    }
+
+    public void setListViewHeight(ListView listView) {
+        ListAdapter listAdapter = listView.getAdapter();
+        if (listAdapter == null) {
+            return;
+        }
+
+        int totalHeight = 0;
+        for (int i = 0; i < listAdapter.getCount(); i++) {
+            View listItem = listAdapter.getView(i, null, listView);
+            listItem.measure(0, 0);
+            totalHeight += listItem.getMeasuredHeight();
+        }
+
+        ViewGroup.LayoutParams params = listView.getLayoutParams();
+        params.height = totalHeight + (listView.getDividerHeight() * (listAdapter.getCount() - 1));
+        listView.setLayoutParams(params);
+        listView.requestLayout();
     }
 }

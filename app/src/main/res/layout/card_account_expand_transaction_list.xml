@@ -14,7 +14,7 @@
 
     <ListView
         android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:layout_height="wrap_content"
         android:id="@+id/card_account_expand_transaction_list"
         android:layout_below="@+id/recent_transaction_header"
         android:scrollbars="none"
