@@ -44,7 +44,9 @@ public class ExpandAccountCard extends CardExpand {
         // TODO setup the expanded card elements
         ListView listView = (ListView) view.findViewById(R.id.card_account_expand_transaction_list);
         List<Purchase> transactions = mAccount.getAllPurchases();
-
+        if (transactions.size() > 3) {
+            transactions = transactions.subList(0,2);
+        }
         RecentTransactionAdapter adapter = new RecentTransactionAdapter(mContext, transactions);
         listView.setAdapter(adapter);
     }

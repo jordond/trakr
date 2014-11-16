@@ -61,14 +61,11 @@ public class RecentTransactionAdapter extends BaseAdapter {
         TextView tAmount = (TextView) convertView.findViewById(R.id.list_transaction_amount);
 
         Purchase p = mPurchases.get(position);
-        Merchant m = p.getMerchant();
-        String name = m.getName();
         String date = new SimpleDateFormat("MMM dd h:mma").format(p.getDate()).toString();
-        String amm = String.valueOf(p.getAmount());
 
         tDate.setText(date);
-        tMerchant.setText(name);
-        tAmount.setText("$" + amm);
+        tMerchant.setText(p.getMerchant().getName().toString());
+        tAmount.setText("$" + p.getAmount());
 
         return convertView;
     }
