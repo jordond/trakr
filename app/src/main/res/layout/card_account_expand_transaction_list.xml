@@ -1,21 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:background="#515254">
 
     <TextView
         style="@style/Now.card_expand_inner_layout.light_gray.bold"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Recent Transactions"/>
+        android:text="@string/card_expand_recent_transactions_text"
+        android:textColor="#fff"
+        android:id="@+id/recent_transaction_header"/>
 
     <ListView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/card_account_expand_transaction_list">
+        android:layout_height="60dp"
+        android:id="@+id/card_account_expand_transaction_list"
+        android:layout_below="@+id/recent_transaction_header"
+        android:scrollbars="none"
+        android:clickable="false">
 
         </ListView>
 
-</LinearLayout>
+    <TextView
+        style="@style/Now.card_expand_inner_layout.light_gray.bold"
+        android:id="@+id/total_spent_desc"
+        android:layout_below="@+id/card_account_expand_transaction_list"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="All time total"/>
+
+    <TextView
+        style="@style/Now.card_expand_inner_layout.light_gray.bold"
+        android:id="@+id/total_spent_text"
+        android:layout_below="@+id/card_account_expand_transaction_list"
+        android:layout_alignParentEnd="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#4CAF50"/>
+
+</RelativeLayout>

@@ -5,7 +5,9 @@ import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.TextView;
 
+import java.text.DecimalFormat;
 import java.util.List;
 
 import it.gmariotti.cardslib.library.internal.CardExpand;
@@ -45,9 +47,13 @@ public class ExpandAccountCard extends CardExpand {
         ListView listView = (ListView) view.findViewById(R.id.card_account_expand_transaction_list);
         List<Purchase> transactions = mAccount.getAllPurchases();
         if (transactions.size() > 3) {
-            transactions = transactions.subList(0,2);
+            transactions = transactions.subList(0,3);
         }
         RecentTransactionAdapter adapter = new RecentTransactionAdapter(mContext, transactions);
         listView.setAdapter(adapter);
+
+        TextView totalAmount = (TextView) view.findViewById(R.id.total_spent_text);
+        String total = new DecimalFormat("$###,###,###.00").format(mAccount.getTotal());
+        totalAmount.setText(total);
     }
 }

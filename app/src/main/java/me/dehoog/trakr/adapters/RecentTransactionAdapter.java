@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
@@ -65,7 +66,9 @@ public class RecentTransactionAdapter extends BaseAdapter {
 
         tDate.setText(date);
         tMerchant.setText(p.getMerchant().getName().toString());
-        tAmount.setText("$" + p.getAmount());
+
+        String amount = new DecimalFormat("$###,###,###.00").format(p.getAmount());
+        tAmount.setText(amount);
 
         return convertView;
     }

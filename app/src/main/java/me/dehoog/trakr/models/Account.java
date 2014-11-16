@@ -67,6 +67,10 @@ public class Account extends SugarRecord<Account> implements Serializable {
         }
     }
 
+    public void addToTotal(double amount) {
+        this.total += amount;
+    }
+
     // Accessor
     public String getNumber() {
         return number;

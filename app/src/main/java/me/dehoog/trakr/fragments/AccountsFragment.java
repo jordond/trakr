@@ -20,8 +20,10 @@ import it.gmariotti.cardslib.library.view.CardListView;
 import it.gmariotti.cardslib.library.view.CardViewNative;
 import me.dehoog.trakr.R;
 import me.dehoog.trakr.cards.AccountCard;
+import me.dehoog.trakr.helpers.SeedDatabase;
 import me.dehoog.trakr.interfaces.AccountsInteraction;
 import me.dehoog.trakr.models.Account;
+import me.dehoog.trakr.models.Purchase;
 import me.dehoog.trakr.models.User;
 
 public class AccountsFragment extends Fragment {
