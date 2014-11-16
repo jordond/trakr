@@ -231,8 +231,6 @@ public class LoginActivity extends Activity implements LoginFragment.OnFragmentI
                 .putString("email", user.getEmail())
                 .apply();
 
-        user = new User().findUser(user.getEmail());
-
         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
         intent.putExtra("user_email", user.getEmail()); // TODO possibly remove as its already in shared prefs, and passing user thru intent doesn't maintain id
         intent.putExtra("loggingIn", true);
