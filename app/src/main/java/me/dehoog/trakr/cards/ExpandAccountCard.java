@@ -51,9 +51,14 @@ public class ExpandAccountCard extends CardExpand {
         }
         RecentTransactionAdapter adapter = new RecentTransactionAdapter(mContext, transactions);
         listView.setAdapter(adapter);
+        listView.setDivider(mContext.getResources().getDrawable(R.drawable.transperent_color));
+        listView.setDividerHeight(0);
 
         TextView totalAmount = (TextView) view.findViewById(R.id.total_spent_text);
         String total = new DecimalFormat("$###,###,###.00").format(mAccount.getTotal());
+        if (total.equals("$.00")) {
+            total = "zero";
+        }
         totalAmount.setText(total);
     }
 }

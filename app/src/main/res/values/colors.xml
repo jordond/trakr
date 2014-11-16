@@ -23,4 +23,7 @@
 
     <color name="logo_light_cyan">#00bcd4</color>
     <color name="logo_dark_cyan">#FF006064</color>
+
+    <drawable name="transperent_color">#00000000</drawable>
+
 </resources>
