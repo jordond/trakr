@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <color name="primary">#FF3f9fe0</color>
+
+
     <color name="primary_dark_cyan">#FF006064</color>
     <color name="primary_dark_cyan_transparent">#C8006064</color>
     <color name="primary_dark_cyan_pressed">#00838F</color>
