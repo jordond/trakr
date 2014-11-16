@@ -42,7 +42,7 @@ public class LoginActivity extends Activity implements LoginFragment.OnFragmentI
     // TODO DEBUG CODE remove after
     public void debugLogin() {
         //debug user
-        mUser = mUser.findUser("test0@test.com");
+        mUser = new User().findUser("test0@test.com");
         if (mUser == null) {
             mUser = new User("test0@test.com", "password");
             mUser.setUsername("username0");
@@ -66,7 +66,7 @@ public class LoginActivity extends Activity implements LoginFragment.OnFragmentI
                     .apply();
 
             Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-            intent.putExtra("user", mUser);
+            intent.putExtra("user_email", mUser.getEmail()); // TODO possibly remove see line 236
             startActivity(intent);
             finish();
         }
@@ -231,8 +231,10 @@ public class LoginActivity extends Activity implements LoginFragment.OnFragmentI
                 .putString("email", user.getEmail())
                 .apply();
 
+        user = new User().findUser(user.getEmail());
+
         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-        intent.putExtra("user", user);
+        intent.putExtra("user_email", user.getEmail()); // TODO possibly remove as its already in shared prefs, and passing user thru intent doesn't maintain id
         intent.putExtra("loggingIn", true);
         startActivity(intent);
         finish();

@@ -54,14 +54,15 @@ public class MainActivity extends FragmentActivity {
             getActionBar().setBackgroundDrawable(color);
         }
 
-        mUser = (User) getIntent().getSerializableExtra("user");
+        String email = mSettings.getString("email", "none"); //TODO replaced intent extras with shared prefs, keep?
+        mUser = new User().findUser(email);
         if (mUser == null) {
             logout();
         }
 
         ButterKnife.inject(this); // get all dem views
         mTabs.setIndicatorColor(barColor);
-        mAdapter = new MainPagerAdapter(getSupportFragmentManager());
+        mAdapter = new MainPagerAdapter(getSupportFragmentManager(), mUser);
         mPager.setAdapter(mAdapter);
         mTabs.setViewPager(mPager);
 

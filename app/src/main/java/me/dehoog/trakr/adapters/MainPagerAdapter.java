@@ -7,6 +7,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 import me.dehoog.trakr.fragments.AccountsFragment;
 import me.dehoog.trakr.fragments.RecentTransactionsFragment;
 import me.dehoog.trakr.fragments.SpendingFragment;
+import me.dehoog.trakr.models.User;
 
 /**
  * Author:  jordon
@@ -17,8 +18,11 @@ public class MainPagerAdapter extends FragmentPagerAdapter {
 
     private final String[] TITLES = { "Accounts", "Recent Transactions", "Spending"};
 
-    public MainPagerAdapter(FragmentManager fm) {
+    private User mUser;
+
+    public MainPagerAdapter(FragmentManager fm, User user) {
         super(fm);
+        this.mUser = user;
     }
 
     @Override
@@ -37,7 +41,7 @@ public class MainPagerAdapter extends FragmentPagerAdapter {
         Fragment f = new Fragment();
         switch (i) {
             case 0:
-                return AccountsFragment.newInstance("");
+                return AccountsFragment.newInstance(mUser);
             case 1:
                 return RecentTransactionsFragment.newInstance("");
             case 2:

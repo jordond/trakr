@@ -9,29 +9,30 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import it.gmariotti.cardslib.library.internal.Card;
 import it.gmariotti.cardslib.library.internal.CardHeader;
 import it.gmariotti.cardslib.library.view.CardViewNative;
 import me.dehoog.trakr.R;
 import me.dehoog.trakr.interfaces.AccountsInteraction;
+import me.dehoog.trakr.models.Account;
+import me.dehoog.trakr.models.User;
 
 public class AccountsFragment extends Fragment {
 
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    private static final String ARG_USER = "user";
 
     // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    private User mUser;
 
     private AccountsInteraction mListener;
 
     // TODO: Rename and change types and number of parameters
-    public static AccountsFragment newInstance(String param1) {
+    public static AccountsFragment newInstance(User user) {
         AccountsFragment fragment = new AccountsFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
+        args.putSerializable(ARG_USER, user);
         fragment.setArguments(args);
         return fragment;
     }
@@ -44,8 +45,7 @@ public class AccountsFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            mUser = (User) getArguments().getSerializable(ARG_USER);
         }
     }
 
@@ -54,6 +54,9 @@ public class AccountsFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_accounts, container, false);
 
+
+        List<Account> accounts = Account.find(Account.class, "user = ?", String.valueOf(mUser.getId()));
+        mUser.setAccounts(accounts);
 
         return view;
     }

@@ -36,9 +36,7 @@ public class User extends SugarRecord<User> implements Serializable {
     private List<Account> accounts;
 
     public List<Account> getAccounts() {
-        return Select.from(Account.class)
-                .where(Condition.prop("user").eq(this.getId().toString()))
-                .list();
+        return accounts;
     }
 
     public void setAccounts(List<Account> accounts) {
