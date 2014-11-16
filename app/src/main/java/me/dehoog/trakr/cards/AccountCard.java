@@ -95,7 +95,7 @@ public class AccountCard extends Card {
 
         // Create objects
         AccountCard card = new AccountCard(getContext(), account);
-        ExpandAccountCard expand = new ExpandAccountCard(getContext());
+        ExpandAccountCard expand = new ExpandAccountCard(getContext(), account);
 
         card.addCardExpand(expand);
 

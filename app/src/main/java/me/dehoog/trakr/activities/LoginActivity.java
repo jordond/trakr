@@ -102,6 +102,7 @@ public class LoginActivity extends Activity implements LoginFragment.OnFragmentI
 //        SeedDatabase seed = new SeedDatabase();
 //        if (seed.users())
 //            seed.accounts();
+//        seed.purchases();
     }
 
     public boolean getLoggedInState() {

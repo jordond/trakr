@@ -3,9 +3,7 @@ package me.dehoog.trakr.models;
 import com.orm.SugarRecord;
 
 import java.io.Serializable;
-import java.sql.Date;
-import java.util.List;
-
+import java.util.Date;
 
 /**
  * Created by jordon on 2014-11-09.

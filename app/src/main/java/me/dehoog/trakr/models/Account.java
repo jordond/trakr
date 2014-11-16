@@ -59,6 +59,14 @@ public class Account extends SugarRecord<Account> implements Serializable {
         return found;
     }
 
+    public List<Purchase> getAllPurchases() {
+        if (purchases == null) {
+            return purchases = Purchase.find(Purchase.class, "account = ?", String.valueOf(this.getId()));
+        } else {
+            return purchases;
+        }
+    }
+
     // Accessor
     public String getNumber() {
         return number;
@@ -124,11 +132,7 @@ public class Account extends SugarRecord<Account> implements Serializable {
         this.user = user;
     }
 
-    public List<Purchase> getPurchases() {
-        return Select.from(Purchase.class)
-                .where(Condition.prop("account").eq(this.getId().toString()))
-                .list();
-    }
+    public List<Purchase> getPurchases() { return purchases; }
 
     public void setPurchases(List<Purchase> purchases) {
         this.purchases = purchases;

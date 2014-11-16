@@ -85,22 +85,26 @@ public class SeedDatabase {
             return false;
         }
 
-        LatLng ll = new LatLng(-11.77455, 66.89461);
-        Address address = new Address(ll);
+        double lat = -11.77455;
+        double lon = 66.89461;
+        Address address = new Address(lat, lon);
         address.setCountry("Canada");
         address.setProvince("ON");
         address.setPostal("N4E1R2");
+        address.save();
 
         Merchant m = new Merchant("Tim Hortons", address);
+        m.save();
 
         Purchase p = new Purchase(a, 14.99);
         p.setMerchant(m);
 
         Category c = new Category().findOrCreate("fast_food");
+        c.save();
+
         p.setCategory(c);
 
-        Date d = new Date();
-        p.setDate((java.sql.Date) d);
+        p.setDate(new Date());
 
         p.save();
 
