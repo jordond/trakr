@@ -8,9 +8,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="#ff4d94bb"
-        android:layout_marginStart="15dp"
+        android:layout_marginStart="5dp"
         android:id="@+id/card_header_subtitle"
-        android:textSize="20sp"
+        android:textSize="18sp"
         />
 
 </LinearLayout>

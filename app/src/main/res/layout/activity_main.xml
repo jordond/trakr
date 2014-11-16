@@ -8,7 +8,9 @@
         android:id="@+id/tabs"
         android:layout_width="match_parent"
         android:layout_height="40dip"
-        android:background="@drawable/background_tabs" />
+        android:background="@drawable/background_tabs"
+        app:pstsScrollOffset="1dp"
+        app:pstsShouldExpand="true"/>
 
     <android.support.v4.view.ViewPager
         android:id="@+id/pager"
@@ -16,6 +18,6 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/tabs"
         tools:context=".MainActivity"
-        android:background="#fff3f3f3"/>
+        android:background="@color/white_background"/>
 
 </RelativeLayout>

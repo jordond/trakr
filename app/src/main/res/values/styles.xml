@@ -16,8 +16,8 @@
     </style>
 
     <style name="card_inner_title">
-        <item name="android:textSize">18sp</item>
-        <item name="android:textColor">@android:color/black</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@android:color/darker_gray</item>
         <item name="android:layout_marginLeft">@dimen/card_header_simple_title_margin_left</item>
     </style>
 
