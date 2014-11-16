@@ -1,26 +1,14 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     xmlns:card="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <ScrollView
-        android:id="@+id/card_scrollview"
+    <it.gmariotti.cardslib.library.view.CardListView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:id="@+id/cardlist_accounts"
+        style="@style/card_external"
+        card:list_card_layout_resourceID="@layout/native_list_card_thumbnail_layout"/>
 
-        <LinearLayout
-            android:orientation="vertical"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <it.gmariotti.cardslib.library.view.CardListView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:id="@+id/cardlist_accounts"/>
-
-            </LinearLayout>
-
-        </ScrollView>
-
-    </LinearLayout>
+</RelativeLayout>

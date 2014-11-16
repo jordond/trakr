@@ -38,6 +38,10 @@ public class AccountCard extends Card {
         super(context, innerLayout);
     }
 
+    public AccountCard(Context context) {
+        super(context, R.layout.card_account);
+    }
+
     private void init() {
 
         CardHeader header = new AccountCardHeader(getContext(), R.layout.card_account_header, mTitle);
@@ -66,7 +70,7 @@ public class AccountCard extends Card {
 
         // Card content
         TextView main = (TextView) view.findViewById(R.id.card_inner_title);
-        TextView sub = (TextView) view.findViewById(R.id.card_header_subtitle);
+        TextView sub = (TextView) view.findViewById(R.id.card_inner_subtitle);
 
         main.setText(mContentMain);
         sub.setText(mContentSub);
@@ -83,7 +87,7 @@ public class AccountCard extends Card {
     }
 
     // Helper method for creating expanding card
-    private AccountCard createExpandCard(String title, String contentMain, String contentSub, int icon) {
+    public AccountCard createExpandCard(String title, String contentMain, String contentSub, int icon) {
 
         // Create objects
         AccountCard card = new AccountCard(getContext(), title, contentMain, contentSub, icon);
@@ -111,8 +115,7 @@ public class AccountCard extends Card {
 
         return card;
 
-    }
-
+    } // createAccountCard
 
     // Custom header class for AccountCard
     public class AccountCardHeader extends CardHeader {
@@ -133,6 +136,6 @@ public class AccountCard extends Card {
                 titleView.setText(mTitle);
             }
         }
-    }
+    } // End AccountCardHeader
 
 }

@@ -11,15 +11,23 @@ import android.view.ViewGroup;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.ButterKnife;
+import butterknife.InjectView;
 import it.gmariotti.cardslib.library.internal.Card;
+import it.gmariotti.cardslib.library.internal.CardArrayAdapter;
 import it.gmariotti.cardslib.library.internal.CardHeader;
+import it.gmariotti.cardslib.library.view.CardListView;
 import it.gmariotti.cardslib.library.view.CardViewNative;
 import me.dehoog.trakr.R;
+import me.dehoog.trakr.cards.AccountCard;
 import me.dehoog.trakr.interfaces.AccountsInteraction;
 import me.dehoog.trakr.models.Account;
 import me.dehoog.trakr.models.User;
 
 public class AccountsFragment extends Fragment {
+
+    // UI Components
+    @InjectView(R.id.cardlist_accounts) CardListView mCardList;
 
     private static final String ARG_USER = "user";
 
@@ -53,12 +61,27 @@ public class AccountsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_accounts, container, false);
+        ButterKnife.inject(this, view);
 
-
-        List<Account> accounts = Account.find(Account.class, "user = ?", String.valueOf(mUser.getId()));
-        mUser.setAccounts(accounts);
+        mUser.setAccounts(Account.find(Account.class, "user = ?", String.valueOf(mUser.getId())));
+        createCards();
 
         return view;
+    }
+
+    public void createCards() {
+        ArrayList<Card> cards = new ArrayList<Card>();
+        for (Account a : mUser.getAccounts()) {
+            AccountCard card = new AccountCard(getActivity())
+                    .createExpandCard(a.getDescription(),
+                            a.getNumber(), a.getCategory(), R.drawable.visa_new);
+            cards.add(card);
+        }
+
+        CardArrayAdapter cardArrayAdapter = new CardArrayAdapter(getActivity(), cards);
+        if (mCardList != null) {
+            mCardList.setAdapter(cardArrayAdapter);
+        }
     }
 
     // TODO: Rename method, update argument and hook method into UI event
