@@ -1,28 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent"
+    android:background="#515254">
 
     <TextView
         style="@style/Now.card_expand_inner_layout.light_gray.bold"
-        android:layout_width="match_parent"
+        android:id="@+id/expires_desc"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/temp1"
-        android:text="@string/hello_world"/>
+        android:text="Card Expires"/>
 
     <TextView
         style="@style/Now.card_expand_inner_layout.light_gray.bold"
-        android:layout_width="match_parent"
+        android:id="@+id/expires_text"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="30dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/temp2"
-        android:text="@string/hello_world"/>
+        android:text="07/10"/>
 
     <TextView
         style="@style/Now.card_expand_inner_layout.light_gray.bold"
-        android:layout_width="match_parent"
+        android:id="@+id/number_transactions_desc"
+        android:layout_below="@+id/expires_desc"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/temp3"
-        android:text="@string/hello_world"/>
+        android:text="Number of Transactions"/>
 
-</LinearLayout>
+    <TextView
+        style="@style/Now.card_expand_inner_layout.light_gray.bold"
+        android:id="@+id/number_transactions_text"
+        android:layout_below="@+id/expires_desc"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="30dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="21"/>
+
+    <TextView
+        style="@style/Now.card_expand_inner_layout.light_gray.bold"
+        android:id="@+id/total_spent_desc"
+        android:layout_below="@+id/number_transactions_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Total Dollars Spent"/>
+
+    <TextView
+        style="@style/Now.card_expand_inner_layout.light_gray.bold"
+        android:id="@+id/total_spent_text"
+        android:layout_below="@+id/number_transactions_text"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="30dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="$487.38"/>
+
+</RelativeLayout>
