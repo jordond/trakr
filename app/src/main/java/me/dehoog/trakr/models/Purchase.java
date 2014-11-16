@@ -2,6 +2,7 @@ package me.dehoog.trakr.models;
 
 import com.orm.SugarRecord;
 
+import java.io.Serializable;
 import java.sql.Date;
 import java.util.List;
 
@@ -9,7 +10,7 @@ import java.util.List;
 /**
  * Created by jordon on 2014-11-09.
  */
-public class Purchase extends SugarRecord<Purchase> {
+public class Purchase extends SugarRecord<Purchase> implements Serializable {
 
     // Properties
     private Account account;

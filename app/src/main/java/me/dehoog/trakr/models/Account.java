@@ -5,12 +5,13 @@ import com.orm.dsl.Ignore;
 import com.orm.query.Condition;
 import com.orm.query.Select;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * Created by jordon on 2014-11-09.
  */
-public class Account extends SugarRecord<Account> {
+public class Account extends SugarRecord<Account> implements Serializable {
 
     // Properties
     private String number;

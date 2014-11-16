@@ -5,10 +5,12 @@ import android.location.Location;
 import com.google.android.gms.maps.model.LatLng;
 import com.orm.SugarRecord;
 
+import java.io.Serializable;
+
 /**
  * Created by jordon on 2014-11-09.
  */
-public class Address extends SugarRecord<Address> {
+public class Address extends SugarRecord<Address> implements Serializable {
 
     // Properties
     private LatLng coords;

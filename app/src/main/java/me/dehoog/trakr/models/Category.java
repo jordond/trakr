@@ -2,12 +2,13 @@ package me.dehoog.trakr.models;
 
 import com.orm.SugarRecord;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * Created by jordon on 2014-11-09.
  */
-public class Category extends SugarRecord<Category> {
+public class Category extends SugarRecord<Category> implements Serializable {
 
     // Properties
     private String name;
