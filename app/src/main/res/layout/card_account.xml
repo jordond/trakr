@@ -18,8 +18,17 @@
         style="@style/card_inner_title.sub"
         android:layout_alignParentStart="true"
         android:layout_below="@+id/card_inner_title"
-        android:layout_marginBottom="0dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
+
+    <ImageView
+        android:layout_width="30dp"
+        android:layout_height="21dp"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="@dimen/card_header_simple_title_margin_left"
+        android:id="@+id/card_inner_extra_icon"
+        android:layout_below="@+id/card_inner_subtitle"
+        android:layout_marginBottom="0dp"
+        android:contentDescription="@string/card_account_extra_icon_description" />
 
 </RelativeLayout>

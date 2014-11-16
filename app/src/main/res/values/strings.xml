@@ -24,5 +24,6 @@
     <string name="logo_letters_description" />
     <string name="action_logout">Logout</string>
     <string name="action_profile">Profile</string>
+    <string name="card_account_extra_icon_description">Credit card type icon</string>
 
 </resources>

@@ -73,8 +73,7 @@ public class AccountsFragment extends Fragment {
         ArrayList<Card> cards = new ArrayList<Card>();
         for (Account a : mUser.getAccounts()) {
             AccountCard card = new AccountCard(getActivity())
-                    .createExpandCard(a.getDescription(),
-                            a.getNumber(), a.getCategory(), R.drawable.visa_new);
+                    .createExpandCard(a);
             cards.add(card);
         }
 

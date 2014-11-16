@@ -3,6 +3,7 @@ package me.dehoog.trakr.cards;
 import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import it.gmariotti.cardslib.library.internal.Card;
@@ -12,6 +13,7 @@ import it.gmariotti.cardslib.library.internal.ViewToClickToExpand;
 import it.gmariotti.cardslib.library.view.base.CardViewWrapper;
 import it.gmariotti.cardslib.library.view.component.CardThumbnailView;
 import me.dehoog.trakr.R;
+import me.dehoog.trakr.models.Account;
 
 /**
  * Author:  jordon
@@ -20,17 +22,11 @@ import me.dehoog.trakr.R;
  */
 public class AccountCard extends Card {
 
-    protected String mTitle;
-    protected String mContentMain;
-    protected String mContentSub;
-    protected int mIcon;
+    protected Account mAccount;
 
-    public AccountCard(Context context, String title, String contentMain, String contentSub, int icon) {
+    public AccountCard(Context context, Account account) {
         super(context, R.layout.card_account);
-        this.mTitle = title;
-        this.mContentMain = contentMain;
-        this.mContentSub = contentSub;
-        this.mIcon = icon;
+        this.mAccount = account;
         init();
     }
 
@@ -44,12 +40,12 @@ public class AccountCard extends Card {
 
     private void init() {
 
-        CardHeader header = new AccountCardHeader(getContext(), R.layout.card_account_header, mTitle);
+        CardHeader header = new AccountCardHeader(getContext(), R.layout.card_account_header, mAccount.getDescription());
         header.setTitle("Not Visible");
         header.setButtonExpandVisible(true);
 
         CardThumbnail icon = new CardThumbnail(getContext());
-        icon.setDrawableResource(mIcon);
+        icon.setDrawableResource(getIcon(mAccount.getCategory()));
 
         addCardHeader(header);
         addCardThumbnail(icon);
@@ -71,9 +67,17 @@ public class AccountCard extends Card {
         // Card content
         TextView main = (TextView) view.findViewById(R.id.card_inner_title);
         TextView sub = (TextView) view.findViewById(R.id.card_inner_subtitle);
+        ImageView extraIcon = (ImageView) view.findViewById(R.id.card_inner_extra_icon);
 
-        main.setText(mContentMain);
-        sub.setText(mContentSub);
+        main.setText(mAccount.getNumber());
+        sub.setText(mAccount.getCategory());
+
+        if (mAccount.getCategory().toLowerCase().equals("credit")) {
+            int iconId = getExtraIcon(mAccount.getType().toLowerCase());
+            if (iconId != -1) {
+                extraIcon.setImageResource(iconId);
+            }
+        }
 
         CardViewWrapper cardView = getCardView();
         CardThumbnailView thumb = cardView.getInternalThumbnailLayout();
@@ -87,10 +91,10 @@ public class AccountCard extends Card {
     }
 
     // Helper method for creating expanding card
-    public AccountCard createExpandCard(String title, String contentMain, String contentSub, int icon) {
+    public AccountCard createExpandCard(Account account) {
 
         // Create objects
-        AccountCard card = new AccountCard(getContext(), title, contentMain, contentSub, icon);
+        AccountCard card = new AccountCard(getContext(), account);
         ExpandAccountCard expand = new ExpandAccountCard(getContext());
 
         card.addCardExpand(expand);
@@ -116,6 +120,29 @@ public class AccountCard extends Card {
         return card;
 
     } // createAccountCard
+
+    private int getIcon(String category) {
+        category = category.toLowerCase();
+        if (category.equals("cash")) {
+            return R.drawable.cash;
+        } else if (category.equals("debit")) {
+            return R.drawable.debit;
+        } else {
+            return R.drawable.creditcard;
+        }
+    }
+
+    private int getExtraIcon(String type) {
+        if (type.equals("visa")) {
+            return R.drawable.visa_noborder;
+        } else if (type.equals("mastercard") || type.equals("master card")) {
+            return R.drawable.mastercard_noborder;
+        } else if (type.equals("american express") || type.equals("amex")) {
+            return R.drawable.amex_noborder;
+        } else {
+            return -1;
+        }
+    }
 
     // Custom header class for AccountCard
     public class AccountCardHeader extends CardHeader {
