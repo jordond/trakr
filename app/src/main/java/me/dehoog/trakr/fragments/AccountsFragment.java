@@ -7,6 +7,9 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
+
+import com.getbase.floatingactionbutton.FloatingActionsMenu;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,6 +21,7 @@ import it.gmariotti.cardslib.library.internal.CardArrayAdapter;
 import it.gmariotti.cardslib.library.internal.CardHeader;
 import it.gmariotti.cardslib.library.view.CardListView;
 import it.gmariotti.cardslib.library.view.CardViewNative;
+import it.gmariotti.cardslib.library.view.listener.SwipeOnScrollListener;
 import me.dehoog.trakr.R;
 import me.dehoog.trakr.cards.AccountCard;
 import me.dehoog.trakr.helpers.SeedDatabase;
