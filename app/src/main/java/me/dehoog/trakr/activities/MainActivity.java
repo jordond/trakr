@@ -1,6 +1,8 @@
 package me.dehoog.trakr.activities;
 
 import android.app.Activity;
+import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.drawable.ColorDrawable;
@@ -22,6 +24,7 @@ import de.keyboardsurfer.android.widget.crouton.Crouton;
 import de.keyboardsurfer.android.widget.crouton.Style;
 import me.dehoog.trakr.R;
 import me.dehoog.trakr.adapters.MainPagerAdapter;
+import me.dehoog.trakr.fragments.AddAccountFragment;
 import me.dehoog.trakr.interfaces.AccountsInteraction;
 import me.dehoog.trakr.models.User;
 
@@ -32,6 +35,9 @@ public class MainActivity extends FragmentActivity implements AccountsInteractio
     public SharedPreferences mSettings;
 
     public User mUser;
+
+    private FragmentTransaction ft;
+    private Fragment mAddAccount;
 
     // Tab pager components
     @InjectView(R.id.tabs) public PagerSlidingTabStrip mTabs;
@@ -108,6 +114,11 @@ public class MainActivity extends FragmentActivity implements AccountsInteractio
 
     @Override
     public void onAccountsInteraction() {
-        //TODO launch the create account fragment
+        mAddAccount = AddAccountFragment.newInstance(mUser);
+        ft = getFragmentManager().beginTransaction();
+        ft.setCustomAnimations(R.animator.slide_up, R.animator.slide_down);
+        ft.replace(R.id.container, mAddAccount,"AddAccountTag");
+        ft.addToBackStack(null);
+        ft.commit();
     }
 }

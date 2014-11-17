@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
+import android.widget.ImageButton;
 
 import com.melnykov.fab.FloatingActionButton;
 
@@ -79,6 +80,14 @@ public class AccountsFragment extends Fragment {
 
         FloatingActionButton fab = (FloatingActionButton) getActivity().findViewById(R.id.button_floating_action);
         fab.attachToListView(mCardList);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mListener != null) {
+                    mListener.onAccountsInteraction();
+                }
+            }
+        });
     }
 
     public void createCards() {
@@ -110,13 +119,6 @@ public class AccountsFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
-    }
-
-    @OnClick(R.id.action_create_account)
-    public void onButtonClick() {
-        if (mListener != null) {
-            mListener.onAccountsInteraction();
-        }
     }
 
 }
