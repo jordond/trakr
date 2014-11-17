@@ -37,8 +37,6 @@ public class MainActivity extends FragmentActivity {
     @InjectView(R.id.pager) public ViewPager mPager;
     private MainPagerAdapter mAdapter;
 
-    private int barColor = 0xFF3f9fe0;
-
     // UI Components
 
     @Override
@@ -47,13 +45,6 @@ public class MainActivity extends FragmentActivity {
         setContentView(R.layout.activity_main);
         mSettings = getSharedPreferences(PREFS_NAME, 0);
 
-        //Change actionbar color
-        //TODO implement color chooser ?
-        Drawable color = new ColorDrawable(barColor);
-        if (getActionBar() != null) {
-            getActionBar().setBackgroundDrawable(color);
-        }
-
         String email = mSettings.getString("email", "none"); //TODO replaced intent extras with shared prefs, keep?
         mUser = new User().findUser(email);
         if (mUser == null) {
@@ -61,12 +52,9 @@ public class MainActivity extends FragmentActivity {
         }
 
         ButterKnife.inject(this); // get all dem views
-        mTabs.setIndicatorColor(barColor);
         mAdapter = new MainPagerAdapter(getSupportFragmentManager(), mUser);
         mPager.setAdapter(mAdapter);
         mTabs.setViewPager(mPager);
-
-
 
         //TODO display crouton asking to setup profile, if User.isFirstLogin()
     }// onCreate

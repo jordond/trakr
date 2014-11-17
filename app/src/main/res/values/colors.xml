@@ -3,8 +3,10 @@
 
     <color name="white_background">#fff3f3f3</color>
 
-    <color name="primary">#FF3f9fe0</color>
-    <color name="primary_pressed">#64B0E3</color>
+    <color name="primary">#3F51B5</color>
+    <color name="primary_pressed">#5C6BC0</color>
+    <color name="accent">#F50057</color>
+    <color name="accent_pressed">#FF4081</color>
 
 
     <color name="primary_dark_cyan">#FF006064</color>

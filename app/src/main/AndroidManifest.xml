@@ -29,7 +29,8 @@
         <activity
             android:name="me.dehoog.trakr.activities.LoginActivity"
             android:label="@string/app_name"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            android:theme="@style/LoginTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -39,7 +40,8 @@
         <activity
             android:name="me.dehoog.trakr.activities.MainActivity"
             android:label=""
-            android:icon="@drawable/logo_all_white">
+            android:icon="@drawable/logo_all_white"
+            android:theme="@style/AppTheme">
         </activity>
 
     </application>
