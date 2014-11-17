@@ -47,7 +47,6 @@ public class ExpandAccountCard extends CardExpand {
         }
 
         //TODO add item click event on transactions list to show the current transaction
-        //TODO add something when there is no transactions
         ListView listView = (ListView) view.findViewById(R.id.card_account_expand_transaction_list);
         List<Purchase> transactions = mAccount.getAllPurchases();
         if (transactions.isEmpty()) {
