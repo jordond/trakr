@@ -17,6 +17,14 @@ import me.dehoog.trakr.models.User;
  * Created: November, 14, 2014
  * 4:09 PM
  */
+
+/*
+*
+*
+* DEV PURPOSES ONLY
+*
+*
+*/
 public class SeedDatabase {
 
     public SeedDatabase() {
