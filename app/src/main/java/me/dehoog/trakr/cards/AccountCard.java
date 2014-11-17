@@ -68,6 +68,7 @@ public class AccountCard extends Card {
         TextView main = (TextView) view.findViewById(R.id.card_inner_title);
         TextView sub = (TextView) view.findViewById(R.id.card_inner_subtitle);
         ImageView extraIcon = (ImageView) view.findViewById(R.id.card_inner_extra_icon);
+        TextView expires = (TextView) view.findViewById(R.id.card_inner_expires);
 
         main.setText(mAccount.getNumber());
         sub.setText(mAccount.getCategory());
@@ -77,6 +78,10 @@ public class AccountCard extends Card {
             if (iconId != -1) {
                 extraIcon.setImageResource(iconId);
             }
+        }
+
+        if (!mAccount.getCategory().toLowerCase().equals("cash")) {
+            expires.setText("exp. " + mAccount.getExpires());
         }
 
         CardViewWrapper cardView = getCardView();

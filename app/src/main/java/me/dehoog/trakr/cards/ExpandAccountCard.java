@@ -44,11 +44,11 @@ public class ExpandAccountCard extends CardExpand {
             return;
         }
 
-        // TODO setup the expanded card elements
+        //TODO add item click event on transactions list to show the current transaction
         ListView listView = (ListView) view.findViewById(R.id.card_account_expand_transaction_list);
         List<Purchase> transactions = mAccount.getAllPurchases();
-        if (transactions.size() > 3) {
-            transactions = transactions.subList(0,3);
+        if (transactions.size() > 5) {
+            transactions = transactions.subList(0,5);
         }
         RecentTransactionAdapter adapter = new RecentTransactionAdapter(mContext, transactions);
         listView.setAdapter(adapter);
