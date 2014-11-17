@@ -2,10 +2,12 @@ package me.dehoog.trakr.models;
 
 import com.orm.SugarRecord;
 
+import java.io.Serializable;
+
 /**
  * Created by jordon on 2014-11-09.
  */
-public class Merchant extends SugarRecord<Merchant> {
+public class Merchant extends SugarRecord<Merchant> implements Serializable {
 
     // Properties
     private String name;

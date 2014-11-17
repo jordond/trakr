@@ -22,5 +22,10 @@
     <string name="error_username_invalid">Username need to be longer than 4 characters</string>
     <string name="register_username_hint">username</string>
     <string name="logo_letters_description" />
+    <string name="action_logout">Logout</string>
+    <string name="action_profile">Profile</string>
+    <string name="card_account_extra_icon_description">Credit card type icon</string>
+    <string name="card_expand_recent_transactions_text">last three transactions…</string>
+    <string name="expand_list_grand_total_text">all time total</string>
 
 </resources>

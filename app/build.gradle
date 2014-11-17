@@ -6,7 +6,7 @@ android {
 
     defaultConfig {
         applicationId "me.dehoog.trakr"
-        minSdkVersion 18
+        minSdkVersion 19
         targetSdkVersion 21
         versionCode 1
         versionName "1.0"
@@ -31,4 +31,8 @@ dependencies {
     compile 'com.nineoldandroids:library:2.4.0'
     compile 'com.daimajia.easing:library:1.0.0@aar'
     compile 'com.daimajia.androidanimations:library:1.1.2@aar'
+    compile 'com.astuetz:pagerslidingtabstrip:1.0.1'
+    compile 'com.github.gabrielemariotti.cards:cardslib-core:2.0.1'
+    compile 'com.github.gabrielemariotti.cards:cardslib-cards:2.0.1'
+    compile 'com.melnykov:floatingactionbutton:1.0.7'
 }

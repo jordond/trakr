@@ -2,10 +2,13 @@ package me.dehoog.trakr.models;
 
 import com.orm.SugarRecord;
 
+import java.io.Serializable;
+import java.util.List;
+
 /**
  * Created by jordon on 2014-11-09.
  */
-public class Category extends SugarRecord<Category> {
+public class Category extends SugarRecord<Category> implements Serializable {
 
     // Properties
     private String name;
@@ -14,6 +17,10 @@ public class Category extends SugarRecord<Category> {
 
     // Constructors
     public Category() {
+    }
+
+    public Category(String name) {
+        this.name = name;
     }
 
     public Category(String name, String description) {
@@ -25,6 +32,19 @@ public class Category extends SugarRecord<Category> {
         this.name = name;
         this.description = description;
         this.icon = icon;
+    }
+
+    // Helper methods
+    public Category findOrCreate(String name) {
+        Category found = null;
+        List<Category> request = Category.find(Category.class, "name = ?", name);
+        if (!request.isEmpty()) {
+            found = request.get(0);
+        } else {
+            found = new Category(name);
+            found.save();
+        }
+        return found;
     }
 
     // Accessors

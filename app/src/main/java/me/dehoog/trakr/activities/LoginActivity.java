@@ -18,6 +18,7 @@ import de.keyboardsurfer.android.widget.crouton.Style;
 import me.dehoog.trakr.R;
 import me.dehoog.trakr.fragments.LoginFragment;
 import me.dehoog.trakr.fragments.RegisterFragment;
+import me.dehoog.trakr.helpers.SeedDatabase;
 import me.dehoog.trakr.interfaces.OnTaskResult;
 import me.dehoog.trakr.models.User;
 import me.dehoog.trakr.tasks.UserLoginTask;
@@ -41,13 +42,13 @@ public class LoginActivity extends Activity implements LoginFragment.OnFragmentI
     // TODO DEBUG CODE remove after
     public void debugLogin() {
         //debug user
-        mUser = mUser.findUser("t@t.com");
+        mUser = new User().findUser("test0@test.com");
         if (mUser == null) {
-            mUser = new User("t@t.com", "test123");
-            mUser.setUsername("testacc");
+            mUser = new User("test0@test.com", "password");
+            mUser.setUsername("username0");
             mUser.save();
         }
-        mLoginTask = new UserLoginTask("t@t.com", "test123", mOnTaskResult);
+        mLoginTask = new UserLoginTask("test0@test.com", "password", mOnTaskResult);
         mLoginTask.execute((Void) null);
     }
     // DEBUG CODE
@@ -65,7 +66,7 @@ public class LoginActivity extends Activity implements LoginFragment.OnFragmentI
                     .apply();
 
             Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-            intent.putExtra("user", mUser);
+            intent.putExtra("user_email", mUser.getEmail()); // TODO possibly remove see line 236
             startActivity(intent);
             finish();
         }
@@ -96,6 +97,12 @@ public class LoginActivity extends Activity implements LoginFragment.OnFragmentI
         if (loggingOut) {
             Crouton.makeText(this, R.string.message_logging_out, Style.INFO).show();
         }
+
+        //TODO DEBUG CODE
+//        SeedDatabase seed = new SeedDatabase();
+//        if (seed.users())
+//            seed.accounts();
+//        seed.purchases();
     }
 
     public boolean getLoggedInState() {
@@ -226,7 +233,7 @@ public class LoginActivity extends Activity implements LoginFragment.OnFragmentI
                 .apply();
 
         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-        intent.putExtra("user", user);
+        intent.putExtra("user_email", user.getEmail()); // TODO possibly remove as its already in shared prefs, and passing user thru intent doesn't maintain id
         intent.putExtra("loggingIn", true);
         startActivity(intent);
         finish();

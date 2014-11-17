@@ -11,7 +11,6 @@ import java.io.Serializable;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
-import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Pattern;
 
@@ -37,9 +36,7 @@ public class User extends SugarRecord<User> implements Serializable {
     private List<Account> accounts;
 
     public List<Account> getAccounts() {
-        return Select.from(Account.class)
-                .where(Condition.prop("user").eq(this.getId().toString()))
-                .list();
+        return accounts;
     }
 
     public void setAccounts(List<Account> accounts) {
@@ -72,7 +69,7 @@ public class User extends SugarRecord<User> implements Serializable {
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
         }
-        return Arrays.toString(salt);
+        return salt.toString();
     }
 
     public String generateHash(String password) {
@@ -81,8 +78,8 @@ public class User extends SugarRecord<User> implements Serializable {
             MessageDigest md = MessageDigest.getInstance("SHA-256");
             md.update(getSalt().getBytes());
             byte[] bytes = md.digest(password.getBytes());
-            for (byte aByte : bytes) {
-                sb.append(Integer.toString((aByte & 0xff) + 0x100, 16).substring(1));
+            for (int i = 0; i < bytes.length; i++) {
+                sb.append(Integer.toString((bytes[i] & 0xff) + 0x100, 16).substring(1));
             }
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();

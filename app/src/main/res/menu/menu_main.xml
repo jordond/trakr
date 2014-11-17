@@ -6,18 +6,17 @@
     <item
         android:id="@+id/action_settings"
         android:title="@string/action_settings"
+        android:orderInCategory="0"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_logout"
+        android:title="@string/action_logout"
         android:orderInCategory="1"
         app:showAsAction="never" />
 
     <item
-        android:id="@+id/action_logout"
-        android:title="Logout"
-        android:orderInCategory="3"
-        app:showAsAction="never" />
-
-    <item
-        android:id="@+id/action_profile"
-        android:icon="@drawable/profile_icon_white"
-        android:orderInCategory="2"
-        app:showAsAction="always" />
+        android:id="@+id/action_contact"
+        android:icon="@drawable/ic_action_user"
+        android:showAsAction="ifRoom"
+        android:title="@string/action_profile"/>
 </menu>

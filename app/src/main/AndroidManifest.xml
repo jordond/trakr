@@ -15,10 +15,10 @@
         android:name="com.orm.SugarApp">
         <meta-data
             android:name="DATABASE"
-            android:value="trakr_dev.db" />
+            android:value="trakr_dev2.db" />
         <meta-data
             android:name="VERSION"
-            android:value="7" />
+            android:value="5" />
         <meta-data
             android:name="QUERY_LOG"
             android:value="true" />
@@ -29,7 +29,8 @@
         <activity
             android:name="me.dehoog.trakr.activities.LoginActivity"
             android:label="@string/app_name"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            android:theme="@style/LoginTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -38,7 +39,9 @@
 
         <activity
             android:name="me.dehoog.trakr.activities.MainActivity"
-            android:label="@string/app_name" >
+            android:label=""
+            android:icon="@drawable/logo_all_white"
+            android:theme="@style/AppTheme">
         </activity>
 
     </application>

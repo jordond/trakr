@@ -1,16 +1,17 @@
 package me.dehoog.trakr.models;
 
-import android.location.Location;
-
 import com.orm.SugarRecord;
+
+import java.io.Serializable;
 
 /**
  * Created by jordon on 2014-11-09.
  */
-public class Address extends SugarRecord<Address> {
+public class Address extends SugarRecord<Address> implements Serializable {
 
     // Properties
-    private Location coords;
+    private double latitude;
+    private double longitude;
     private String address;
     private String province;
     private String country;
@@ -20,17 +21,20 @@ public class Address extends SugarRecord<Address> {
     public Address() {
     }
 
-    public Address(Location coords) {
-        this.coords = coords;
+    public Address(double lat, double lon) {
+        this.latitude = lat;
+        this.longitude = lon;
     }
 
-    public Address(Location coords, String address) {
-        this.coords = coords;
+    public Address(double lat, double lon, String address) {
+        this.latitude = lat;
+        this.longitude = lon;
         this.address = address;
     }
 
-    public Address(Location coords, String address, String province, String country, String postal) {
-        this.coords = coords;
+    public Address(double lat, double lon, String address, String province, String country, String postal) {
+        this.latitude = lat;
+        this.longitude = lon;
         this.address = address;
         this.province = province;
         this.country = country;
@@ -38,12 +42,22 @@ public class Address extends SugarRecord<Address> {
     }
 
     // Accessors
-    public Location getCoords() {
-        return coords;
+
+
+    public double getLatitude() {
+        return latitude;
     }
 
-    public void setCoords(Location coords) {
-        this.coords = coords;
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
+    }
+
+    public double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
     }
 
     public String getAddress() {
