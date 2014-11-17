@@ -8,6 +8,8 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import org.w3c.dom.Text;
+
 import java.text.DecimalFormat;
 import java.util.List;
 
@@ -48,6 +50,10 @@ public class ExpandAccountCard extends CardExpand {
         //TODO add something when there is no transactions
         ListView listView = (ListView) view.findViewById(R.id.card_account_expand_transaction_list);
         List<Purchase> transactions = mAccount.getAllPurchases();
+        if (transactions.isEmpty()) {
+            TextView recentTransHeader = (TextView) view.findViewById(R.id.recent_transaction_header);
+            recentTransHeader.setText("no transactions");
+        }
         if (transactions.size() > 3) {
             transactions = transactions.subList(0,3);
         }

@@ -59,15 +59,17 @@ public class AccountsFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mUser = (User) getArguments().getSerializable(ARG_USER);
-        }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_accounts, container, false);
+
+        if (getArguments() != null) {
+            mUser = (User) getArguments().getSerializable(ARG_USER);
+        }
+
         ButterKnife.inject(this, view);
         return view;
     }

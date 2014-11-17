@@ -28,7 +28,7 @@
         android:layout_below="@+id/card_account_expand_transaction_list"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="All time total"/>
+        android:text="@string/expand_list_grand_total_text"/>
 
     <TextView
         style="@style/Now.card_expand_inner_layout.light_gray.bold"
