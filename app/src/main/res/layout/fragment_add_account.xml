@@ -2,10 +2,17 @@
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="me.dehoog.trakr.fragments.AddAccountFragment"
-    android:background="@color/material_blue_grey_800">
+    android:background="@color/material_blue_grey_800"
+    android:clickable="true">
 
     <!-- TODO: Update blank fragment layout -->
     <TextView android:layout_width="match_parent" android:layout_height="match_parent"
         android:text="@string/hello_blank_fragment" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/close"
+        android:text="Close fragment"/>
 
 </FrameLayout>

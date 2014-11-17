@@ -1,36 +1,26 @@
 package me.dehoog.trakr.fragments;
 
 import android.app.Activity;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AbsListView;
-import android.widget.ImageButton;
 
 import com.melnykov.fab.FloatingActionButton;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
-import butterknife.OnClick;
 import it.gmariotti.cardslib.library.internal.Card;
 import it.gmariotti.cardslib.library.internal.CardArrayAdapter;
-import it.gmariotti.cardslib.library.internal.CardHeader;
 import it.gmariotti.cardslib.library.view.CardListView;
-import it.gmariotti.cardslib.library.view.CardViewNative;
-import it.gmariotti.cardslib.library.view.listener.SwipeOnScrollListener;
 import me.dehoog.trakr.R;
 import me.dehoog.trakr.cards.AccountCard;
-import me.dehoog.trakr.helpers.SeedDatabase;
 import me.dehoog.trakr.interfaces.AccountsInteraction;
 import me.dehoog.trakr.models.Account;
-import me.dehoog.trakr.models.Purchase;
 import me.dehoog.trakr.models.User;
 
 public class AccountsFragment extends Fragment {
@@ -59,8 +49,7 @@ public class AccountsFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_accounts, container, false);
 
         if (getArguments() != null) {

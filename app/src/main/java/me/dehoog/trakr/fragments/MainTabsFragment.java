@@ -59,5 +59,12 @@ public class MainTabsFragment extends Fragment {
         return view;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (getActivity().getActionBar() != null) {
+            getActivity().getActionBar().setTitle("");
+        }
+    }
 
 }

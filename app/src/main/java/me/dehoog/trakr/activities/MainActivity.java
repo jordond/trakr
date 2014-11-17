@@ -112,6 +112,14 @@ public class MainActivity extends FragmentActivity implements AccountsInteractio
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        if (getActionBar() != null) {
+            getActionBar().setTitle("");
+        }
+    }
+
+    @Override
     public void onAccountsInteraction() {
         mAddAccount = AddAccountFragment.newInstance(mUser);
         ft = getSupportFragmentManager().beginTransaction();
