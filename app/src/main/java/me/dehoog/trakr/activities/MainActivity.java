@@ -22,10 +22,11 @@ import de.keyboardsurfer.android.widget.crouton.Crouton;
 import de.keyboardsurfer.android.widget.crouton.Style;
 import me.dehoog.trakr.R;
 import me.dehoog.trakr.adapters.MainPagerAdapter;
+import me.dehoog.trakr.interfaces.AccountsInteraction;
 import me.dehoog.trakr.models.User;
 
 
-public class MainActivity extends FragmentActivity {
+public class MainActivity extends FragmentActivity implements AccountsInteraction {
 
     public static final String PREFS_NAME = "TrakrPrefs";
     public SharedPreferences mSettings;
@@ -35,9 +36,6 @@ public class MainActivity extends FragmentActivity {
     // Tab pager components
     @InjectView(R.id.tabs) public PagerSlidingTabStrip mTabs;
     @InjectView(R.id.pager) public ViewPager mPager;
-    private MainPagerAdapter mAdapter;
-
-    // UI Components
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,7 +50,7 @@ public class MainActivity extends FragmentActivity {
         }
 
         ButterKnife.inject(this); // get all dem views
-        mAdapter = new MainPagerAdapter(getSupportFragmentManager(), mUser);
+        MainPagerAdapter mAdapter = new MainPagerAdapter(getSupportFragmentManager(), mUser);
         mPager.setAdapter(mAdapter);
         mTabs.setViewPager(mPager);
 
@@ -70,13 +68,10 @@ public class MainActivity extends FragmentActivity {
         finish();
     }
 
-
     @Override
     protected void onStart() {
         super.onStart();
-
         ButterKnife.inject(this);
-
     }// onStart
 
     @Override
@@ -86,7 +81,6 @@ public class MainActivity extends FragmentActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
@@ -97,6 +91,8 @@ public class MainActivity extends FragmentActivity {
         switch (id) {
             case R.id.action_settings:
                 return true;
+            case R.id.action_profile:
+                break;
             case R.id.action_logout:
                 logout();
                 break;
@@ -108,5 +104,10 @@ public class MainActivity extends FragmentActivity {
     protected void onDestroy() {
         super.onDestroy();
         Crouton.cancelAllCroutons();
+    }
+
+    @Override
+    public void onAccountsInteraction() {
+        //TODO launch the create account fragment
     }
 }

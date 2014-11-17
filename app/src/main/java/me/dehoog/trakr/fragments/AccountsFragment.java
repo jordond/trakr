@@ -17,6 +17,7 @@ import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import butterknife.OnClick;
 import it.gmariotti.cardslib.library.internal.Card;
 import it.gmariotti.cardslib.library.internal.CardArrayAdapter;
 import it.gmariotti.cardslib.library.internal.CardHeader;
@@ -38,12 +39,9 @@ public class AccountsFragment extends Fragment {
 
     private static final String ARG_USER = "user";
 
-    // TODO: Rename and change types of parameters
     private User mUser;
-
     private AccountsInteraction mListener;
 
-    // TODO: Rename and change types and number of parameters
     public static AccountsFragment newInstance(User user) {
         AccountsFragment fragment = new AccountsFragment();
         Bundle args = new Bundle();
@@ -52,9 +50,7 @@ public class AccountsFragment extends Fragment {
         return fragment;
     }
 
-    public AccountsFragment() {
-        // Required empty public constructor
-    }
+    public AccountsFragment() { }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -99,28 +95,28 @@ public class AccountsFragment extends Fragment {
         }
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onAccountsInteraction(-1);
-        }
-    }
-
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-//        try {
-//            mListener = (AccountsInteraction) activity;
-//        } catch (ClassCastException e) {
-//            throw new ClassCastException(activity.toString()
-//                    + " must implement OnFragmentInteractionListener");
-//        }
+        try {
+            mListener = (AccountsInteraction) activity;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(activity.toString()
+                    + " must implement OnFragmentInteractionListener");
+        }
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    @OnClick(R.id.action_create_account)
+    public void onButtonClick() {
+        if (mListener != null) {
+            mListener.onAccountsInteraction();
+        }
     }
 
 }

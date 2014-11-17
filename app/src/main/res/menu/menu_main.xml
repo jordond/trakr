@@ -15,7 +15,7 @@
         app:showAsAction="never" />
 
     <item
-        android:id="@+id/action_contact"
+        android:id="@+id/action_profile"
         android:icon="@drawable/ic_action_user"
         android:showAsAction="ifRoom"
         android:title="@string/action_profile"/>
