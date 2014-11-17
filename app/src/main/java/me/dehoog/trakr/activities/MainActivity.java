@@ -1,8 +1,8 @@
 package me.dehoog.trakr.activities;
 
 import android.app.Activity;
-import android.app.Fragment;
-import android.app.FragmentTransaction;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.drawable.ColorDrawable;
@@ -25,6 +25,7 @@ import de.keyboardsurfer.android.widget.crouton.Style;
 import me.dehoog.trakr.R;
 import me.dehoog.trakr.adapters.MainPagerAdapter;
 import me.dehoog.trakr.fragments.AddAccountFragment;
+import me.dehoog.trakr.fragments.MainTabsFragment;
 import me.dehoog.trakr.interfaces.AccountsInteraction;
 import me.dehoog.trakr.models.User;
 
@@ -37,11 +38,8 @@ public class MainActivity extends FragmentActivity implements AccountsInteractio
     public User mUser;
 
     private FragmentTransaction ft;
-    private Fragment mAddAccount;
-
-    // Tab pager components
-    @InjectView(R.id.tabs) public PagerSlidingTabStrip mTabs;
-    @InjectView(R.id.pager) public ViewPager mPager;
+    private MainTabsFragment mMainTabs;
+    private AddAccountFragment mAddAccount;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,10 +53,11 @@ public class MainActivity extends FragmentActivity implements AccountsInteractio
             logout();
         }
 
-        ButterKnife.inject(this); // get all dem views
-        MainPagerAdapter mAdapter = new MainPagerAdapter(getSupportFragmentManager(), mUser);
-        mPager.setAdapter(mAdapter);
-        mTabs.setViewPager(mPager);
+        mMainTabs = MainTabsFragment.newInstance(mUser);
+
+        ft = getSupportFragmentManager().beginTransaction();
+        ft.replace(R.id.container, mMainTabs);
+        ft.commit();
 
         //TODO display crouton asking to setup profile, if User.isFirstLogin()
     }// onCreate
@@ -115,9 +114,9 @@ public class MainActivity extends FragmentActivity implements AccountsInteractio
     @Override
     public void onAccountsInteraction() {
         mAddAccount = AddAccountFragment.newInstance(mUser);
-        ft = getFragmentManager().beginTransaction();
-        ft.setCustomAnimations(R.animator.slide_up, R.animator.slide_down);
-        ft.replace(R.id.container, mAddAccount,"AddAccountTag");
+        ft = getSupportFragmentManager().beginTransaction();
+        ft.setCustomAnimations(R.anim.abc_slide_in_bottom, R.anim.abc_slide_out_bottom, R.anim.abc_slide_in_bottom, R.anim.abc_slide_out_bottom);
+        ft.add(R.id.container, mAddAccount,"AddAccountTag");
         ft.addToBackStack(null);
         ft.commit();
     }
