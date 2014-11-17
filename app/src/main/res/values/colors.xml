@@ -4,6 +4,7 @@
     <color name="white_background">#fff3f3f3</color>
 
     <color name="primary">#FF3f9fe0</color>
+    <color name="primary_pressed">#64B0E3</color>
 
 
     <color name="primary_dark_cyan">#FF006064</color>

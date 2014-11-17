@@ -3,13 +3,14 @@ package me.dehoog.trakr.fragments;
 import android.app.Activity;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 
-import com.getbase.floatingactionbutton.FloatingActionsMenu;
+import com.melnykov.fab.FloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -68,11 +69,18 @@ public class AccountsFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_accounts, container, false);
         ButterKnife.inject(this, view);
+        return view;
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
 
         mUser.setAccounts(Account.find(Account.class, "user = ?", String.valueOf(mUser.getId())));
         createCards();
 
-        return view;
+        FloatingActionButton fab = (FloatingActionButton) getActivity().findViewById(R.id.button_floating_action);
+        fab.attachToListView(mCardList);
     }
 
     public void createCards() {
