@@ -1,4 +1,4 @@
 <shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="rectangle">
-    <solid android:color="@color/primary_dark_cyan_transparent" />
+    <solid android:color="@color/login_button_confirm" />
     <corners android:radius="@dimen/round_button_radius" />
 </shape>
