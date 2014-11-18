@@ -1,7 +1,7 @@
 package me.dehoog.trakr.activities;
 
 import android.app.Activity;
-import android.support.v4.app.Fragment;
+import android.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -41,6 +41,10 @@ public class MainActivity extends FragmentActivity implements AccountsInteractio
     private MainTabsFragment mMainTabs;
     private AddAccountFragment mAddAccount;
 
+    // Tab pager components
+    @InjectView(R.id.tabs) public PagerSlidingTabStrip mTabs;
+    @InjectView(R.id.pager) public ViewPager mPager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,9 +59,15 @@ public class MainActivity extends FragmentActivity implements AccountsInteractio
 
         mMainTabs = MainTabsFragment.newInstance(mUser);
 
-        ft = getSupportFragmentManager().beginTransaction();
-        ft.replace(R.id.container, mMainTabs);
-        ft.commit();
+        ButterKnife.inject(this); // get all dem views
+        MainPagerAdapter mAdapter = new MainPagerAdapter(getSupportFragmentManager(), mUser);
+        mPager.setAdapter(mAdapter);
+        mTabs.setViewPager(mPager);
+
+        //TODO get rid of tabs in fragment?
+//        ft = getSupportFragmentManager().beginTransaction();
+//        ft.replace(R.id.container, mMainTabs);
+//        ft.commit();
 
         //TODO display crouton asking to setup profile, if User.isFirstLogin()
     }// onCreate
@@ -124,7 +134,7 @@ public class MainActivity extends FragmentActivity implements AccountsInteractio
         mAddAccount = AddAccountFragment.newInstance(mUser);
         ft = getSupportFragmentManager().beginTransaction();
         ft.setCustomAnimations(R.anim.abc_fade_in, R.anim.abc_fade_out, R.anim.abc_fade_in, R.anim.abc_fade_out);
-        ft.add(R.id.container, mAddAccount,"AddAccountTag");
+        ft.replace(R.id.container, mAddAccount,"AddAccountTag");
         ft.addToBackStack(null);
         ft.commit();
     }
