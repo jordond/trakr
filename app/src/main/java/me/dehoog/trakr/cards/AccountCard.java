@@ -129,11 +129,11 @@ public class AccountCard extends Card {
     private int getIcon(String category) {
         category = category.toLowerCase();
         if (category.equals("cash")) {
-            return R.drawable.cash;
+            return R.drawable.cash_black;
         } else if (category.equals("debit")) {
-            return R.drawable.debit;
+            return R.drawable.debit_black;
         } else {
-            return R.drawable.creditcard;
+            return R.drawable.creditcard_black;
         }
     }
 
