@@ -20,7 +20,7 @@ public class AddAccountFragment extends Fragment {
 
     private User mUser;
 
-    @OnClick(R.id.close)
+    @OnClick(R.id.cancel)
     public void closeFrag() {
         getFragmentManager().popBackStackImmediate();
     }

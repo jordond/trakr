@@ -123,7 +123,7 @@ public class MainActivity extends FragmentActivity implements AccountsInteractio
     public void onAccountsInteraction() {
         mAddAccount = AddAccountFragment.newInstance(mUser);
         ft = getSupportFragmentManager().beginTransaction();
-        ft.setCustomAnimations(R.anim.abc_slide_in_bottom, R.anim.abc_slide_out_bottom, R.anim.abc_slide_in_bottom, R.anim.abc_slide_out_bottom);
+        ft.setCustomAnimations(R.anim.abc_fade_in, R.anim.abc_fade_out, R.anim.abc_fade_in, R.anim.abc_fade_out);
         ft.add(R.id.container, mAddAccount,"AddAccountTag");
         ft.addToBackStack(null);
         ft.commit();
