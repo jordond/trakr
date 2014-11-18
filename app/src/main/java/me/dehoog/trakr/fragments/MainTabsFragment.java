@@ -19,6 +19,8 @@ import me.dehoog.trakr.models.User;
 /**
  * A simple {@link Fragment} subclass.
  */
+//TODO remove?
+@Deprecated
 public class MainTabsFragment extends Fragment {
 
     private static final String ARG_USER = "user";
