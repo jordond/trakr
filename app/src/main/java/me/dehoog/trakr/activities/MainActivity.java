@@ -30,7 +30,6 @@ public class MainActivity extends FragmentActivity implements AccountsInteractio
     public User mUser;
 
     private FragmentTransaction ft;
-    private MainTabsFragment mMainTabs;
     private AddAccountFragment mAddAccount;
 
     // Tab pager components
@@ -49,19 +48,11 @@ public class MainActivity extends FragmentActivity implements AccountsInteractio
             logout();
         }
 
-        mMainTabs = MainTabsFragment.newInstance(mUser);
-
         ButterKnife.inject(this); // get all dem views
         MainPagerAdapter mAdapter = new MainPagerAdapter(getSupportFragmentManager(), mUser);
         mPager.setAdapter(mAdapter);
         mTabs.setViewPager(mPager);
 
-        //TODO get rid of tabs in fragment?
-//        ft = getSupportFragmentManager().beginTransaction();
-//        ft.replace(R.id.container, mMainTabs);
-//        ft.commit();
-
-        //TODO display crouton asking to setup profile, if User.isFirstLogin()
     }// onCreate
 
     private void logout() {
