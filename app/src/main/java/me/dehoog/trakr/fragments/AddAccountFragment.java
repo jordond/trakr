@@ -6,6 +6,8 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.RadioGroup;
 import android.widget.ToggleButton;
 
@@ -21,8 +23,20 @@ public class AddAccountFragment extends Fragment {
 
     private User mUser;
 
-    @InjectView(R.id.toggle_group) RadioGroup mToggleGroup;
+    @InjectView(R.id.account_number) EditText mAccountNumber;
+    @InjectView(R.id.expires) EditText mExpiry;
+    @InjectView(R.id.descriptive_name) EditText mName;
 
+    @InjectView(R.id.action_confirm) Button mConfirm;
+    @OnClick(R.id.action_confirm)
+    public void onConfirm() {
+
+    }
+
+    @OnClick(R.id.action_cancel)
+    public void onCancel() { getFragmentManager().popBackStackImmediate(); }
+
+    @InjectView(R.id.toggle_group) RadioGroup mToggleGroup;
     @OnClick({ R.id.toggle_cash, R.id.toggle_credit, R.id.toggle_debit })
     public void onToggle(View view) {
         ((RadioGroup)view.getParent()).check(view.getId());
@@ -32,7 +46,7 @@ public class AddAccountFragment extends Fragment {
 
     //@OnClick(R.id.cancel)
     public void closeFrag() {
-        getFragmentManager().popBackStackImmediate();
+
     }
 
     public static AddAccountFragment newInstance(User user) {
