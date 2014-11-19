@@ -13,7 +13,6 @@ import java.text.SimpleDateFormat;
 import java.util.List;
 
 import me.dehoog.trakr.R;
-import me.dehoog.trakr.models.Merchant;
 import me.dehoog.trakr.models.Purchase;
 
 /**

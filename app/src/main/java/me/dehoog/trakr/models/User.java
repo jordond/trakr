@@ -4,8 +4,6 @@ import android.util.Patterns;
 
 import com.orm.SugarRecord;
 import com.orm.dsl.Ignore;
-import com.orm.query.Condition;
-import com.orm.query.Select;
 
 import java.io.Serializable;
 import java.security.MessageDigest;

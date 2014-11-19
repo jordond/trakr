@@ -2,8 +2,6 @@ package me.dehoog.trakr.models;
 
 import com.orm.SugarRecord;
 import com.orm.dsl.Ignore;
-import com.orm.query.Condition;
-import com.orm.query.Select;
 
 import java.io.Serializable;
 import java.util.List;
