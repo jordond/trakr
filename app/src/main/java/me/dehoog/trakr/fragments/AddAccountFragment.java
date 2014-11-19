@@ -16,9 +16,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
-import com.doomonafireball.betterpickers.expirationpicker.ExpirationPickerBuilder;
-import com.doomonafireball.betterpickers.expirationpicker.ExpirationPickerDialogFragment;
-
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;

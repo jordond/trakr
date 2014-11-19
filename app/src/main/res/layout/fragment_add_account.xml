@@ -15,7 +15,6 @@
         android:layout_height="300dp"
         android:orientation="vertical"
         android:gravity="center_horizontal"
-        android:layout_gravity="center_horizontal"
         android:background="@color/white_background">
 
         <RadioGroup
@@ -94,6 +93,41 @@
                 android:layout_below="@id/expires"/>
 
             </RelativeLayout>
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="1dip"
+            android:layout_marginTop="5dp"
+            android:background="@color/accent_pressed" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="@dimen/activity_horizontal_margin"
+            android:layout_gravity="bottom|end">
+
+            <Button
+                android:id="@+id/action_cancel"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:text="Cancel"
+                android:textSize="14sp"
+                style="?android:attr/borderlessButtonStyle"
+                android:layout_marginEnd="5dp"/>
+
+            <Button
+                android:id="@+id/action_confirm"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:textColor="@color/white"
+                android:text="Add"
+                style="?android:textAppearanceSmall"
+                android:background="@drawable/button_confirm"
+                android:layout_marginEnd="5dp"/>
+
+            </LinearLayout>
 
         </LinearLayout>
 
