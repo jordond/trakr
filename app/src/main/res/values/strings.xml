@@ -36,5 +36,6 @@
     <string name="credit_type_visa">VISA</string>
     <string name="credit_type_mastercard">MasterCard</string>
     <string name="credit_type_amex">Amex</string>
+    <string name="credit_type_other">Other</string>
 
 </resources>

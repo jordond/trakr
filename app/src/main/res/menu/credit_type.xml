@@ -13,4 +13,8 @@
         android:id="@+id/amex"
         android:title="@string/credit_type_amex"/>
 
+    <item
+        android:id="@+id/other"
+        android:title="@string/credit_type_other" />
+
 </menu>
