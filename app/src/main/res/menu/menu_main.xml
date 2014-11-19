@@ -7,12 +7,12 @@
         android:id="@+id/action_settings"
         android:title="@string/action_settings"
         android:orderInCategory="0"
-        app:showAsAction="never" />
+        android:showAsAction="never" />
     <item
         android:id="@+id/action_logout"
         android:title="@string/action_logout"
         android:orderInCategory="1"
-        app:showAsAction="never" />
+        android:showAsAction="never" />
 
     <item
         android:id="@+id/action_profile"

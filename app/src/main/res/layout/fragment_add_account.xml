@@ -61,31 +61,39 @@
 
         </RadioGroup>
 
-        <EditText
+        <RelativeLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:inputType="number"
-            android:ems="10"
-            android:hint="Account Number"
-            android:id="@+id/account_number" />
+            android:layout_height="wrap_content">
 
-        <EditText
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:inputType="date"
-            android:ems="10"
-            android:hint="Expires"
-            android:id="@+id/expires" />
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:inputType="number"
+                android:ems="10"
+                android:hint="Account Number"
+                android:id="@+id/account_number" />
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:inputType="date"
+                android:ems="5"
+                android:hint="Expires"
+                android:id="@+id/expires"
+                android:layout_below="@+id/account_number"/>
 
 
-        <EditText
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:inputType="textPersonName"
-            android:ems="10"
-            android:layout_marginTop="30dp"
-            android:hint="Descriptive Name"
-            android:id="@+id/descriptive_name" />
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:inputType="textPersonName"
+                android:ems="10"
+                android:layout_marginTop="30dp"
+                android:hint="Descriptive Name"
+                android:id="@+id/descriptive_name"
+                android:layout_below="@id/expires"/>
+
+            </RelativeLayout>
 
         </LinearLayout>
 
