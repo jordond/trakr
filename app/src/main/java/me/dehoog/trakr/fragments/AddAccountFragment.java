@@ -11,8 +11,10 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ToggleButton;
 
 import com.doomonafireball.betterpickers.expirationpicker.ExpirationPickerBuilder;
 import com.doomonafireball.betterpickers.expirationpicker.ExpirationPickerDialogFragment;
@@ -28,6 +30,15 @@ public class AddAccountFragment extends Fragment {
     private static final String ARG_USER = "user";
 
     private User mUser;
+
+    @InjectView(R.id.toggle_group) RadioGroup mToggleGroup;
+
+    @OnClick({ R.id.toggle_cash, R.id.toggle_credit, R.id.toggle_debit })
+    public void onToggle(View view) {
+        ((RadioGroup)view.getParent()).check(view.getId());
+
+        int i = 0;
+    }
 
     //@OnClick(R.id.cancel)
     public void closeFrag() {
@@ -57,6 +68,8 @@ public class AddAccountFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_add_account, container, false);
         ButterKnife.inject(this, view);
 
+        mToggleGroup.setOnCheckedChangeListener(ToggleListener);
+
         return view;
     }
 
@@ -75,4 +88,14 @@ public class AddAccountFragment extends Fragment {
             getActivity().getActionBar().setTitle("");
         }
     }
+
+    static final RadioGroup.OnCheckedChangeListener ToggleListener = new RadioGroup.OnCheckedChangeListener() {
+        @Override
+        public void onCheckedChanged(final RadioGroup radioGroup, final int i) {
+            for (int j = 0; j < radioGroup.getChildCount(); j++) {
+                final ToggleButton view = (ToggleButton) radioGroup.getChildAt(j);
+                view.setChecked(view.getId() == i);
+            }
+        }
+    };
 }

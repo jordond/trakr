@@ -27,5 +27,8 @@
     <string name="card_account_extra_icon_description">Credit card type icon</string>
     <string name="card_expand_recent_transactions_text">last three transactions…</string>
     <string name="expand_list_grand_total_text">all time total</string>
+    <string name="add_account_hint_account_number">Account Number</string>
+    <string name="add_account_hint_expires">Expires</string>
+    <string name="add_account_hint_descriptive">Descriptive Name</string>
 
 </resources>

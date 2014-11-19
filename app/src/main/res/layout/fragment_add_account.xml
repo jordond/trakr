@@ -70,7 +70,7 @@
                 android:layout_height="wrap_content"
                 android:inputType="number"
                 android:ems="10"
-                android:hint="Account Number"
+                android:hint="@string/add_account_hint_account_number"
                 android:id="@+id/account_number" />
 
             <EditText
@@ -78,7 +78,7 @@
                 android:layout_height="wrap_content"
                 android:inputType="date"
                 android:ems="5"
-                android:hint="Expires"
+                android:hint="@string/add_account_hint_expires"
                 android:maxLength="5"
                 android:id="@+id/expires"
                 android:layout_below="@+id/account_number"/>
@@ -89,7 +89,7 @@
                 android:inputType="textPersonName"
                 android:ems="10"
                 android:layout_marginTop="30dp"
-                android:hint="Descriptive Name"
+                android:hint="@string/add_account_hint_descriptive"
                 android:id="@+id/descriptive_name"
                 android:layout_below="@id/expires"/>
 
