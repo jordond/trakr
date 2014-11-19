@@ -33,5 +33,8 @@
     <string name="add_account_nfc_button_description">Read an EMV card</string>
     <string name="add_account_action_cancel">Cancel</string>
     <string name="add_account_action_confirm">Add</string>
+    <string name="credit_type_visa">VISA</string>
+    <string name="credit_type_mastercard">MasterCard</string>
+    <string name="credit_type_amex">Amex</string>
 
 </resources>
