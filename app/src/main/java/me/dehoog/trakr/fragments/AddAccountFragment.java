@@ -1,6 +1,7 @@
 package me.dehoog.trakr.fragments;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -33,6 +34,10 @@ public class AddAccountFragment extends Fragment {
     @OnClick(R.id.action_confirm)
     public void onConfirm() {
 
+    }
+
+    @OnClick(R.id.action_nfc)
+    public void onReadNfcClick() {
     }
 
     @OnClick(R.id.action_cancel)

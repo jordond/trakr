@@ -57,6 +57,13 @@
                 android:focusable="false"
                 android:focusableInTouchMode="false"/>
 
+            <ImageButton
+                android:id="@+id/action_nfc"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/nfc_button" />
+
         </RadioGroup>
 
         <RelativeLayout
