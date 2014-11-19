@@ -5,11 +5,14 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.PopupMenu;
 import android.widget.RadioGroup;
+import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import butterknife.ButterKnife;
@@ -46,8 +49,22 @@ public class AddAccountFragment extends Fragment {
     // UI - Account type toggles
     @InjectView(R.id.toggle_group) RadioGroup mToggleGroup;
     @OnClick({ R.id.toggle_cash, R.id.toggle_credit, R.id.toggle_debit })
-    public void onToggle(View view) {
-        ((RadioGroup)view.getParent()).check(view.getId());
+    public void onToggle(ToggleButton button) {
+        ((RadioGroup)button.getParent()).check(button.getId());
+
+        if (button.getId() == R.id.toggle_credit && button.isChecked()) {
+            PopupMenu pop = new PopupMenu(getActivity(), button);
+            pop.getMenuInflater()
+                    .inflate(R.menu.credit_type, pop.getMenu());
+            pop.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                @Override
+                public boolean onMenuItemClick(MenuItem item) {
+                    Toast.makeText(getActivity(), item.getTitle() + " was clicked", Toast.LENGTH_SHORT).show();
+                    return true;
+                }
+            });
+            pop.show();
+        }
     }
 
     public static AddAccountFragment newInstance(User user) {
