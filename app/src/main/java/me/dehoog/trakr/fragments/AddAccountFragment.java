@@ -97,7 +97,7 @@ public class AddAccountFragment extends Fragment {
     static final RadioGroup.OnCheckedChangeListener ToggleListener = new RadioGroup.OnCheckedChangeListener() {
         @Override
         public void onCheckedChanged(final RadioGroup radioGroup, final int i) {
-            for (int j = 0; j < radioGroup.getChildCount(); j++) {
+            for (int j = 0; j < radioGroup.getChildCount() - 1; j++) {
                 final ToggleButton view = (ToggleButton) radioGroup.getChildAt(j);
                 view.setChecked(view.getId() == i);
             }

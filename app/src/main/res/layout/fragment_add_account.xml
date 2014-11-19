@@ -62,7 +62,9 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:background="@drawable/nfc_button" />
+                android:background="@drawable/nfc_button"
+                android:layout_marginTop="4dp"
+                android:contentDescription="@string/add_account_nfc_button_description" />
 
         </RadioGroup>
 
@@ -119,7 +121,7 @@
                 android:id="@+id/action_cancel"
                 android:layout_width="wrap_content"
                 android:layout_height="40dp"
-                android:text="Cancel"
+                android:text="@string/add_account_action_cancel"
                 android:textSize="14sp"
                 style="?android:attr/borderlessButtonStyle"
                 android:layout_marginEnd="5dp"/>
@@ -129,7 +131,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="40dp"
                 android:textColor="@color/white"
-                android:text="Add"
+                android:text="@string/add_account_action_confirm"
                 style="?android:textAppearanceSmall"
                 android:background="@drawable/button_confirm"
                 android:layout_marginEnd="5dp"/>
