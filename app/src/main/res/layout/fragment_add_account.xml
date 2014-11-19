@@ -11,7 +11,7 @@
 
     <LinearLayout
         android:layout_width="300dp"
-        android:layout_height="300dp"
+        android:layout_height="340dp"
         android:orientation="vertical"
         android:gravity="center_horizontal"
         android:background="@color/white_background">
@@ -96,7 +96,7 @@
         <View
             android:layout_width="fill_parent"
             android:layout_height="1dip"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="40dp"
             android:alpha="0.7"
             android:background="@color/accent_pressed" />
 
@@ -104,7 +104,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="15dp"
             android:layout_marginEnd="@dimen/activity_horizontal_margin"
             android:layout_gravity="bottom|end">
 
