@@ -79,9 +79,9 @@
                 android:inputType="date"
                 android:ems="5"
                 android:hint="Expires"
+                android:maxLength="5"
                 android:id="@+id/expires"
                 android:layout_below="@+id/account_number"/>
-
 
             <EditText
                 android:layout_width="wrap_content"
