@@ -142,7 +142,9 @@ public class AddAccountFragment extends Fragment {
         if (mAccount != null) {
             mType = mAccount.getType();
             mAccountNumber.setText(mAccount.getNumber());
+            mAccountNumber.setEnabled(true);
             mExpiry.setText(mAccount.getExpires());
+            mExpiry.setEnabled(true);
             mName.setText(mAccount.getDescription());
 
             mCategory = mAccount.getCategory();
@@ -204,6 +206,7 @@ public class AddAccountFragment extends Fragment {
 
         if (mAccount != null) {
             mAccount.setUser(mUser);
+            mAccount.setCategory(mCategory);
         } else {
             mAccount = new Account(mUser);
             mAccount.setCategory(mCategory);
@@ -241,6 +244,12 @@ public class AddAccountFragment extends Fragment {
                 focusView = mAccountNumber;
             } else {
                 mAccount.setNumber(accountNum);
+            }
+
+            if (mCategory.equals("Credit")) {
+                mAccount.setType(mType);
+            } else {
+                mAccount.setType("");
             }
         }
 
