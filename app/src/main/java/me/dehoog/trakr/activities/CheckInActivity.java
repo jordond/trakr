@@ -19,12 +19,15 @@ import com.google.android.gms.maps.model.LatLng;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
 import me.dehoog.trakr.R;
+import me.dehoog.trakr.services.GPSTracker;
 
 public class CheckInActivity extends Activity {
 
     private static final int MAP_ZOOM = 13;
 
     private GoogleMap mMap;
+    private GPSTracker mTracker;
+
     private Location mCurrentLocation;
 
     @Override
@@ -100,5 +103,12 @@ public class CheckInActivity extends Activity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onDestroy() {
+        if (mTracker != null) {
+            mTracker.stopUsingGPS();
+        }
     }
 }
