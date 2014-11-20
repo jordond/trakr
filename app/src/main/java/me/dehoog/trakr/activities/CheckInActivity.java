@@ -37,6 +37,7 @@ public class CheckInActivity extends Activity {
 
         int resultcode = GooglePlayServicesUtil.isGooglePlayServicesAvailable(this);
         if (ConnectionResult.SUCCESS == resultcode) {
+            mTracker = GPSTracker.getInstance();
             setUpMapIfNeeded();
         } else {
             new SweetAlertDialog(this, SweetAlertDialog.ERROR_TYPE)
@@ -66,20 +67,8 @@ public class CheckInActivity extends Activity {
         mMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
         mMap.setMyLocationEnabled(true);
         mMap.getUiSettings().setTiltGesturesEnabled(false);
-        if (getCurrentLocation()) {
-            setLocation(mCurrentLocation);
-        }
-    }
-
-    public boolean getCurrentLocation() {
-        LocationManager manager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        if (manager != null) {
-            mCurrentLocation = manager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-            if (mCurrentLocation != null) {
-                return true;
-            }
-        }
-        return false;
+        mCurrentLocation = mTracker.getLocation(this);
+        setLocation(mCurrentLocation);
     }
 
     private void setLocation(Location location) {
