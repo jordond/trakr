@@ -114,8 +114,8 @@ public class MainActivity extends FragmentActivity implements AccountsInteractio
     }
 
     @Override
-    public void onAccountsInteraction() {
-        mAddAccount = AddAccountFragment.newInstance(mUser);
+    public void onAccountsInteraction(String action) {
+        mAddAccount = AddAccountFragment.newInstance(mUser, action);
         ft = getSupportFragmentManager().beginTransaction();
         ft.setCustomAnimations(R.animator.fade_in, R.animator.fade_out, R.animator.fade_in, R.animator.fade_out);
         ft.replace(R.id.container, mAddAccount,"AddAccountTag");

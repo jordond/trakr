@@ -31,10 +31,13 @@ import me.dehoog.trakr.models.User;
 public class AddAccountFragment extends Fragment {
 
     private static final String ARG_USER = "user";
+    private static final String ARG_ACTION = "action";
 
     private AddAccountInteraction mListener;
 
     private User mUser;
+    private String mAction;
+
     private String mCategory;
     private String mType; //amex, visa, mastercard
 
@@ -97,10 +100,11 @@ public class AddAccountFragment extends Fragment {
         }
     }
 
-    public static AddAccountFragment newInstance(User user) {
+    public static AddAccountFragment newInstance(User user, String action) {
         AddAccountFragment fragment = new AddAccountFragment();
         Bundle args = new Bundle();
         args.putSerializable(ARG_USER, user);
+        args.putString(ARG_ACTION, action);
         fragment.setArguments(args);
         return fragment;
     }
@@ -112,6 +116,7 @@ public class AddAccountFragment extends Fragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             mUser = (User) getArguments().getSerializable(ARG_USER);
+            mAction = getArguments().getString(ARG_ACTION);
         }
     }
 
@@ -121,6 +126,8 @@ public class AddAccountFragment extends Fragment {
         ButterKnife.inject(this, view);
 
         mToggleGroup.setOnCheckedChangeListener(ToggleListener);
+
+        mConfirm.setText(mAction);
 
         return view;
     }

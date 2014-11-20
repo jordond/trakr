@@ -6,5 +6,5 @@ package me.dehoog.trakr.interfaces;
  * 1:55 PM
  */
 public interface AccountsInteraction {
-    public void onAccountsInteraction();
+    public void onAccountsInteraction(String action);
 }

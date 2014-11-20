@@ -81,7 +81,7 @@ public class AccountsFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if (mListener != null) {
-                    mListener.onAccountsInteraction();
+                    mListener.onAccountsInteraction("Add");
                 }
             }
         });
@@ -113,7 +113,7 @@ public class AccountsFragment extends Fragment {
             mListener = (AccountsInteraction) activity;
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString()
-                    + " must implement OnFragmentInteractionListener");
+                    + " must implement AccountsInteraction");
         }
     }
 
