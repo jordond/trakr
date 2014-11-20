@@ -98,6 +98,7 @@ public class CheckInActivity extends Activity {
 
     @Override
     protected void onDestroy() {
+        super.onDestroy();
         if (mTracker != null) {
             mTracker.stopUsingGPS();
         }
