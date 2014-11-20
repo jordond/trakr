@@ -19,6 +19,7 @@ import it.gmariotti.cardslib.library.internal.Card;
 import it.gmariotti.cardslib.library.internal.CardArrayAdapter;
 import it.gmariotti.cardslib.library.view.CardListView;
 import me.dehoog.trakr.R;
+import me.dehoog.trakr.adapters.AccountCardArrayAdapter;
 import me.dehoog.trakr.cards.AccountCard;
 import me.dehoog.trakr.helpers.SeedDatabase;
 import me.dehoog.trakr.interfaces.AccountsInteraction;
@@ -91,10 +92,15 @@ public class AccountsFragment extends Fragment {
         for (Account a : mUser.getAccounts()) {
             AccountCard card = new AccountCard(getActivity())
                     .createExpandCard(a);
+
+            if (a.getCategory().equals("Cash")) {
+                card.setType(2);
+            }
+
             cards.add(card);
         }
 
-        CardArrayAdapter cardArrayAdapter = new CardArrayAdapter(getActivity(), cards);
+        AccountCardArrayAdapter cardArrayAdapter = new AccountCardArrayAdapter(getActivity(), cards);
         if (mCardList != null) {
             mCardList.setAdapter(cardArrayAdapter);
         }
