@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.PopupMenu;
 import android.widget.RadioGroup;
 import android.widget.Toast;
@@ -22,6 +23,7 @@ import com.daimajia.androidanimations.library.YoYo;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
+import cn.pedant.SweetAlert.SweetAlertDialog;
 import me.dehoog.trakr.R;
 import me.dehoog.trakr.interfaces.AccountsInteraction;
 import me.dehoog.trakr.interfaces.AddAccountInteraction;
@@ -53,6 +55,25 @@ public class AddAccountFragment extends Fragment {
     @OnClick(R.id.action_confirm)
     public void onConfirm() {
         attemptAdd();
+    }
+
+    @InjectView(R.id.action_delete) ImageButton mDelete;
+    @OnClick(R.id.action_delete)
+    public void showDelete() {
+        new SweetAlertDialog(getActivity(), SweetAlertDialog.WARNING_TYPE)
+                .setTitleText("Are you sure?")
+                .setContentText("All transactions for this account will also be deleted.")
+                .setConfirmText("Yes, permanently delete!")
+                .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                    @Override
+                    public void onClick(SweetAlertDialog dialog) {
+                        dialog.setTitleText("Deleted!")
+                                .setContentText("Account '" + mAccount.getDescription() + "' was deleted!")
+                                .setConfirmText("OK")
+                                .setConfirmClickListener(null)
+                                .changeAlertType(SweetAlertDialog.SUCCESS_TYPE);
+                    }
+                }).show();
     }
 
     @OnClick(R.id.action_nfc)
@@ -140,6 +161,7 @@ public class AddAccountFragment extends Fragment {
             mConfirm.setText("Add");
         } else {
             mConfirm.setText("Save");
+            mDelete.setVisibility(View.VISIBLE);
         }
 
         if (mAccount != null) {
