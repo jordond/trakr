@@ -63,15 +63,44 @@ public class AddAccountFragment extends Fragment {
         new SweetAlertDialog(getActivity(), SweetAlertDialog.WARNING_TYPE)
                 .setTitleText("Are you sure?")
                 .setContentText("All transactions for this account will also be deleted.")
-                .setConfirmText("Yes, permanently delete!")
+                .setConfirmText("Yes!")
+                .setCancelText("I changed my mind")
+                .showCancelButton(true)
+                .setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                    @Override
+                    public void onClick(SweetAlertDialog dialog) {
+                        dialog.setTitleText("Cancelled!")
+                                .setContentText("Phew that was close, your account is safe")
+                                .setConfirmText("OK")
+                                .showCancelButton(false)
+                                .setCancelClickListener(null)
+                                .setConfirmClickListener(null)
+                                .changeAlertType(SweetAlertDialog.ERROR_TYPE);
+                    }
+                })
                 .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
                     @Override
                     public void onClick(SweetAlertDialog dialog) {
+                        String message;
+                        int count = mAccount.deleteAllTransactions();
+                        if (count == 0) {
+                            message = "Account '" + mAccount.getDescription() + "' was deleted!";
+                        } else {
+                            message = "Account '" + mAccount.getDescription() + "' was deleted along with " + count + " transactions!";
+                        }
+                        mAccount.delete();
+                        mAccount = null;
                         dialog.setTitleText("Deleted!")
-                                .setContentText("Account '" + mAccount.getDescription() + "' was deleted!")
+                                .setContentText(message)
                                 .setConfirmText("OK")
+                                .showCancelButton(false)
+                                .setCancelClickListener(null)
                                 .setConfirmClickListener(null)
                                 .changeAlertType(SweetAlertDialog.SUCCESS_TYPE);
+                        if (mListener != null) {
+                            mListener.onAddInteraction();
+                        }
+                        close();
                     }
                 }).show();
     }

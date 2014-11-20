@@ -88,6 +88,16 @@ public class Account extends SugarRecord<Account> implements Serializable {
         this.total += amount;
     }
 
+    public int deleteAllTransactions() { // Allow for safe deletion of account, leave no orphans
+        int count = 0;
+        List<Purchase> transactions = this.getAllPurchases();
+        for (Purchase t : transactions) {
+            t.delete();
+            count++;
+        }
+        return count;
+    }
+
     // Accessor
     public String getNumber() {
         return number;
