@@ -19,10 +19,11 @@ import me.dehoog.trakr.adapters.MainPagerAdapter;
 import me.dehoog.trakr.fragments.AddAccountFragment;
 import me.dehoog.trakr.fragments.MainTabsFragment;
 import me.dehoog.trakr.interfaces.AccountsInteraction;
+import me.dehoog.trakr.interfaces.AddAccountInteraction;
 import me.dehoog.trakr.models.User;
 
 
-public class MainActivity extends FragmentActivity implements AccountsInteraction {
+public class MainActivity extends FragmentActivity implements AccountsInteraction, AddAccountInteraction{
 
     public static final String PREFS_NAME = "TrakrPrefs";
     public SharedPreferences mSettings;
@@ -120,5 +121,10 @@ public class MainActivity extends FragmentActivity implements AccountsInteractio
         ft.replace(R.id.container, mAddAccount,"AddAccountTag");
         ft.addToBackStack(null);
         ft.commit();
+    }
+
+    @Override
+    public void onAddInteraction() {
+        mPager.getAdapter().notifyDataSetChanged();
     }
 }

@@ -45,7 +45,10 @@ public class AccountCard extends Card {
         header.setButtonExpandVisible(true);
 
         CardThumbnail icon = new CardThumbnail(getContext());
-        icon.setDrawableResource(getIcon(mAccount.getCategory()));
+        int iconId = getIcon(mAccount.getCategory());
+        if (iconId != -1) {
+            icon.setDrawableResource(getIcon(mAccount.getCategory()));
+        }
 
         addCardHeader(header);
         addCardThumbnail(icon);
@@ -65,23 +68,28 @@ public class AccountCard extends Card {
     public void setupInnerViewElements(ViewGroup parent, View view) {
 
         // Card content
-        TextView main = (TextView) view.findViewById(R.id.card_inner_title);
         TextView sub = (TextView) view.findViewById(R.id.card_inner_subtitle);
-        ImageView extraIcon = (ImageView) view.findViewById(R.id.card_inner_extra_icon);
-        TextView expires = (TextView) view.findViewById(R.id.card_inner_expires);
 
-        main.setText(mAccount.getNumber());
-        sub.setText(mAccount.getCategory());
+        if (mAccount.getCategory().toLowerCase().equals("cash")) {
+            sub.setText(mAccount.getCategory());
+        } else {
+            TextView main = (TextView) view.findViewById(R.id.card_inner_title);
+            ImageView extraIcon = (ImageView) view.findViewById(R.id.card_inner_extra_icon);
+            TextView expires = (TextView) view.findViewById(R.id.card_inner_expires);
 
-        if (mAccount.getCategory().toLowerCase().equals("credit")) {
-            int iconId = getExtraIcon(mAccount.getType().toLowerCase());
-            if (iconId != -1) {
-                extraIcon.setImageResource(iconId);
+            main.setText(mAccount.getNumber());
+            sub.setText(mAccount.getCategory());
+
+            if (mAccount.getCategory().toLowerCase().equals("credit")) {
+                int iconId = getExtraIcon(mAccount.getType().toLowerCase());
+                if (iconId != -1) {
+                    extraIcon.setImageResource(iconId);
+                }
             }
-        }
 
-        if (!mAccount.getCategory().toLowerCase().equals("cash")) {
-            expires.setText("exp. " + mAccount.getExpires());
+            if (!mAccount.getExpires().isEmpty()) {
+                expires.setText("exp. " + mAccount.getExpires());
+            }
         }
 
         CardViewWrapper cardView = getCardView();
@@ -93,6 +101,15 @@ public class AccountCard extends Card {
             }
         }
 
+    }
+
+    @Override
+    public int getType() {
+        if (mAccount.getCategory().equals("Cash")) {
+            return 1;
+        } else {
+            return 0;
+        }
     }
 
     // Helper method for creating expanding card
@@ -127,14 +144,17 @@ public class AccountCard extends Card {
     } // createAccountCard
 
     private int getIcon(String category) {
-        category = category.toLowerCase();
-        if (category.equals("cash")) {
-            return R.drawable.ic_card_cash;
-        } else if (category.equals("debit")) {
-            return R.drawable.ic_card_debit;
-        } else {
-            return R.drawable.ic_card_credit;
+        if (category != null) {
+            category = category.toLowerCase();
+            if (category.equals("cash")) {
+                return R.drawable.ic_card_cash;
+            } else if (category.equals("debit")) {
+                return R.drawable.ic_card_debit;
+            } else {
+                return R.drawable.ic_card_credit;
+            }
         }
+        return -1;
     }
 
     private int getExtraIcon(String type) {

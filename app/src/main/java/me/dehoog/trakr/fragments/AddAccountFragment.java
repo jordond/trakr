@@ -1,6 +1,7 @@
 package me.dehoog.trakr.fragments;
 
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -15,17 +16,27 @@ import android.widget.RadioGroup;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
+import com.daimajia.androidanimations.library.Techniques;
+import com.daimajia.androidanimations.library.YoYo;
+
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
 import me.dehoog.trakr.R;
+import me.dehoog.trakr.interfaces.AccountsInteraction;
+import me.dehoog.trakr.interfaces.AddAccountInteraction;
+import me.dehoog.trakr.models.Account;
 import me.dehoog.trakr.models.User;
 
 public class AddAccountFragment extends Fragment {
 
     private static final String ARG_USER = "user";
 
+    private AddAccountInteraction mListener;
+
     private User mUser;
+    private String mCategory;
+    private String mType; //amex, visa, mastercard
 
     // UI - Text fields
     @InjectView(R.id.account_number) EditText mAccountNumber;
@@ -36,7 +47,7 @@ public class AddAccountFragment extends Fragment {
     @InjectView(R.id.action_confirm) Button mConfirm;
     @OnClick(R.id.action_confirm)
     public void onConfirm() {
-
+        attemptAdd();
     }
 
     @OnClick(R.id.action_nfc)
@@ -44,7 +55,7 @@ public class AddAccountFragment extends Fragment {
     }
 
     @OnClick(R.id.action_cancel)
-    public void onCancel() { getFragmentManager().popBackStackImmediate(); }
+    public void onCancel() { close(); }
 
     // UI - Account type toggles
     @InjectView(R.id.toggle_group) RadioGroup mToggleGroup;
@@ -52,18 +63,37 @@ public class AddAccountFragment extends Fragment {
     public void onToggle(ToggleButton button) {
         ((RadioGroup)button.getParent()).check(button.getId());
 
+        switch (button.getId()) {
+            case R.id.toggle_cash:
+                mCategory = "Cash";
+                mAccountNumber.setEnabled(false);
+                mExpiry.setEnabled(false);
+                break;
+            case R.id.toggle_debit:
+                mCategory = "Debit";
+                mAccountNumber.setEnabled(true);
+                mExpiry.setEnabled(true);
+                break;
+            case R.id.toggle_credit:
+                mCategory = "Credit";
+                mAccountNumber.setEnabled(true);
+                mExpiry.setEnabled(true);
+        }
+
         if (button.getId() == R.id.toggle_credit && button.isChecked()) {
+            mType = "";
             PopupMenu pop = new PopupMenu(getActivity(), button);
             pop.getMenuInflater()
                     .inflate(R.menu.credit_type, pop.getMenu());
             pop.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                 @Override
                 public boolean onMenuItemClick(MenuItem item) {
-                    Toast.makeText(getActivity(), item.getTitle() + " was clicked", Toast.LENGTH_SHORT).show();
+                    mType = String.valueOf(item.getTitle());
                     return true;
                 }
             });
             pop.show();
+            mType = mType.isEmpty() ? "Other" : mType;
         }
     }
 
@@ -96,6 +126,17 @@ public class AddAccountFragment extends Fragment {
     }
 
     @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        try {
+            mListener = (AddAccountInteraction) activity;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(activity.toString()
+                    + " must implement AddActionInteraction");
+        }
+    }
+
+    @Override
     public void onResume() {
         super.onResume();
         if (getActivity().getActionBar() != null) {
@@ -111,6 +152,10 @@ public class AddAccountFragment extends Fragment {
         }
     }
 
+    public void close() {
+        getFragmentManager().popBackStackImmediate();
+    }
+
     static final RadioGroup.OnCheckedChangeListener ToggleListener = new RadioGroup.OnCheckedChangeListener() {
         @Override
         public void onCheckedChanged(final RadioGroup radioGroup, final int i) {
@@ -120,4 +165,39 @@ public class AddAccountFragment extends Fragment {
             }
         }
     };
+
+    private void attemptAdd() {
+        boolean isError = false;
+        View focusView = null;
+
+        Account newAccount = new Account();
+        newAccount.setUser(mUser);
+
+        if (mCategory == null) {
+            focusView = mToggleGroup;
+            isError = true;
+        } else if (mCategory.equals("Cash")) {
+            String name = String.valueOf(mName.getText());
+            if (name.isEmpty()) {
+                isError = true;
+                focusView = mName;
+            } else {
+                newAccount.setDescription(name);
+            }
+        }
+
+        if (!isError) {
+            newAccount.setCategory(mCategory);
+            newAccount.save();
+            if (mListener != null) {
+                mListener.onAddInteraction();
+            }
+            close();
+        } else {
+            focusView.requestFocus();
+            YoYo.with(Techniques.Shake)
+                    .duration(500)
+                    .playOn(focusView);
+        }
+    }
 }

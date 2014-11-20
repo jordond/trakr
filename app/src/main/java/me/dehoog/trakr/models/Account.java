@@ -41,10 +41,8 @@ public class Account extends SugarRecord<Account> implements Serializable {
         this.category = category;
     }
 
-    public Account(String number, String name, int branch) {
-        this.number = number;
-        this.type = name;
-        this.branch = branch;
+    public Account(User user) {
+        this.user = user;
     }
 
     // Helper methods

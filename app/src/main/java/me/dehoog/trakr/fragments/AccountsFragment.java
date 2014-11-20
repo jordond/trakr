@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import com.melnykov.fab.FloatingActionButton;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -19,6 +20,7 @@ import it.gmariotti.cardslib.library.internal.CardArrayAdapter;
 import it.gmariotti.cardslib.library.view.CardListView;
 import me.dehoog.trakr.R;
 import me.dehoog.trakr.cards.AccountCard;
+import me.dehoog.trakr.helpers.SeedDatabase;
 import me.dehoog.trakr.interfaces.AccountsInteraction;
 import me.dehoog.trakr.models.Account;
 import me.dehoog.trakr.models.User;
@@ -55,6 +57,11 @@ public class AccountsFragment extends Fragment {
         if (getArguments() != null) {
             mUser = (User) getArguments().getSerializable(ARG_USER);
         }
+
+        //TODO REMOVE DEBUG CODE
+//        Account.deleteAll(Account.class);
+//        SeedDatabase seed = new SeedDatabase();
+//        seed.accounts();
 
         ButterKnife.inject(this, view);
         return view;
