@@ -201,6 +201,10 @@ public class AccountManagerFragment extends Fragment {
             mCategory = mAccount.getCategory();
             if (mCategory.equals("Cash")) {
                 mCash.toggle();
+                mAccountNumber.setText("");
+                mAccountNumber.setEnabled(false);
+                mExpiry.setText("");
+                mExpiry.setEnabled(false);
             } else if (mCategory.equals("Debit")) {
                 mDebit.toggle();
             } else if (mCategory.equals("Credit")) {

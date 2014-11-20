@@ -8,6 +8,8 @@
     <color name="accent">#DE6461</color>
     <color name="accent_pressed">#FF9895</color>
 
+    <color name="background_white">#ececec</color>
+
     <color name="login_button_confirm">#66BB6A</color>
     <color name="login_button_confirm_pressed">#43A047</color>
     <color name="login_button_neutral">#DE6461</color>

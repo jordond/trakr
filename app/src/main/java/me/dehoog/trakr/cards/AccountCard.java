@@ -136,7 +136,6 @@ public class AccountCard extends Card {
         ExpandAccountCard expand = new ExpandAccountCard(getContext(), account);
 
         card.addCardExpand(expand);
-
         // Create and attach click to expand
         ViewToClickToExpand viewToClickToExpand = ViewToClickToExpand
                 .builder().enableForExpandAction();

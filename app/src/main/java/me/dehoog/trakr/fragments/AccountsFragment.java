@@ -93,7 +93,8 @@ public class AccountsFragment extends Fragment {
                     .createExpandCard(a);
 
             card.setmListener((EditAccountCallback) mParentActivity);
-
+            card.setCardElevation(getResources().getDimension(R.dimen.cardview_default_elevation));
+            card.setShadow(true);
             if (a.getCategory().equals("Cash")) {
                 card.setType(2);
             }

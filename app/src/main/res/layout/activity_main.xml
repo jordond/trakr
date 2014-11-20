@@ -19,7 +19,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/tabs"
         tools:context=".MainActivity"
-        android:background="@color/white_background"/>
+        android:background="@color/background_white"/>
 
         <FrameLayout
             android:layout_width="match_parent"
