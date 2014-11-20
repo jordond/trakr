@@ -81,7 +81,7 @@ public class AccountsFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if (mListener != null) {
-                    mListener.onAccountsInteraction("Add");
+                    mListener.onAccountsInteraction("add");
                 }
             }
         });

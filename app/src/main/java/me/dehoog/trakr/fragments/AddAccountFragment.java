@@ -126,8 +126,11 @@ public class AddAccountFragment extends Fragment {
         ButterKnife.inject(this, view);
 
         mToggleGroup.setOnCheckedChangeListener(ToggleListener);
-
-        mConfirm.setText(mAction);
+        if (mAction.equals("add")) {
+            mConfirm.setText("Add");
+        } else {
+            mConfirm.setText("Save");
+        }
 
         return view;
     }
