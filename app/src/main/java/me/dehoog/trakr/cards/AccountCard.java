@@ -67,7 +67,10 @@ public class AccountCard extends Card {
     @Override
     public void setupInnerViewElements(ViewGroup parent, View view) {
 
-        // Card content
+        if (!mAccount.isValid()) {  // fix crashing check if account is valid
+            return;
+        }
+
         TextView sub = (TextView) view.findViewById(R.id.card_inner_subtitle);
 
         if (mAccount.getCategory().toLowerCase().equals("cash")) {
