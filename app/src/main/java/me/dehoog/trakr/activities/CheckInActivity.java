@@ -1,5 +1,6 @@
 package me.dehoog.trakr.activities;
 
+import android.app.Activity;
 import android.content.Context;
 import android.location.Location;
 import android.location.LocationManager;
@@ -10,14 +11,16 @@ import android.view.MenuItem;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMapOptions;
 import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.model.LatLng;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
 import me.dehoog.trakr.R;
 
-public class CheckInActivity extends ActionBarActivity {
+public class CheckInActivity extends Activity {
 
     private GoogleMap mMap;
     private Location mCurrentLocation;
@@ -58,14 +61,25 @@ public class CheckInActivity extends ActionBarActivity {
         mMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
         mMap.setMyLocationEnabled(true);
         mMap.getUiSettings().setTiltGesturesEnabled(false);
-        getCurrentLocation();
+        if (getCurrentLocation()) {
+            setLocation(mCurrentLocation);
+        }
     }
 
-    private void getCurrentLocation() {
+    public boolean getCurrentLocation() {
         LocationManager manager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         if (manager != null) {
-            mCurrentLocation = manager.getLastKnownLocation(LocationManager.)
+            mCurrentLocation = manager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+            if (mCurrentLocation != null) {
+                return true;
+            }
         }
+        return false;
+    }
+
+    private void setLocation(Location location) {
+        LatLng latlng = new LatLng(location.getLatitude(), location.getLongitude());
+        mMap.animateCamera(CameraUpdateFactory.newLatLng(latlng), 3000, null);
     }
 
     @Override

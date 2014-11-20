@@ -3,15 +3,21 @@ package me.dehoog.trakr.fragments;
 import android.app.Activity;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
+import com.melnykov.fab.FloatingActionButton;
+
+import butterknife.InjectView;
 import me.dehoog.trakr.R;
 import me.dehoog.trakr.interfaces.RecentTransactionsInteraction;
 
 public class RecentTransactionsFragment extends Fragment {
+
     // TODO: Rename parameter arguments, choose names that match
     private static final String ARG_PARAM1 = "param1";
 
@@ -48,22 +54,31 @@ public class RecentTransactionsFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_recent_transactions, container, false);
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onAccountsInteraction();
-        }
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        FloatingActionButton fab = (FloatingActionButton) getActivity().findViewById(R.id.button_new_checkin);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mListener != null) {
+                    mListener.onRecentTransactionInteraction();
+                }
+            }
+        });
+
     }
 
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-//        try {
-//            mListener = (RecentTransactionsInteraction) activity;
-//        } catch (ClassCastException e) {
-//            throw new ClassCastException(activity.toString()
-//                    + " must implement OnFragmentInteractionListener");
-//        }
+        try {
+            mListener = (RecentTransactionsInteraction) activity;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(activity.toString()
+                    + " must implement RecentTransactionListener");
+        }
     }
 
     @Override

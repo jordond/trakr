@@ -56,7 +56,8 @@
         </activity>
         <activity
             android:name="me.dehoog.trakr.activities.CheckInActivity"
-            android:label="@string/title_activity_check_in" >
+            android:label="@string/title_activity_check_in"
+            android:theme="@style/AppTheme">
         </activity>
     </application>
 
