@@ -64,13 +64,21 @@ public class Account extends SugarRecord<Account> implements Serializable {
     }
 
     public boolean isValid() {
+        if (this.category == null) {
+            return false;
+        }
+
         if (this.category.equals("Cash")) {
-            if (!this.description.isEmpty()) {
-                return true;
+            if (this.description != null) {
+                if (!this.description.isEmpty()) {
+                    return true;
+                }
             }
         } else if (this.category.equals("Debit") || this.category.equals("Credit")) {
-            if (!this.description.isEmpty() && !this.expires.isEmpty() && !this.number.isEmpty()) {
-                return true;
+            if (this.description != null && this.expires != null && this.number != null) {
+                if (!this.description.isEmpty() && !this.expires.isEmpty() && !this.number.isEmpty()) {
+                    return true;
+                }
             }
         }
         return false;
