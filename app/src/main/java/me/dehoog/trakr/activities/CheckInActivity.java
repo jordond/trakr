@@ -22,6 +22,8 @@ import me.dehoog.trakr.R;
 
 public class CheckInActivity extends Activity {
 
+    private static final int MAP_ZOOM = 13;
+
     private GoogleMap mMap;
     private Location mCurrentLocation;
 
@@ -79,6 +81,7 @@ public class CheckInActivity extends Activity {
 
     private void setLocation(Location location) {
         LatLng latlng = new LatLng(location.getLatitude(), location.getLongitude());
+        mMap.moveCamera(CameraUpdateFactory.zoomTo(MAP_ZOOM));
         mMap.animateCamera(CameraUpdateFactory.newLatLng(latlng), 3000, null);
     }
 
