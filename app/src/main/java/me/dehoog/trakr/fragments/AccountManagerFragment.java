@@ -2,7 +2,6 @@ package me.dehoog.trakr.fragments;
 
 
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -14,7 +13,6 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.PopupMenu;
 import android.widget.RadioGroup;
-import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import com.daimajia.androidanimations.library.Techniques;
@@ -25,12 +23,11 @@ import butterknife.InjectView;
 import butterknife.OnClick;
 import cn.pedant.SweetAlert.SweetAlertDialog;
 import me.dehoog.trakr.R;
-import me.dehoog.trakr.interfaces.AccountsInteraction;
 import me.dehoog.trakr.interfaces.AddAccountInteraction;
 import me.dehoog.trakr.models.Account;
 import me.dehoog.trakr.models.User;
 
-public class AddAccountFragment extends Fragment {
+public class AccountManagerFragment extends Fragment {
 
     private static final String ARG_USER = "user";
     private static final String ARG_ACTION = "action";
@@ -158,8 +155,8 @@ public class AddAccountFragment extends Fragment {
         }
     }
 
-    public static AddAccountFragment newInstance(User user, String action, Account account) {
-        AddAccountFragment fragment = new AddAccountFragment();
+    public static AccountManagerFragment newInstance(User user, String action, Account account) {
+        AccountManagerFragment fragment = new AccountManagerFragment();
         Bundle args = new Bundle();
         args.putSerializable(ARG_USER, user);
         args.putString(ARG_ACTION, action);
@@ -168,7 +165,7 @@ public class AddAccountFragment extends Fragment {
         return fragment;
     }
 
-    public AddAccountFragment() {}
+    public AccountManagerFragment() {}
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -182,7 +179,7 @@ public class AddAccountFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_add_account, container, false);
+        View view = inflater.inflate(R.layout.fragment_account_manager, container, false);
         ButterKnife.inject(this, view);
 
         mToggleGroup.setOnCheckedChangeListener(ToggleListener);

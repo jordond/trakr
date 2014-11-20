@@ -16,7 +16,7 @@ import butterknife.InjectView;
 import de.keyboardsurfer.android.widget.crouton.Crouton;
 import me.dehoog.trakr.R;
 import me.dehoog.trakr.adapters.MainPagerAdapter;
-import me.dehoog.trakr.fragments.AddAccountFragment;
+import me.dehoog.trakr.fragments.AccountManagerFragment;
 import me.dehoog.trakr.interfaces.AccountsInteraction;
 import me.dehoog.trakr.interfaces.AddAccountInteraction;
 import me.dehoog.trakr.interfaces.EditAccountCallback;
@@ -34,7 +34,7 @@ public class MainActivity extends FragmentActivity implements AccountsInteractio
     public User mUser;
 
     private FragmentTransaction ft;
-    private AddAccountFragment mAddAccount;
+    private AccountManagerFragment mAccountManager;
 
     // Tab pager components
     @InjectView(R.id.tabs) public PagerSlidingTabStrip mTabs;
@@ -118,10 +118,10 @@ public class MainActivity extends FragmentActivity implements AccountsInteractio
 
     @Override
     public void onAccountsInteraction(String action, Account account) {
-        mAddAccount = AddAccountFragment.newInstance(mUser, action, account);
+        mAccountManager = AccountManagerFragment.newInstance(mUser, action, account);
         ft = getSupportFragmentManager().beginTransaction();
         ft.setCustomAnimations(R.animator.fade_in, R.animator.fade_out, R.animator.fade_in, R.animator.fade_out);
-        ft.replace(R.id.container, mAddAccount,"AddAccountTag");
+        ft.replace(R.id.container, mAccountManager,"AddAccountTag");
         ft.addToBackStack(null);
         ft.commit();
     }
