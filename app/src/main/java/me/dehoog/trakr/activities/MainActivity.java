@@ -20,10 +20,12 @@ import me.dehoog.trakr.fragments.AddAccountFragment;
 import me.dehoog.trakr.fragments.MainTabsFragment;
 import me.dehoog.trakr.interfaces.AccountsInteraction;
 import me.dehoog.trakr.interfaces.AddAccountInteraction;
+import me.dehoog.trakr.interfaces.RegisterEditButton;
+import me.dehoog.trakr.models.Account;
 import me.dehoog.trakr.models.User;
 
 
-public class MainActivity extends FragmentActivity implements AccountsInteraction, AddAccountInteraction{
+public class MainActivity extends FragmentActivity implements AccountsInteraction, AddAccountInteraction, RegisterEditButton {
 
     public static final String PREFS_NAME = "TrakrPrefs";
     public SharedPreferences mSettings;
@@ -114,8 +116,8 @@ public class MainActivity extends FragmentActivity implements AccountsInteractio
     }
 
     @Override
-    public void onAccountsInteraction(String action) {
-        mAddAccount = AddAccountFragment.newInstance(mUser, action);
+    public void onAccountsInteraction(String action, Account account) {
+        mAddAccount = AddAccountFragment.newInstance(mUser, action, account);
         ft = getSupportFragmentManager().beginTransaction();
         ft.setCustomAnimations(R.animator.fade_in, R.animator.fade_out, R.animator.fade_in, R.animator.fade_out);
         ft.replace(R.id.container, mAddAccount,"AddAccountTag");
@@ -126,5 +128,10 @@ public class MainActivity extends FragmentActivity implements AccountsInteractio
     @Override
     public void onAddInteraction() {
         mPager.getAdapter().notifyDataSetChanged();
+    }
+
+    @Override
+    public void editButton(Account account) {
+        onAccountsInteraction("edit", account);
     }
 }

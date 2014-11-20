@@ -23,6 +23,7 @@ import me.dehoog.trakr.adapters.AccountCardArrayAdapter;
 import me.dehoog.trakr.cards.AccountCard;
 import me.dehoog.trakr.helpers.SeedDatabase;
 import me.dehoog.trakr.interfaces.AccountsInteraction;
+import me.dehoog.trakr.interfaces.RegisterEditButton;
 import me.dehoog.trakr.models.Account;
 import me.dehoog.trakr.models.User;
 
@@ -35,6 +36,7 @@ public class AccountsFragment extends Fragment {
 
     private User mUser;
     private AccountsInteraction mListener;
+    private Activity mParentActivity;
 
     public static AccountsFragment newInstance(User user) {
         AccountsFragment fragment = new AccountsFragment();
@@ -81,7 +83,7 @@ public class AccountsFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if (mListener != null) {
-                    mListener.onAccountsInteraction("add");
+                    mListener.onAccountsInteraction("add", null);
                 }
             }
         });
@@ -93,9 +95,13 @@ public class AccountsFragment extends Fragment {
             AccountCard card = new AccountCard(getActivity())
                     .createExpandCard(a);
 
+            card.setmListener((RegisterEditButton) mParentActivity);
+
             if (a.getCategory().equals("Cash")) {
                 card.setType(2);
             }
+
+            card.setCardElevation(1);
 
             cards.add(card);
         }
@@ -111,6 +117,7 @@ public class AccountsFragment extends Fragment {
         super.onAttach(activity);
         try {
             mListener = (AccountsInteraction) activity;
+            mParentActivity = activity;
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString()
                     + " must implement AccountsInteraction");
@@ -122,5 +129,4 @@ public class AccountsFragment extends Fragment {
         super.onDetach();
         mListener = null;
     }
-
 }

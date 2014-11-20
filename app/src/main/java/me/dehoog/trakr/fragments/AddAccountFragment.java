@@ -32,11 +32,13 @@ public class AddAccountFragment extends Fragment {
 
     private static final String ARG_USER = "user";
     private static final String ARG_ACTION = "action";
+    private static final String ARG_ACCOUNT = "account";
 
     private AddAccountInteraction mListener;
 
     private User mUser;
     private String mAction;
+    private Account mAccount;
 
     private String mCategory;
     private String mType; //amex, visa, mastercard
@@ -62,6 +64,9 @@ public class AddAccountFragment extends Fragment {
 
     // UI - Account type toggles
     @InjectView(R.id.toggle_group) RadioGroup mToggleGroup;
+    @InjectView(R.id.toggle_cash) ToggleButton mCash;
+    @InjectView(R.id.toggle_debit) ToggleButton mDebit;
+    @InjectView(R.id.toggle_credit) ToggleButton mCredit;
     @OnClick({ R.id.toggle_cash, R.id.toggle_credit, R.id.toggle_debit })
     public void onToggle(ToggleButton button) {
         ((RadioGroup)button.getParent()).check(button.getId());
@@ -100,11 +105,12 @@ public class AddAccountFragment extends Fragment {
         }
     }
 
-    public static AddAccountFragment newInstance(User user, String action) {
+    public static AddAccountFragment newInstance(User user, String action, Account account) {
         AddAccountFragment fragment = new AddAccountFragment();
         Bundle args = new Bundle();
         args.putSerializable(ARG_USER, user);
         args.putString(ARG_ACTION, action);
+        args.putSerializable(ARG_ACCOUNT, account);
         fragment.setArguments(args);
         return fragment;
     }
@@ -117,6 +123,7 @@ public class AddAccountFragment extends Fragment {
         if (getArguments() != null) {
             mUser = (User) getArguments().getSerializable(ARG_USER);
             mAction = getArguments().getString(ARG_ACTION);
+            mAccount = (Account) getArguments().getSerializable(ARG_ACCOUNT);
         }
     }
 
@@ -132,6 +139,21 @@ public class AddAccountFragment extends Fragment {
             mConfirm.setText("Save");
         }
 
+        if (mAccount != null) {
+            mType = mAccount.getType();
+            mAccountNumber.setText(mAccount.getNumber());
+            mExpiry.setText(mAccount.getExpires());
+            mName.setText(mAccount.getDescription());
+
+            mCategory = mAccount.getCategory();
+            if (mCategory.equals("Cash")) {
+                mCash.toggle();
+            } else if (mCategory.equals("Debit")) {
+                mDebit.toggle();
+            } else if (mCategory.equals("Credit")) {
+                mCredit.toggle();
+            }
+        }
         return view;
     }
 
@@ -180,8 +202,12 @@ public class AddAccountFragment extends Fragment {
         boolean cancel = false;
         View focusView = null;
 
-        Account newAccount = new Account(mUser);
-        newAccount.setCategory(mCategory);
+        if (mAccount != null) {
+            mAccount.setUser(mUser);
+        } else {
+            mAccount = new Account(mUser);
+            mAccount.setCategory(mCategory);
+        }
 
         if (mCategory == null) {
             focusView = mToggleGroup;
@@ -192,7 +218,7 @@ public class AddAccountFragment extends Fragment {
                 cancel = true;
                 focusView = mName;
             } else {
-                newAccount.setDescription(name);
+                mAccount.setDescription(name);
             }
         } else if (mCategory.equals("Debit") || mCategory.equals("Credit")) {
             String name = String.valueOf(mName.getText());
@@ -202,19 +228,19 @@ public class AddAccountFragment extends Fragment {
                 cancel = true;
                 focusView = mName;
             } else {
-                newAccount.setDescription(name);
+                mAccount.setDescription(name);
             }
             if (expiry.isEmpty()) {
                 cancel = true;
                 focusView = mExpiry;
             } else {
-                newAccount.setExpires(expiry);
+                mAccount.setExpires(expiry);
             }
             if (accountNum.isEmpty()) {
                 cancel = true;
                 focusView = mAccountNumber;
             } else {
-                newAccount.setNumber(accountNum);
+                mAccount.setNumber(accountNum);
             }
         }
 
@@ -223,8 +249,8 @@ public class AddAccountFragment extends Fragment {
             YoYo.with(Techniques.Shake)
                     .duration(500)
                     .playOn(focusView);
-        } else if (newAccount.isValid()) {
-            newAccount.save();
+        } else if (mAccount.isValid()) {
+            mAccount.save();
             if (mListener != null) {
                 mListener.onAddInteraction();
             }
