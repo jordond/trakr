@@ -114,13 +114,12 @@
             android:alpha="0.7"
             android:background="@color/accent_pressed" />
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
             android:layout_marginTop="15dp"
-            android:layout_marginEnd="@dimen/activity_horizontal_margin"
-            android:layout_gravity="bottom|end">
+            android:layout_marginEnd="@dimen/activity_vertical_margin"
+            android:layout_marginStart="@dimen/activity_vertical_margin">
 
             <Button
                 android:id="@+id/action_cancel"
@@ -129,19 +128,28 @@
                 android:text="@string/add_account_action_cancel"
                 android:textSize="14sp"
                 style="?android:attr/borderlessButtonStyle"
-                android:layout_marginEnd="5dp"/>
+                android:layout_marginEnd="5dp"
+                android:layout_toStartOf="@+id/action_confirm"/>
 
             <Button
                 android:id="@+id/action_confirm"
-                android:layout_width="wrap_content"
+                android:layout_width="60dp"
                 android:layout_height="40dp"
                 android:textColor="@color/white"
                 android:text="@string/add_account_action_confirm"
                 style="?android:textAppearanceSmall"
                 android:background="@drawable/button_confirm"
-                android:layout_marginEnd="5dp"/>
+                android:layout_alignParentEnd="true"/>
 
-            </LinearLayout>
+            <ImageButton
+                android:id="@+id/action_delete"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_alignParentStart="true"
+                android:background="@drawable/button_delete"
+                android:contentDescription="@string/add_account_button_delete_description" />
+
+            </RelativeLayout>
 
         </LinearLayout>
 
