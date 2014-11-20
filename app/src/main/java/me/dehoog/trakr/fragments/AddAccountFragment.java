@@ -204,15 +204,15 @@ public class AddAccountFragment extends Fragment {
             } else {
                 newAccount.setDescription(name);
             }
+            if (expiry.isEmpty()) {
+                cancel = true;
+                focusView = mExpiry;
+            }
             if (accountNum.isEmpty()) {
                 cancel = true;
                 focusView = mAccountNumber;
             } else {
                 newAccount.setNumber(accountNum);
-            }
-            if (expiry.isEmpty()) {
-                cancel = true;
-                focusView = mExpiry;
             }
         }
 
