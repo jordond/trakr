@@ -177,37 +177,56 @@ public class AddAccountFragment extends Fragment {
     };
 
     private void attemptAdd() {
-        boolean isError = false;
+        boolean cancel = false;
         View focusView = null;
 
-        Account newAccount = new Account();
-        newAccount.setUser(mUser);
+        Account newAccount = new Account(mUser);
+        newAccount.setCategory(mCategory);
 
         if (mCategory == null) {
             focusView = mToggleGroup;
-            isError = true;
+            cancel = true;
         } else if (mCategory.equals("Cash")) {
             String name = String.valueOf(mName.getText());
             if (name.isEmpty()) {
-                isError = true;
+                cancel = true;
                 focusView = mName;
             } else {
                 newAccount.setDescription(name);
             }
+        } else if (mCategory.equals("Debit") || mCategory.equals("Credit")) {
+            String name = String.valueOf(mName.getText());
+            String accountNum = String.valueOf(mAccountNumber.getText());
+            String expiry = String.valueOf(mExpiry.getText());
+            if (name.isEmpty()) {
+                cancel = true;
+                focusView = mName;
+            } else {
+                newAccount.setDescription(name);
+            }
+            if (accountNum.isEmpty()) {
+                cancel = true;
+                focusView = mAccountNumber;
+            } else {
+                newAccount.setNumber(accountNum);
+            }
+            if (expiry.isEmpty()) {
+                cancel = true;
+                focusView = mExpiry;
+            }
         }
 
-        if (!isError) {
-            newAccount.setCategory(mCategory);
+        if (cancel) {
+            focusView.requestFocus();
+            YoYo.with(Techniques.Shake)
+                    .duration(500)
+                    .playOn(focusView);
+        } else if (newAccount.isValid()) {
             newAccount.save();
             if (mListener != null) {
                 mListener.onAddInteraction();
             }
             close();
-        } else {
-            focusView.requestFocus();
-            YoYo.with(Techniques.Shake)
-                    .duration(500)
-                    .playOn(focusView);
         }
     }
 }
