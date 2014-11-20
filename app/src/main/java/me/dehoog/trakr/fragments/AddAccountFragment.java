@@ -57,6 +57,7 @@ public class AddAccountFragment extends Fragment {
 
     @OnClick(R.id.action_nfc)
     public void onReadNfcClick() {
+        //TODO implement
     }
 
     @OnClick(R.id.action_cancel)
@@ -75,7 +76,9 @@ public class AddAccountFragment extends Fragment {
             case R.id.toggle_cash:
                 mCategory = "Cash";
                 mAccountNumber.setEnabled(false);
+                mAccountNumber.setText("");
                 mExpiry.setEnabled(false);
+                mExpiry.setText("");
                 break;
             case R.id.toggle_debit:
                 mCategory = "Debit";
