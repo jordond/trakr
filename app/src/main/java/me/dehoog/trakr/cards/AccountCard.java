@@ -93,22 +93,20 @@ public class AccountCard extends Card {
                 }
             }
 
-            Button edit = (Button) view.findViewById(R.id.action_edit);
-            edit.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (mListener != null) {
-                        mListener.editButton(mAccount);
-                    }
-                }
-            });
-
             if (!mAccount.getExpires().isEmpty()) {
                 expires.setText("exp. " + mAccount.getExpires());
             }
         }
 
         Button edit = (Button) view.findViewById(R.id.action_edit);
+        edit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mListener != null) {
+                    mListener.editButton(mAccount);
+                }
+            }
+        });
 
         CardViewWrapper cardView = getCardView();
         CardThumbnailView thumb = cardView.getInternalThumbnailLayout();
