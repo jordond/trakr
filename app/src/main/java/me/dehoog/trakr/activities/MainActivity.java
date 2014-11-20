@@ -17,15 +17,16 @@ import de.keyboardsurfer.android.widget.crouton.Crouton;
 import me.dehoog.trakr.R;
 import me.dehoog.trakr.adapters.MainPagerAdapter;
 import me.dehoog.trakr.fragments.AddAccountFragment;
-import me.dehoog.trakr.fragments.MainTabsFragment;
 import me.dehoog.trakr.interfaces.AccountsInteraction;
 import me.dehoog.trakr.interfaces.AddAccountInteraction;
-import me.dehoog.trakr.interfaces.RegisterEditButton;
+import me.dehoog.trakr.interfaces.EditAccountCallback;
 import me.dehoog.trakr.models.Account;
 import me.dehoog.trakr.models.User;
 
 
-public class MainActivity extends FragmentActivity implements AccountsInteraction, AddAccountInteraction, RegisterEditButton {
+public class MainActivity extends FragmentActivity implements AccountsInteraction,      // Interface callback for Accounts Cardview fragment
+                                                              AddAccountInteraction,    // Callback for adding, and editing account
+                                                              EditAccountCallback {      // Button click inside AccountCard
 
     public static final String PREFS_NAME = "TrakrPrefs";
     public SharedPreferences mSettings;

@@ -7,6 +7,6 @@ import me.dehoog.trakr.models.Account;
  * Created: November, 19, 2014
  * 8:52 PM
  */
-public interface RegisterEditButton {
+public interface EditAccountCallback {
     public void editButton(Account account);
 }

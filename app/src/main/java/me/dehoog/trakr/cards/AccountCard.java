@@ -14,7 +14,7 @@ import it.gmariotti.cardslib.library.internal.ViewToClickToExpand;
 import it.gmariotti.cardslib.library.view.base.CardViewWrapper;
 import it.gmariotti.cardslib.library.view.component.CardThumbnailView;
 import me.dehoog.trakr.R;
-import me.dehoog.trakr.interfaces.RegisterEditButton;
+import me.dehoog.trakr.interfaces.EditAccountCallback;
 import me.dehoog.trakr.models.Account;
 
 /**
@@ -25,7 +25,7 @@ import me.dehoog.trakr.models.Account;
 public class AccountCard extends Card {
 
     protected Account mAccount;
-    private RegisterEditButton mListener;
+    private EditAccountCallback mListener;
 
     public AccountCard(Context context, Account account) {
         super(context, R.layout.card_account);
@@ -187,7 +187,7 @@ public class AccountCard extends Card {
         }
     }
 
-    public void setmListener(RegisterEditButton mListener) {
+    public void setmListener(EditAccountCallback mListener) {
         this.mListener = mListener;
     }
 

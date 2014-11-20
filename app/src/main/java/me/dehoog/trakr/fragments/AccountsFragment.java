@@ -11,19 +11,16 @@ import android.view.ViewGroup;
 import com.melnykov.fab.FloatingActionButton;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import it.gmariotti.cardslib.library.internal.Card;
-import it.gmariotti.cardslib.library.internal.CardArrayAdapter;
 import it.gmariotti.cardslib.library.view.CardListView;
 import me.dehoog.trakr.R;
 import me.dehoog.trakr.adapters.AccountCardArrayAdapter;
 import me.dehoog.trakr.cards.AccountCard;
-import me.dehoog.trakr.helpers.SeedDatabase;
 import me.dehoog.trakr.interfaces.AccountsInteraction;
-import me.dehoog.trakr.interfaces.RegisterEditButton;
+import me.dehoog.trakr.interfaces.EditAccountCallback;
 import me.dehoog.trakr.models.Account;
 import me.dehoog.trakr.models.User;
 
@@ -95,7 +92,7 @@ public class AccountsFragment extends Fragment {
             AccountCard card = new AccountCard(getActivity())
                     .createExpandCard(a);
 
-            card.setmListener((RegisterEditButton) mParentActivity);
+            card.setmListener((EditAccountCallback) mParentActivity);
 
             if (a.getCategory().equals("Cash")) {
                 card.setType(2);
