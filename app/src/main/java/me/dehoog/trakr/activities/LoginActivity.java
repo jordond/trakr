@@ -17,6 +17,7 @@ import de.keyboardsurfer.android.widget.crouton.Style;
 import me.dehoog.trakr.R;
 import me.dehoog.trakr.fragments.LoginFragment;
 import me.dehoog.trakr.fragments.RegisterFragment;
+import me.dehoog.trakr.helpers.SeedDatabase;
 import me.dehoog.trakr.interfaces.OnTaskResult;
 import me.dehoog.trakr.models.User;
 import me.dehoog.trakr.tasks.UserLoginTask;
@@ -96,7 +97,7 @@ public class LoginActivity extends Activity implements LoginFragment.OnFragmentI
             Crouton.makeText(this, R.string.message_logging_out, Style.INFO).show();
         }
 
-        //TODO DEBUG CODE
+        //TODO DEBUG CODE - make sure your logged out, uncomment and run.
 //        SeedDatabase seed = new SeedDatabase();
 //        if (seed.users())
 //            seed.accounts();
