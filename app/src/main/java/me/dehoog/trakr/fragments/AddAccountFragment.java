@@ -207,6 +207,8 @@ public class AddAccountFragment extends Fragment {
             if (expiry.isEmpty()) {
                 cancel = true;
                 focusView = mExpiry;
+            } else {
+                newAccount.setExpires(expiry);
             }
             if (accountNum.isEmpty()) {
                 cancel = true;

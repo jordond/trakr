@@ -69,7 +69,7 @@ public class Account extends SugarRecord<Account> implements Serializable {
                 return true;
             }
         } else if (this.category.equals("Debit") || this.category.equals("Credit")) {
-            if (!this.description.isEmpty() || !this.expires.isEmpty() || !this.number.isEmpty()) {
+            if (!this.description.isEmpty() && !this.expires.isEmpty() && !this.number.isEmpty()) {
                 return true;
             }
         }
