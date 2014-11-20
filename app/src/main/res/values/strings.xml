@@ -39,5 +39,6 @@
     <string name="credit_type_other">Other</string>
     <string name="add_account_button_delete_description">Delete account button</string>
     <string name="title_activity_check_in">Check In</string>
+    <string name="action_search">Search</string>
 
 </resources>

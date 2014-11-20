@@ -1,10 +1,7 @@
 package me.dehoog.trakr.activities;
 
 import android.app.Activity;
-import android.content.Context;
 import android.location.Location;
-import android.location.LocationManager;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -13,7 +10,6 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.GoogleMapOptions;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.model.LatLng;
 
@@ -35,8 +31,8 @@ public class CheckInActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_check_in);
 
-        int resultcode = GooglePlayServicesUtil.isGooglePlayServicesAvailable(this);
-        if (ConnectionResult.SUCCESS == resultcode) {
+        int resultCode = GooglePlayServicesUtil.isGooglePlayServicesAvailable(this);
+        if (ConnectionResult.SUCCESS == resultCode) {
             mTracker = GPSTracker.getInstance();
             setUpMapIfNeeded();
         } else {
@@ -64,9 +60,19 @@ public class CheckInActivity extends Activity {
     }
 
     private void setUpMap() {
-        mMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
+        mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
         mMap.setMyLocationEnabled(true);
         mMap.getUiSettings().setTiltGesturesEnabled(false);
+
+        mMap.setOnMyLocationButtonClickListener(new GoogleMap.OnMyLocationButtonClickListener() {
+            @Override
+            public boolean onMyLocationButtonClick() {
+                mCurrentLocation = mTracker.getLocation(getApplication());
+                setLocation(mCurrentLocation);
+                return true;
+            }
+        });
+
         mCurrentLocation = mTracker.getLocation(this);
         setLocation(mCurrentLocation);
     }
