@@ -97,9 +97,14 @@ public class CheckInActivity extends Activity {
 
         if (id == R.id.action_settings) {
             return true;
+        } else if (id == R.id.action_search) {
+            testGson();
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void testGson() {
     }
 
     @Override
