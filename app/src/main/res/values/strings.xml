@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <string name="google_maps_key">AIzaSyDEedsYQzLtHaCgBekXbp2RkxO3_J9KITg</string>
+
     <string name="app_name">Trakr</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
@@ -13,15 +15,13 @@
     <string name="text_register_heading">CREATE A NEW TRAKR ACCOUNT TODAY!</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="error_password_required">Password is required</string>
-
     <string name="register_error_email">Email already exists</string>
     <string name="register_error_username">Username already exists</string>
     <string name="logo_description">trakR</string>
-
     <string name="error_username_required">Username is required</string>
     <string name="error_username_invalid">Username need to be longer than 4 characters</string>
     <string name="register_username_hint">username</string>
-    <string name="logo_letters_description" />
+    <string name="logo_letters_description"></string>
     <string name="action_logout">Logout</string>
     <string name="action_profile">Profile</string>
     <string name="card_account_extra_icon_description">Credit card type icon</string>
@@ -38,5 +38,6 @@
     <string name="credit_type_amex">Amex</string>
     <string name="credit_type_other">Other</string>
     <string name="add_account_button_delete_description">Delete account button</string>
+    <string name="title_activity_check_in">Check In</string>
 
 </resources>
