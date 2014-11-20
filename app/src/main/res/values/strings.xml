@@ -27,5 +27,16 @@
     <string name="card_account_extra_icon_description">Credit card type icon</string>
     <string name="card_expand_recent_transactions_text">last three transactions…</string>
     <string name="expand_list_grand_total_text">all time total</string>
+    <string name="add_account_hint_account_number">Account Number</string>
+    <string name="add_account_hint_expires">Expires</string>
+    <string name="add_account_hint_descriptive">Descriptive Name</string>
+    <string name="add_account_nfc_button_description">Read an EMV card</string>
+    <string name="add_account_action_cancel">Cancel</string>
+    <string name="add_account_action_confirm">Add</string>
+    <string name="credit_type_visa">VISA</string>
+    <string name="credit_type_mastercard">MasterCard</string>
+    <string name="credit_type_amex">Amex</string>
+    <string name="credit_type_other">Other</string>
+    <string name="add_account_button_delete_description">Delete account button</string>
 
 </resources>

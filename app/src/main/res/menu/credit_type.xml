@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/visa"
+        android:title="@string/credit_type_visa"/>
+
+    <item
+        android:id="@+id/mastercard"
+        android:title="@string/credit_type_mastercard"/>
+
+    <item
+        android:id="@+id/amex"
+        android:title="@string/credit_type_amex"/>
+
+    <item
+        android:id="@+id/other"
+        android:title="@string/credit_type_other" />
+
+</menu>

@@ -3,6 +3,7 @@ package me.dehoog.trakr.cards;
 import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -13,6 +14,7 @@ import it.gmariotti.cardslib.library.internal.ViewToClickToExpand;
 import it.gmariotti.cardslib.library.view.base.CardViewWrapper;
 import it.gmariotti.cardslib.library.view.component.CardThumbnailView;
 import me.dehoog.trakr.R;
+import me.dehoog.trakr.interfaces.EditAccountCallback;
 import me.dehoog.trakr.models.Account;
 
 /**
@@ -23,6 +25,7 @@ import me.dehoog.trakr.models.Account;
 public class AccountCard extends Card {
 
     protected Account mAccount;
+    private EditAccountCallback mListener;
 
     public AccountCard(Context context, Account account) {
         super(context, R.layout.card_account);
@@ -45,7 +48,10 @@ public class AccountCard extends Card {
         header.setButtonExpandVisible(true);
 
         CardThumbnail icon = new CardThumbnail(getContext());
-        icon.setDrawableResource(getIcon(mAccount.getCategory()));
+        int iconId = getIcon(mAccount.getCategory());
+        if (iconId != -1) {
+            icon.setDrawableResource(getIcon(mAccount.getCategory()));
+        }
 
         addCardHeader(header);
         addCardThumbnail(icon);
@@ -64,25 +70,45 @@ public class AccountCard extends Card {
     @Override
     public void setupInnerViewElements(ViewGroup parent, View view) {
 
-        // Card content
-        TextView main = (TextView) view.findViewById(R.id.card_inner_title);
+        if (!mAccount.isValid()) {  // fix crashing check if account is valid
+            return;
+        }
+
         TextView sub = (TextView) view.findViewById(R.id.card_inner_subtitle);
-        ImageView extraIcon = (ImageView) view.findViewById(R.id.card_inner_extra_icon);
-        TextView expires = (TextView) view.findViewById(R.id.card_inner_expires);
 
-        main.setText(mAccount.getNumber());
-        sub.setText(mAccount.getCategory());
+        if (mAccount.getCategory().toLowerCase().equals("cash")) {
+            sub.setText(mAccount.getCategory());
+        } else {
+            TextView main = (TextView) view.findViewById(R.id.card_inner_title);
+            ImageView extraIcon = (ImageView) view.findViewById(R.id.card_inner_extra_icon);
+            TextView expires = (TextView) view.findViewById(R.id.card_inner_expires);
 
-        if (mAccount.getCategory().toLowerCase().equals("credit")) {
-            int iconId = getExtraIcon(mAccount.getType().toLowerCase());
-            if (iconId != -1) {
-                extraIcon.setImageResource(iconId);
+            main.setText(mAccount.getNumber());
+            sub.setText(mAccount.getCategory());
+
+            if (mAccount.getCategory().toLowerCase().equals("credit")) {
+                int iconId = getExtraIcon(mAccount.getType().toLowerCase());
+                if (iconId != -1) {
+                    extraIcon.setImageResource(iconId);
+                }
+            }
+
+            Button edit = (Button) view.findViewById(R.id.action_edit);
+            edit.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (mListener != null) {
+                        mListener.editButton(mAccount);
+                    }
+                }
+            });
+
+            if (!mAccount.getExpires().isEmpty()) {
+                expires.setText("exp. " + mAccount.getExpires());
             }
         }
 
-        if (!mAccount.getCategory().toLowerCase().equals("cash")) {
-            expires.setText("exp. " + mAccount.getExpires());
-        }
+        Button edit = (Button) view.findViewById(R.id.action_edit);
 
         CardViewWrapper cardView = getCardView();
         CardThumbnailView thumb = cardView.getInternalThumbnailLayout();
@@ -93,6 +119,15 @@ public class AccountCard extends Card {
             }
         }
 
+    }
+
+    @Override
+    public int getType() {
+        if (mAccount.getCategory().equals("Cash")) {
+            return 1;
+        } else {
+            return 0;
+        }
     }
 
     // Helper method for creating expanding card
@@ -127,14 +162,17 @@ public class AccountCard extends Card {
     } // createAccountCard
 
     private int getIcon(String category) {
-        category = category.toLowerCase();
-        if (category.equals("cash")) {
-            return R.drawable.cash;
-        } else if (category.equals("debit")) {
-            return R.drawable.debit;
-        } else {
-            return R.drawable.creditcard;
+        if (category != null) {
+            category = category.toLowerCase();
+            if (category.equals("cash")) {
+                return R.drawable.ic_card_cash;
+            } else if (category.equals("debit")) {
+                return R.drawable.ic_card_debit;
+            } else {
+                return R.drawable.ic_card_credit;
+            }
         }
+        return -1;
     }
 
     private int getExtraIcon(String type) {
@@ -147,6 +185,10 @@ public class AccountCard extends Card {
         } else {
             return -1;
         }
+    }
+
+    public void setmListener(EditAccountCallback mListener) {
+        this.mListener = mListener;
     }
 
     // Custom header class for AccountCard

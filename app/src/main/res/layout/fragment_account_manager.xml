@@ -1,0 +1,157 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="me.dehoog.trakr.fragments.AccountManagerFragment"
+    android:background="#64000000"
+    android:clickable="true"
+    android:paddingStart="@dimen/activity_horizontal_margin"
+    android:paddingEnd="@dimen/activity_horizontal_margin"
+    android:gravity="center">
+
+    <LinearLayout
+        android:layout_width="300dp"
+        android:layout_height="340dp"
+        android:orientation="vertical"
+        android:gravity="center_horizontal"
+        android:background="@color/white_background">
+
+        <RadioGroup
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="16dp"
+            android:id="@+id/toggle_group"
+            android:layout_marginBottom="20dp">
+
+            <ToggleButton
+                android:id="@+id/toggle_cash"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:textOn="CASH"
+                android:textOff="CASH"
+                android:layout_height="wrap_content"
+                android:focusable="false"
+                android:focusableInTouchMode="false"/>
+
+            <ToggleButton
+                android:id="@+id/toggle_debit"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:textOn="DEBIT"
+                android:textOff="DEBIT"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:focusable="false"
+                android:focusableInTouchMode="false"/>
+
+            <ToggleButton
+                android:id="@+id/toggle_credit"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:textOn="CREDIT"
+                android:textOff="CREDIT"
+                android:layout_height="wrap_content"
+                android:focusable="false"
+                android:focusableInTouchMode="false"/>
+
+            <ImageButton
+                android:id="@+id/action_nfc"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/nfc_button"
+                android:layout_marginTop="4dp"
+                android:contentDescription="@string/add_account_nfc_button_description" />
+
+        </RadioGroup>
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:inputType="number"
+                android:ems="10"
+                android:enabled="false"
+                android:maxLength="16"
+                android:hint="@string/add_account_hint_account_number"
+                android:id="@+id/account_number" />
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:inputType="date"
+                android:ems="5"
+                android:hint="@string/add_account_hint_expires"
+                android:maxLength="5"
+                android:id="@+id/expires"
+                android:enabled="false"
+                android:layout_below="@+id/account_number"/>
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:inputType="textCapWords"
+                android:maxLines="1"
+                android:maxLength="25"
+                android:ems="10"
+                android:layout_marginTop="30dp"
+                android:hint="@string/add_account_hint_descriptive"
+                android:id="@+id/descriptive_name"
+                android:layout_below="@id/expires"/>
+
+            </RelativeLayout>
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="1dip"
+            android:layout_marginTop="40dp"
+            android:alpha="0.7"
+            android:background="@color/accent_pressed" />
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:layout_marginEnd="@dimen/activity_vertical_margin"
+            android:layout_marginStart="@dimen/activity_vertical_margin">
+
+            <Button
+                android:id="@+id/action_cancel"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:text="@string/add_account_action_cancel"
+                android:textSize="14sp"
+                style="?android:attr/borderlessButtonStyle"
+                android:layout_marginEnd="5dp"
+                android:layout_toStartOf="@+id/action_confirm"/>
+
+            <Button
+                android:id="@+id/action_confirm"
+                android:layout_width="60dp"
+                android:layout_height="40dp"
+                android:textColor="@color/white"
+                android:text="@string/add_account_action_confirm"
+                style="?android:textAppearanceSmall"
+                android:background="@drawable/button_confirm"
+                android:layout_alignParentEnd="true"/>
+
+            <ImageButton
+                android:id="@+id/action_delete"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_alignParentStart="true"
+                android:background="@drawable/button_delete"
+                android:contentDescription="@string/add_account_button_delete_description"
+                android:visibility="invisible"/>
+
+            </RelativeLayout>
+
+        </LinearLayout>
+
+</RelativeLayout>

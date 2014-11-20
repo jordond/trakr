@@ -2,8 +2,6 @@ package me.dehoog.trakr.models;
 
 import com.orm.SugarRecord;
 import com.orm.dsl.Ignore;
-import com.orm.query.Condition;
-import com.orm.query.Select;
 
 import java.io.Serializable;
 import java.util.List;
@@ -43,10 +41,8 @@ public class Account extends SugarRecord<Account> implements Serializable {
         this.category = category;
     }
 
-    public Account(String number, String name, int branch) {
-        this.number = number;
-        this.type = name;
-        this.branch = branch;
+    public Account(User user) {
+        this.user = user;
     }
 
     // Helper methods
@@ -67,8 +63,39 @@ public class Account extends SugarRecord<Account> implements Serializable {
         }
     }
 
+    public boolean isValid() {
+        if (this.category == null) {
+            return false;
+        }
+
+        if (this.category.equals("Cash")) {
+            if (this.description != null) {
+                if (!this.description.isEmpty()) {
+                    return true;
+                }
+            }
+        } else if (this.category.equals("Debit") || this.category.equals("Credit")) {
+            if (this.description != null && this.expires != null && this.number != null) {
+                if (!this.description.isEmpty() && !this.expires.isEmpty() && !this.number.isEmpty()) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
     public void addToTotal(double amount) {
         this.total += amount;
+    }
+
+    public int deleteAllTransactions() { // Allow for safe deletion of account, leave no orphans
+        int count = 0;
+        List<Purchase> transactions = this.getAllPurchases();
+        for (Purchase t : transactions) {
+            t.delete();
+            count++;
+        }
+        return count;
     }
 
     // Accessor

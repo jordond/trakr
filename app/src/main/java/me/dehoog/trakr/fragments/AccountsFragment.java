@@ -1,34 +1,27 @@
 package me.dehoog.trakr.fragments;
 
 import android.app.Activity;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AbsListView;
 
 import com.melnykov.fab.FloatingActionButton;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import it.gmariotti.cardslib.library.internal.Card;
-import it.gmariotti.cardslib.library.internal.CardArrayAdapter;
-import it.gmariotti.cardslib.library.internal.CardHeader;
 import it.gmariotti.cardslib.library.view.CardListView;
-import it.gmariotti.cardslib.library.view.CardViewNative;
-import it.gmariotti.cardslib.library.view.listener.SwipeOnScrollListener;
 import me.dehoog.trakr.R;
+import me.dehoog.trakr.adapters.AccountCardArrayAdapter;
 import me.dehoog.trakr.cards.AccountCard;
-import me.dehoog.trakr.helpers.SeedDatabase;
 import me.dehoog.trakr.interfaces.AccountsInteraction;
+import me.dehoog.trakr.interfaces.EditAccountCallback;
 import me.dehoog.trakr.models.Account;
-import me.dehoog.trakr.models.Purchase;
 import me.dehoog.trakr.models.User;
 
 public class AccountsFragment extends Fragment {
@@ -38,12 +31,10 @@ public class AccountsFragment extends Fragment {
 
     private static final String ARG_USER = "user";
 
-    // TODO: Rename and change types of parameters
     private User mUser;
-
     private AccountsInteraction mListener;
+    private Activity mParentActivity;
 
-    // TODO: Rename and change types and number of parameters
     public static AccountsFragment newInstance(User user) {
         AccountsFragment fragment = new AccountsFragment();
         Bundle args = new Bundle();
@@ -52,9 +43,7 @@ public class AccountsFragment extends Fragment {
         return fragment;
     }
 
-    public AccountsFragment() {
-        // Required empty public constructor
-    }
+    public AccountsFragment() { }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -62,13 +51,17 @@ public class AccountsFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_accounts, container, false);
 
         if (getArguments() != null) {
             mUser = (User) getArguments().getSerializable(ARG_USER);
         }
+
+        //TODO REMOVE DEBUG CODE
+//        Account.deleteAll(Account.class);
+//        SeedDatabase seed = new SeedDatabase();
+//        seed.accounts();
 
         ButterKnife.inject(this, view);
         return view;
@@ -83,6 +76,14 @@ public class AccountsFragment extends Fragment {
 
         FloatingActionButton fab = (FloatingActionButton) getActivity().findViewById(R.id.button_floating_action);
         fab.attachToListView(mCardList);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mListener != null) {
+                    mListener.onAccountsInteraction("add", null);
+                }
+            }
+        });
     }
 
     public void createCards() {
@@ -90,31 +91,34 @@ public class AccountsFragment extends Fragment {
         for (Account a : mUser.getAccounts()) {
             AccountCard card = new AccountCard(getActivity())
                     .createExpandCard(a);
+
+            card.setmListener((EditAccountCallback) mParentActivity);
+
+            if (a.getCategory().equals("Cash")) {
+                card.setType(2);
+            }
+
+            card.setCardElevation(1);
+
             cards.add(card);
         }
 
-        CardArrayAdapter cardArrayAdapter = new CardArrayAdapter(getActivity(), cards);
+        AccountCardArrayAdapter cardArrayAdapter = new AccountCardArrayAdapter(getActivity(), cards);
         if (mCardList != null) {
             mCardList.setAdapter(cardArrayAdapter);
-        }
-    }
-
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onAccountsInteraction(-1);
         }
     }
 
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-//        try {
-//            mListener = (AccountsInteraction) activity;
-//        } catch (ClassCastException e) {
-//            throw new ClassCastException(activity.toString()
-//                    + " must implement OnFragmentInteractionListener");
-//        }
+        try {
+            mListener = (AccountsInteraction) activity;
+            mParentActivity = activity;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(activity.toString()
+                    + " must implement AccountsInteraction");
+        }
     }
 
     @Override
@@ -122,5 +126,4 @@ public class AccountsFragment extends Fragment {
         super.onDetach();
         mListener = null;
     }
-
 }

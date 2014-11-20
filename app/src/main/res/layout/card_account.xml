@@ -40,4 +40,17 @@
         android:layout_marginBottom="0dp"
         android:contentDescription="@string/card_account_extra_icon_description" />
 
+    <Button
+        android:layout_width="30dp"
+        android:layout_height="20dp"
+        android:id="@+id/action_edit"
+        android:layout_alignParentEnd="true"
+        android:layout_above="@id/card_inner_expires"
+        android:layout_marginEnd="15dp"
+        android:textSize="12sp"
+        android:text="edit"
+        style="?android:textAppearanceSmall"
+        android:textColor="@color/white"
+        android:background="@drawable/button_confirm"/>
+
 </RelativeLayout>

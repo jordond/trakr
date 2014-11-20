@@ -3,7 +3,6 @@ package me.dehoog.trakr.activities;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
-
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -98,7 +97,7 @@ public class LoginActivity extends Activity implements LoginFragment.OnFragmentI
             Crouton.makeText(this, R.string.message_logging_out, Style.INFO).show();
         }
 
-        //TODO DEBUG CODE
+        //TODO DEBUG CODE - make sure your logged out, uncomment and run.
 //        SeedDatabase seed = new SeedDatabase();
 //        if (seed.users())
 //            seed.accounts();

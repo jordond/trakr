@@ -1,43 +1,44 @@
 package me.dehoog.trakr.activities;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.TextView;
 
 import com.astuetz.PagerSlidingTabStrip;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
-import butterknife.OnClick;
 import de.keyboardsurfer.android.widget.crouton.Crouton;
-import de.keyboardsurfer.android.widget.crouton.Style;
 import me.dehoog.trakr.R;
 import me.dehoog.trakr.adapters.MainPagerAdapter;
+import me.dehoog.trakr.fragments.AccountManagerFragment;
+import me.dehoog.trakr.interfaces.AccountsInteraction;
+import me.dehoog.trakr.interfaces.AddAccountInteraction;
+import me.dehoog.trakr.interfaces.EditAccountCallback;
+import me.dehoog.trakr.models.Account;
 import me.dehoog.trakr.models.User;
 
 
-public class MainActivity extends FragmentActivity {
+public class MainActivity extends FragmentActivity implements AccountsInteraction,      // Interface callback for Accounts Cardview fragment
+                                                              AddAccountInteraction,    // Callback for adding, and editing account
+                                                              EditAccountCallback {      // Button click inside AccountCard
 
     public static final String PREFS_NAME = "TrakrPrefs";
     public SharedPreferences mSettings;
 
     public User mUser;
 
+    private FragmentTransaction ft;
+    private AccountManagerFragment mAccountManager;
+
     // Tab pager components
     @InjectView(R.id.tabs) public PagerSlidingTabStrip mTabs;
     @InjectView(R.id.pager) public ViewPager mPager;
-    private MainPagerAdapter mAdapter;
-
-    // UI Components
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,11 +53,10 @@ public class MainActivity extends FragmentActivity {
         }
 
         ButterKnife.inject(this); // get all dem views
-        mAdapter = new MainPagerAdapter(getSupportFragmentManager(), mUser);
+        MainPagerAdapter mAdapter = new MainPagerAdapter(getSupportFragmentManager(), mUser);
         mPager.setAdapter(mAdapter);
         mTabs.setViewPager(mPager);
 
-        //TODO display crouton asking to setup profile, if User.isFirstLogin()
     }// onCreate
 
     private void logout() {
@@ -70,13 +70,10 @@ public class MainActivity extends FragmentActivity {
         finish();
     }
 
-
     @Override
     protected void onStart() {
         super.onStart();
-
         ButterKnife.inject(this);
-
     }// onStart
 
     @Override
@@ -86,7 +83,6 @@ public class MainActivity extends FragmentActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
@@ -97,6 +93,8 @@ public class MainActivity extends FragmentActivity {
         switch (id) {
             case R.id.action_settings:
                 return true;
+            case R.id.action_profile:
+                break;
             case R.id.action_logout:
                 logout();
                 break;
@@ -108,5 +106,33 @@ public class MainActivity extends FragmentActivity {
     protected void onDestroy() {
         super.onDestroy();
         Crouton.cancelAllCroutons();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (getActionBar() != null) {
+            getActionBar().setTitle("");
+        }
+    }
+
+    @Override
+    public void onAccountsInteraction(String action, Account account) {
+        mAccountManager = AccountManagerFragment.newInstance(mUser, action, account);
+        ft = getSupportFragmentManager().beginTransaction();
+        ft.setCustomAnimations(R.animator.fade_in, R.animator.fade_out, R.animator.fade_in, R.animator.fade_out);
+        ft.replace(R.id.container, mAccountManager,"AddAccountTag");
+        ft.addToBackStack(null);
+        ft.commit();
+    }
+
+    @Override
+    public void onAddInteraction() {
+        mPager.getAdapter().notifyDataSetChanged();
+    }
+
+    @Override
+    public void editButton(Account account) {
+        onAccountsInteraction("edit", account);
     }
 }

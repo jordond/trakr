@@ -1,7 +1,5 @@
 package me.dehoog.trakr.helpers;
 
-import com.google.android.gms.maps.model.LatLng;
-
 import java.util.Date;
 import java.util.List;
 
