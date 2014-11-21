@@ -13,6 +13,10 @@ public class PlacesResult {
     private List<Place> results;
     private String status;
 
+    public boolean isMoreResults() {
+        return next_page_token != null;
+    }
+
     public String getNext_page_token() {
         return next_page_token;
     }

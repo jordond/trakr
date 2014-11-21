@@ -31,7 +31,7 @@ import me.dehoog.trakr.services.PlacesService;
 
 public class CheckInActivity extends Activity implements PlacesService.PlacesInterface{
 
-    private static final int MAP_ZOOM = 15;
+    private static final int MAP_ZOOM = 17;
 
     private GoogleMap mMap;
 
@@ -134,20 +134,21 @@ public class CheckInActivity extends Activity implements PlacesService.PlacesInt
 
     @Override
     public void onPlacesReturned(List<Place> places) {
-        for (Marker m : mMarkers) {
-            if (m != null) {
-                m.remove();
-            }
-        }
-        mMarkers.clear();
-
         for (Place place : places) {
             if (!place.shouldExclude()) {
                 addMarker(place);
                 mPlaces.add(place);
             }
         }
+    }
 
+    public void clearMarkers() {
+        for (Marker marker : mMarkers) {
+            if (marker != null) {
+                marker.remove();
+            }
+        }
+        mMarkers.clear();
     }
 
     private void addMarker(Place place) {

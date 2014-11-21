@@ -39,7 +39,7 @@ public class PlacesService extends Service {
 
     private PlacesInterface mListener;
 
-    private int mRadius = 500;
+    private int mRadius = 300;
 
     private Location mLocation;
     private double mLatitude;
@@ -110,6 +110,13 @@ public class PlacesService extends Service {
         sendDetailsRequest(url);
     }
 
+    public void getMore(String token){
+        String url = PLACES_BASE + PLACES_NEARBY
+                + "key=" + PLACES_API
+                + "&pagetoken=" + token;
+        sendRequest(url);
+    }
+
     public void sendRequest(String url)
     {
         Ion.with(mContext)
@@ -166,6 +173,9 @@ public class PlacesService extends Service {
         try {
             Gson gson = new Gson();
             result = gson.fromJson(json, PlacesResult.class);
+            if (result.isMoreResults()) {
+                getMore(result.getNext_page_token());
+            }
         } catch (Exception e) {
             Log.e("parseJSON", e.getMessage());
         }
