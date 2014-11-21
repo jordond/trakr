@@ -15,9 +15,9 @@ import com.koushikdutta.ion.Ion;
 
 import java.util.List;
 
+import me.dehoog.trakr.models.Place;
 import me.dehoog.trakr.models.PlaceDetails;
 import me.dehoog.trakr.models.PlaceDetailsResult;
-import me.dehoog.trakr.models.Places;
 import me.dehoog.trakr.models.PlacesResult;
 
 /**
@@ -99,9 +99,16 @@ public class PlacesService extends Service {
 
     }
 
-    //TODO implement
-    public PlaceDetails placeDetailSearch() {
-        return null;
+    public void placeDetailSearch(Place place) {
+
+        if (place == null) {
+            return;
+        }
+
+        String url = PLACES_BASE + PLACES_DETAILS
+                + "key=" + PLACES_API
+                + "&placeid=" + place.getPlace_id();
+        sendDetailsRequest(url);
     }
 
     public void sendRequest(String url)
@@ -113,7 +120,7 @@ public class PlacesService extends Service {
                     @Override
                     public void onCompleted(Exception e, JsonObject result) {
                         if (mListener != null) {
-                            List<Places> places = parseJSON(result.toString());
+                            List<Place> places = parseJSON(result.toString());
                             mListener.onPlacesReturned(places);
                         }
                     }
@@ -155,7 +162,7 @@ public class PlacesService extends Service {
         return new LatLng(lat, lng);
     }
 
-    public List<Places> parseJSON(String json) {
+    public List<Place> parseJSON(String json) {
         PlacesResult result = new PlacesResult();
         try {
             Gson gson = new Gson();
@@ -211,7 +218,7 @@ public class PlacesService extends Service {
     }
 
     public interface PlacesInterface {
-        public void onPlacesReturned(List<Places> places);
+        public void onPlacesReturned(List<Place> places);
         public void onPlaceDetailsReturned(PlaceDetails details);
     }
 }

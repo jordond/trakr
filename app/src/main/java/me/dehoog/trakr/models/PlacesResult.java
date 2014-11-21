@@ -10,7 +10,7 @@ import java.util.List;
 public class PlacesResult {
 
     private String next_page_token;
-    private List<Places> results;
+    private List<Place> results;
     private String status;
 
     public String getNext_page_token() {
@@ -21,11 +21,11 @@ public class PlacesResult {
         this.next_page_token = next_page_token;
     }
 
-    public List<Places> getResults() {
+    public List<Place> getResults() {
         return results;
     }
 
-    public void setResults(List<Places> results) {
+    public void setResults(List<Place> results) {
         this.results = results;
     }
 

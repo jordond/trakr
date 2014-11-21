@@ -11,7 +11,7 @@ import java.util.List;
  * Created: November, 20, 2014
  * 6:38 PM
  */
-public class Places {
+public class Place {
 
     private String id;
     private String name;

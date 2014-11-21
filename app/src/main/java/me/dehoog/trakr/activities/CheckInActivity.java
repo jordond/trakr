@@ -13,23 +13,13 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
-import com.google.gson.Gson;
 
-import org.apache.http.HttpResponse;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
-
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.Reader;
-import java.net.URI;
 import java.util.List;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
 import me.dehoog.trakr.R;
+import me.dehoog.trakr.models.Place;
 import me.dehoog.trakr.models.PlaceDetails;
-import me.dehoog.trakr.models.Places;
-import me.dehoog.trakr.models.PlacesResult;
 import me.dehoog.trakr.services.GPSTracker;
 import me.dehoog.trakr.services.PlacesService;
 
@@ -44,7 +34,7 @@ public class CheckInActivity extends Activity implements PlacesService.PlacesInt
 
     private Location mCurrentLocation;
 
-    private List<Places> mPlaces;
+    private List<Place> mPlaces;
     private List<Marker> mMarkers;
 
     @Override
@@ -142,7 +132,7 @@ public class CheckInActivity extends Activity implements PlacesService.PlacesInt
     }
 
     @Override
-    public void onPlacesReturned(List<Places> places) {
+    public void onPlacesReturned(List<Place> places) {
         mPlaces = places;
 
     }
