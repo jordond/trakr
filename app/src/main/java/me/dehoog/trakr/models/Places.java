@@ -1,5 +1,9 @@
 package me.dehoog.trakr.models;
 
+import android.location.Location;
+
+import com.google.android.gms.maps.model.LatLng;
+
 import java.util.List;
 
 /**
@@ -16,7 +20,30 @@ public class Places {
     private List<String> types;
     private PlacesLocation geometry;
 
+    // Helper
+    public double getLatitude() {
+        double lat = -1.0;
+        if (this.geometry != null) {
+            lat = this.geometry.getLocation().getLat();
+        }
+        return lat;
+    }
 
+    public double getLongitude() {
+        double lng = -1.0;
+        if (this.geometry != null) {
+            lng = this.geometry.getLocation().getLng();
+        }
+        return lng;
+    }
+
+    public LatLng getLatLng() {
+        if (this.geometry != null) {
+            return new LatLng(this.getLatitude(), this.getLongitude());
+        }
+        return null;
+    }
+    
     public String getId() {
         return id;
     }
