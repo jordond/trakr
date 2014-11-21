@@ -1,6 +1,7 @@
 package me.dehoog.trakr.activities;
 
 import android.app.Activity;
+import android.graphics.Bitmap;
 import android.location.Location;
 import android.os.Bundle;
 import android.view.Menu;
@@ -11,9 +12,12 @@ import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.koushikdutta.async.future.FutureCallback;
+import com.koushikdutta.ion.Ion;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -150,10 +154,22 @@ public class CheckInActivity extends Activity implements PlacesService.PlacesInt
     }
 
     private void addMarker(Place place) {
-        Marker marker = mMap.addMarker(new MarkerOptions()
+        final Marker marker = mMap.addMarker(new MarkerOptions()
                 .position(place.getLatLng())
                 .title(place.getName()));
         mMarkers.add(marker);
+
+        Ion.with(getApplicationContext())
+                .load(place.getIcon())
+                .asBitmap()
+                .setCallback(new FutureCallback<Bitmap>() {
+                    @Override
+                    public void onCompleted(Exception e, Bitmap result) {
+                        int index = mMarkers.indexOf(marker);
+                        marker.setIcon(BitmapDescriptorFactory.fromBitmap(result));
+                        mMarkers.set(index, marker);
+                    }
+                });
 
     }
 

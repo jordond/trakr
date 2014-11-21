@@ -15,6 +15,7 @@ public class Place {
 
     private String id;
     private String name;
+    private String icon;
     private String place_id;
     private String vicinity;
     private String formatted_address; // for text search
@@ -43,6 +44,14 @@ public class Place {
             return new LatLng(this.getLatitude(), this.getLongitude());
         }
         return null;
+    }
+
+    public String getIcon() {
+        return icon;
+    }
+
+    public void setIcon(String icon) {
+        this.icon = icon;
     }
 
     public String getId() {
