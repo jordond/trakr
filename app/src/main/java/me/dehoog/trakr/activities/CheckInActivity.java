@@ -13,7 +13,9 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
@@ -25,7 +27,7 @@ import me.dehoog.trakr.services.PlacesService;
 
 public class CheckInActivity extends Activity implements PlacesService.PlacesInterface{
 
-    private static final int MAP_ZOOM = 14;
+    private static final int MAP_ZOOM = 15;
 
     private GoogleMap mMap;
 
@@ -34,8 +36,8 @@ public class CheckInActivity extends Activity implements PlacesService.PlacesInt
 
     private Location mCurrentLocation;
 
-    private List<Place> mPlaces;
-    private List<Marker> mMarkers;
+    private List<Place> mPlaces = new ArrayList<Place>();
+    private List<Marker> mMarkers = new ArrayList<Marker>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -133,7 +135,25 @@ public class CheckInActivity extends Activity implements PlacesService.PlacesInt
 
     @Override
     public void onPlacesReturned(List<Place> places) {
-        mPlaces = places;
+        for (Marker m : mMarkers) {
+            if (m != null) {
+                m.remove();
+            }
+        }
+        mMarkers.clear();
+
+        for (Place place : places) {
+            addMarker(place);
+            mPlaces.add(place);
+        }
+
+    }
+
+    private void addMarker(Place place) {
+        Marker marker = mMap.addMarker(new MarkerOptions()
+                .position(place.getLatLng())
+                .title(place.getName()));
+        mMarkers.add(marker);
 
     }
 
