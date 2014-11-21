@@ -10,8 +10,6 @@ import android.util.Log;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.gson.Gson;
 
-import java.io.InputStreamReader;
-import java.io.Reader;
 import java.util.List;
 
 import me.dehoog.trakr.interfaces.PlacesSearchListener;
@@ -35,6 +33,8 @@ public class PlacesService extends Service implements PlacesSearchListener {
     private static final String PLACES_DETAILS = "details/json?";
 
     private Context mContext;
+
+    private PlacesInterface mListener;
 
     private int mRadius = 100;
 
@@ -94,10 +94,9 @@ public class PlacesService extends Service implements PlacesSearchListener {
     @Override
     public void onSearchComplete(String result) {
         List<Places> places = parseJSON(result);
-        if (places != null) {
 
-        } else {
-
+        if (mListener != null) {
+            mListener.onPlacesReturned(places);
         }
     }
 
@@ -110,11 +109,7 @@ public class PlacesService extends Service implements PlacesSearchListener {
     public boolean setToCurrentLocation() {
         GPSTracker tracker = GPSTracker.getInstance();
         mLocation = tracker.getLocation(mContext);
-        if (mLocation == null) {
-            return false;
-        } else {
-            return true;
-        }
+        return mLocation != null;
     }
 
     public LatLng locationToLatLng(Location location) {
@@ -171,4 +166,15 @@ public class PlacesService extends Service implements PlacesSearchListener {
         this.mContext = mContext;
     }
 
+    public PlacesInterface getmListener() {
+        return mListener;
+    }
+
+    public void setmListener(PlacesInterface mListener) {
+        this.mListener = mListener;
+    }
+
+    public interface PlacesInterface {
+        public void onPlacesReturned(List<Places> places);
+    }
 }

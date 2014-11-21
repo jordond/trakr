@@ -22,14 +22,16 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.net.URI;
+import java.util.List;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
 import me.dehoog.trakr.R;
+import me.dehoog.trakr.models.Places;
 import me.dehoog.trakr.models.PlacesResult;
 import me.dehoog.trakr.services.GPSTracker;
 import me.dehoog.trakr.services.PlacesService;
 
-public class CheckInActivity extends Activity {
+public class CheckInActivity extends Activity implements PlacesService.PlacesInterface{
 
     private static final int MAP_ZOOM = 14;
 
@@ -40,6 +42,8 @@ public class CheckInActivity extends Activity {
 
     private Location mCurrentLocation;
 
+    private List<Places> mPlaces;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,6 +53,8 @@ public class CheckInActivity extends Activity {
         if (ConnectionResult.SUCCESS == resultCode) {
             mTracker = GPSTracker.getInstance();
             mPlacesService = PlacesService.getInstance(this);
+            mPlacesService.setmListener(this);
+
             setUpMapIfNeeded();
         } else {
             new SweetAlertDialog(this, SweetAlertDialog.ERROR_TYPE)
@@ -149,5 +155,10 @@ public class CheckInActivity extends Activity {
         if (mTracker != null) {
             mTracker.stopUsingGPS();
         }
+    }
+
+    @Override
+    public void onPlacesReturned(List<Places> places) {
+        mPlaces = places;
     }
 }

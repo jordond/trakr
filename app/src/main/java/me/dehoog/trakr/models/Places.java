@@ -43,7 +43,7 @@ public class Places {
         }
         return null;
     }
-    
+
     public String getId() {
         return id;
     }
