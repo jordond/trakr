@@ -64,7 +64,6 @@ public class Places {
     public void setGeometry(PlacesLocation geometry) {
         this.geometry = geometry;
     }
-
 }
 
 

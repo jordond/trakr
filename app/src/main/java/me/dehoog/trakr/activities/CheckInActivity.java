@@ -27,13 +27,16 @@ import cn.pedant.SweetAlert.SweetAlertDialog;
 import me.dehoog.trakr.R;
 import me.dehoog.trakr.models.PlacesResult;
 import me.dehoog.trakr.services.GPSTracker;
+import me.dehoog.trakr.services.PlacesService;
 
 public class CheckInActivity extends Activity {
 
     private static final int MAP_ZOOM = 14;
 
     private GoogleMap mMap;
+
     private GPSTracker mTracker;
+    private PlacesService mPlacesService;
 
     private Location mCurrentLocation;
 
@@ -45,6 +48,7 @@ public class CheckInActivity extends Activity {
         int resultCode = GooglePlayServicesUtil.isGooglePlayServicesAvailable(this);
         if (ConnectionResult.SUCCESS == resultCode) {
             mTracker = GPSTracker.getInstance();
+            mPlacesService = PlacesService.getInstance(this);
             setUpMapIfNeeded();
         } else {
             new SweetAlertDialog(this, SweetAlertDialog.ERROR_TYPE)
@@ -118,6 +122,8 @@ public class CheckInActivity extends Activity {
     private void testGson() {
 
         String url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?key=AIzaSyATAz4Zi2av7206I5JFWqCBUzbzlpnLcdA&location=42.9395008,-81.22171019&radius=10";
+
+        mPlacesService.nearbySearch(null);
 //        DefaultHttpClient httpClient = new DefaultHttpClient();
 //        URI uri;
 //        InputStream data = null;
