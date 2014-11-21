@@ -39,7 +39,7 @@ public class PlacesService extends Service {
 
     private PlacesInterface mListener;
 
-    private int mRadius = 200;
+    private int mRadius = 500;
 
     private Location mLocation;
     private double mLatitude;
@@ -100,7 +100,6 @@ public class PlacesService extends Service {
     }
 
     public void placeDetailSearch(Place place) {
-
         if (place == null) {
             return;
         }

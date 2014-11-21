@@ -55,6 +55,7 @@ public class CheckInActivity extends Activity implements PlacesService.PlacesInt
             mPlacesService.setmListener(this);
 
             setUpMapIfNeeded();
+            mPlacesService.nearbySearch(null);
         } else {
             new SweetAlertDialog(this, SweetAlertDialog.ERROR_TYPE)
                     .setTitleText("Error")
@@ -118,15 +119,9 @@ public class CheckInActivity extends Activity implements PlacesService.PlacesInt
         if (id == R.id.action_settings) {
             return true;
         } else if (id == R.id.action_search) {
-            testGson();
         }
 
         return super.onOptionsItemSelected(item);
-    }
-
-    private void testGson() {
-        mPlacesService.nearbySearch(null);
-
     }
 
     @Override
@@ -147,8 +142,10 @@ public class CheckInActivity extends Activity implements PlacesService.PlacesInt
         mMarkers.clear();
 
         for (Place place : places) {
-            addMarker(place);
-            mPlaces.add(place);
+            if (!place.shouldExclude()) {
+                addMarker(place);
+                mPlaces.add(place);
+            }
         }
 
     }
