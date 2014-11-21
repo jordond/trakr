@@ -48,6 +48,11 @@ public class CheckInActivity extends Activity implements PlacesService.PlacesInt
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_check_in);
 
+        if (getActionBar() != null) {
+            getActionBar().setHomeButtonEnabled(true);
+            getActionBar().setDisplayHomeAsUpEnabled(true);
+        }
+
         int resultCode = GooglePlayServicesUtil.isGooglePlayServicesAvailable(this);
         if (ConnectionResult.SUCCESS == resultCode) {
             mTracker = GPSTracker.getInstance();

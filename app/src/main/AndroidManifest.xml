@@ -58,7 +58,11 @@
             android:name="me.dehoog.trakr.activities.CheckInActivity"
             android:icon="@drawable/logo_all_white"
             android:label="@string/title_activity_check_in"
-            android:theme="@style/AppTheme">
+            android:theme="@style/AppTheme"
+            android:parentActivityName=".activities.MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activities.MainActivity" />
         </activity>
     </application>
 
