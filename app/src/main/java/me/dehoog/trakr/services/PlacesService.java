@@ -16,6 +16,7 @@ import com.koushikdutta.ion.Ion;
 import java.util.List;
 
 import me.dehoog.trakr.models.PlaceDetails;
+import me.dehoog.trakr.models.PlaceDetailsResult;
 import me.dehoog.trakr.models.Places;
 import me.dehoog.trakr.models.PlacesResult;
 
@@ -31,6 +32,7 @@ public class PlacesService extends Service {
     private static final String PLACES_API = "AIzaSyATAz4Zi2av7206I5JFWqCBUzbzlpnLcdA";
     private static final String PLACES_BASE = "https://maps.googleapis.com/maps/api/place/";
     private static final String PLACES_NEARBY = "nearbysearch/json?";
+    private static final String PLACES_TEXT = "textsearch/json?";
     private static final String PLACES_DETAILS = "details/json?";
 
     private Context mContext;
@@ -78,9 +80,23 @@ public class PlacesService extends Service {
         sendRequest(url);
     }
 
-    //TODO implement
-    public List<Places> textSearch() {
-        return null;
+    public void textSearch(String query, int radius, Location location) {
+        if (location == null) {
+            setToCurrentLocation();
+            location = mLocation;
+            if (location == null) {
+                return;
+            }
+        }
+
+        LatLng latLng = locationToLatLng(location);
+        String url = PLACES_BASE + PLACES_TEXT
+                + "key=" + PLACES_API
+                + "&query=" + query
+                + "&location=" + latLng.latitude + "," + latLng.longitude
+                + "&radius=" + radius;
+        sendRequest(url);
+
     }
 
     //TODO implement
@@ -96,9 +112,30 @@ public class PlacesService extends Service {
                 .setCallback(new FutureCallback<JsonObject>() {
                     @Override
                     public void onCompleted(Exception e, JsonObject result) {
-                        List<Places> places = parseJSON(result.toString());
                         if (mListener != null) {
+                            List<Places> places = parseJSON(result.toString());
                             mListener.onPlacesReturned(places);
+                        }
+                    }
+                });
+    }
+
+    public void sendDetailsRequest(String url) {
+        Ion.with(mContext)
+                .load(url)
+                .asJsonObject()
+                .setCallback(new FutureCallback<JsonObject>() {
+                    @Override
+                    public void onCompleted(Exception e, JsonObject result) {
+                        if (mListener != null) {
+                            PlaceDetailsResult detailResult = new PlaceDetailsResult();
+                            try {
+                                Gson gson = new Gson();
+                                detailResult = gson.fromJson(result.toString(), PlaceDetailsResult.class);
+                                mListener.onPlaceDetailsReturned(detailResult.getResults());
+                            } catch (Exception ex) {
+                                Log.e("Details request", ex.getMessage());
+                            }
                         }
                     }
                 });
@@ -124,7 +161,7 @@ public class PlacesService extends Service {
             Gson gson = new Gson();
             result = gson.fromJson(json, PlacesResult.class);
         } catch (Exception e) {
-            Log.d("parseJSON", e.getMessage());
+            Log.e("parseJSON", e.getMessage());
         }
         return result.getResults();
     }
@@ -175,5 +212,6 @@ public class PlacesService extends Service {
 
     public interface PlacesInterface {
         public void onPlacesReturned(List<Places> places);
+        public void onPlaceDetailsReturned(PlaceDetails details);
     }
 }

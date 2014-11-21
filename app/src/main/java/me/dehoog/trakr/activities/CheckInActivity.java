@@ -27,6 +27,7 @@ import java.util.List;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
 import me.dehoog.trakr.R;
+import me.dehoog.trakr.models.PlaceDetails;
 import me.dehoog.trakr.models.Places;
 import me.dehoog.trakr.models.PlacesResult;
 import me.dehoog.trakr.services.GPSTracker;
@@ -144,6 +145,10 @@ public class CheckInActivity extends Activity implements PlacesService.PlacesInt
     public void onPlacesReturned(List<Places> places) {
         mPlaces = places;
 
+    }
+
+    @Override
+    public void onPlaceDetailsReturned(PlaceDetails details) {
 
     }
 }
