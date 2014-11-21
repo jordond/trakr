@@ -17,6 +17,7 @@ public class Places {
     private String name;
     private String place_id;
     private String vicinity;
+    private String formatted_address; // for text search
     private List<String> types;
     private PlacesLocation geometry;
 
@@ -90,6 +91,14 @@ public class Places {
 
     public void setGeometry(PlacesLocation geometry) {
         this.geometry = geometry;
+    }
+
+    public String getFormatted_address() {
+        return formatted_address;
+    }
+
+    public void setFormatted_address(String formatted_address) {
+        this.formatted_address = formatted_address;
     }
 }
 

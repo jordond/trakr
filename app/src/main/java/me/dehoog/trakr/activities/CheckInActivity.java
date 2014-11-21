@@ -12,6 +12,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.gson.Gson;
 
 import org.apache.http.HttpResponse;
@@ -43,6 +44,7 @@ public class CheckInActivity extends Activity implements PlacesService.PlacesInt
     private Location mCurrentLocation;
 
     private List<Places> mPlaces;
+    private List<Marker> mMarkers;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -126,27 +128,8 @@ public class CheckInActivity extends Activity implements PlacesService.PlacesInt
     }
 
     private void testGson() {
-
-        String url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?key=AIzaSyATAz4Zi2av7206I5JFWqCBUzbzlpnLcdA&location=42.9395008,-81.22171019&radius=10";
-
         mPlacesService.nearbySearch(null);
-//        DefaultHttpClient httpClient = new DefaultHttpClient();
-//        URI uri;
-//        InputStream data = null;
-//        try {
-//            uri = new URI(url);
-//            HttpGet method = new HttpGet(uri);
-//            HttpResponse response = httpClient.execute(method);
-//            data = response.getEntity().getContent();
-//
-//            Gson gson = new Gson();
-//            Reader r = new InputStreamReader(data);
-//            PlacesResult pr = gson.fromJson(r, PlacesResult.class);
-//            String output = "INSERT BREAKPOINT";
-//
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
+
     }
 
     @Override
@@ -160,5 +143,7 @@ public class CheckInActivity extends Activity implements PlacesService.PlacesInt
     @Override
     public void onPlacesReturned(List<Places> places) {
         mPlaces = places;
+
+
     }
 }

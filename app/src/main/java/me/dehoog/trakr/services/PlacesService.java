@@ -9,21 +9,22 @@ import android.util.Log;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.koushikdutta.async.future.FutureCallback;
+import com.koushikdutta.ion.Ion;
 
 import java.util.List;
 
-import me.dehoog.trakr.interfaces.PlacesSearchListener;
 import me.dehoog.trakr.models.PlaceDetails;
 import me.dehoog.trakr.models.Places;
 import me.dehoog.trakr.models.PlacesResult;
-import me.dehoog.trakr.tasks.PlacesSearchTask;
 
 /**
  * Author:  jordon
  * Created: November, 20, 2014
  * 7:02 PM
  */
-public class PlacesService extends Service implements PlacesSearchListener {
+public class PlacesService extends Service {
 
     private static PlacesService mInstance;
 
@@ -74,10 +75,7 @@ public class PlacesService extends Service implements PlacesSearchListener {
                 + "key=" + PLACES_API
                 + "&location=" + latLng.latitude + "," + latLng.longitude
                 + "&radius=" + mRadius;
-
-        // Call async get
-        PlacesSearchTask searchTask = new PlacesSearchTask(this);
-        searchTask.execute(url);
+        sendRequest(url);
     }
 
     //TODO implement
@@ -90,19 +88,20 @@ public class PlacesService extends Service implements PlacesSearchListener {
         return null;
     }
 
-    // Callbacks
-    @Override
-    public void onSearchComplete(String result) {
-        List<Places> places = parseJSON(result);
-
-        if (mListener != null) {
-            mListener.onPlacesReturned(places);
-        }
-    }
-
-    @Override
-    public void onSearchCancelled() {
-        //TODO Do something... maybe
+    public void sendRequest(String url)
+    {
+        Ion.with(mContext)
+                .load(url)
+                .asJsonObject()
+                .setCallback(new FutureCallback<JsonObject>() {
+                    @Override
+                    public void onCompleted(Exception e, JsonObject result) {
+                        List<Places> places = parseJSON(result.toString());
+                        if (mListener != null) {
+                            mListener.onPlacesReturned(places);
+                        }
+                    }
+                });
     }
 
     // Helpers
