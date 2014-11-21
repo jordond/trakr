@@ -12,9 +12,20 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.gson.Gson;
+
+import org.apache.http.HttpResponse;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
+
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.net.URI;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
 import me.dehoog.trakr.R;
+import me.dehoog.trakr.models.PlacesResult;
 import me.dehoog.trakr.services.GPSTracker;
 
 public class CheckInActivity extends Activity {
@@ -105,6 +116,25 @@ public class CheckInActivity extends Activity {
     }
 
     private void testGson() {
+
+        String url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?key=AIzaSyATAz4Zi2av7206I5JFWqCBUzbzlpnLcdA&location=42.9395008,-81.22171019&radius=10";
+//        DefaultHttpClient httpClient = new DefaultHttpClient();
+//        URI uri;
+//        InputStream data = null;
+//        try {
+//            uri = new URI(url);
+//            HttpGet method = new HttpGet(uri);
+//            HttpResponse response = httpClient.execute(method);
+//            data = response.getEntity().getContent();
+//
+//            Gson gson = new Gson();
+//            Reader r = new InputStreamReader(data);
+//            PlacesResult pr = gson.fromJson(r, PlacesResult.class);
+//            String output = "INSERT BREAKPOINT";
+//
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
     }
 
     @Override
