@@ -120,6 +120,16 @@ public class PlaceDetails {
         return "";
     }
 
+    public String typeToString() {
+        String type = "";
+        if (this.types != null) {
+            String raw = this.types.get(0);
+            raw = raw.replaceAll("_", " ").toLowerCase();
+            type = raw.substring(0, 1).toUpperCase() + raw.substring(1);
+        }
+        return type;
+    }
+
     public List<AddressComponents> getAddress_components() {
         return address_components;
     }

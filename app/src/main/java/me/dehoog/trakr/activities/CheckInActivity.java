@@ -14,8 +14,10 @@ import android.util.AttributeSet;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.daimajia.androidanimations.library.Techniques;
@@ -69,11 +71,21 @@ public class CheckInActivity extends Activity implements PlacesService.PlacesInt
     @InjectView(R.id.panel_layout) SlidingUpPanelLayout mMerchantLayout;
     @InjectView(R.id.panel_header) RelativeLayout mPanelHeader;
 
+    // Panel Header
     @InjectView(R.id.merchant_icon) ImageView mMerchantIcon;
     @InjectView(R.id.merchant_name) TextView mMerchantTitle;
     @InjectView(R.id.merchant_address) TextView mMerchantSubtitle;
-
     @InjectView(R.id.panel_slide_symbol) ImageView mSlideSymbol;
+
+    // Panel Content
+    @InjectView(R.id.panel_merchant_address) TextView mPanelAddress;
+    @InjectView(R.id.panel_merchant_type) TextView mPanelType; // category
+    @InjectView(R.id.panel_merchant_phone) TextView mPanelPhone;
+    @InjectView(R.id.panel_merchant_website) TextView mPanelWebsite;
+
+    @InjectView(R.id.panel_transaction_date) TextView mPanelDate;
+    @InjectView(R.id.panel_transaction_account) Spinner mPanelAccount;
+    @InjectView(R.id.panel_transaction_amount) EditText mPanelAmount;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
