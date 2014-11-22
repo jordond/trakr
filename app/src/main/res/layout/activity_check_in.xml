@@ -57,6 +57,8 @@
                     android:layout_height="wrap_content"
                     style="?android:textAppearanceMedium"
                     android:gravity="center_vertical"
+                    android:maxLines="1"
+                    android:singleLine="true"
                     android:layout_marginTop="5dp"
                     android:layout_toEndOf="@+id/merchant_icon"/>
 
@@ -65,6 +67,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     style="?android:textAppearanceSmall"
+                    android:maxLines="1"
+                    android:singleLine="true"
                     android:layout_below="@id/merchant_name"
                     android:layout_toEndOf="@id/merchant_icon"/>
 

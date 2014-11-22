@@ -178,7 +178,7 @@ public class CheckInActivity extends Activity implements PlacesService.PlacesInt
     private void setLocation(LatLng location) {
         if (location != null) {
             mMap.moveCamera(CameraUpdateFactory.zoomTo(MAP_ZOOM));
-            mMap.animateCamera(CameraUpdateFactory.newLatLng(location), 3000, null);
+            mMap.animateCamera(CameraUpdateFactory.newLatLng(location), 1800, null);
         }
     }
 
