@@ -33,13 +33,46 @@
             android:background="@color/white_background">
 
             <!-- Panel bar layout -->
-            <LinearLayout
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="68dp"
-                android:orientation="horizontal"
+                android:gravity="center_vertical"
                 android:id="@+id/panel_content">
 
-                </LinearLayout>
+                <ImageView
+                    android:id="@+id/merchant_icon"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:gravity="center_vertical"
+                    android:src="@drawable/ic_general_icon"
+                    android:layout_marginEnd="10dp"/>
+
+                <TextView
+                    android:id="@+id/merchant_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="?android:textAppearanceMedium"
+                    android:gravity="center_vertical"
+                    android:layout_marginTop="5dp"
+                    android:layout_toEndOf="@+id/merchant_icon"/>
+
+                <TextView
+                    android:id="@+id/merchant_address"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="?android:textAppearanceSmall"
+                    android:layout_below="@id/merchant_name"
+                    android:layout_toEndOf="@id/merchant_icon"/>
+
+
+                <ImageView
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:src="@drawable/ic_plus_skinny"
+                    android:layout_marginEnd="10dp"
+                    android:layout_alignParentEnd="true" />
+
+                </RelativeLayout>
 
             <!-- Panel content -->
 
