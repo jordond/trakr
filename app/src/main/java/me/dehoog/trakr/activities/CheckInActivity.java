@@ -31,6 +31,9 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 import cn.pedant.SweetAlert.SweetAlertDialog;
 import me.dehoog.trakr.R;
+import me.dehoog.trakr.models.Address;
+import me.dehoog.trakr.models.Category;
+import me.dehoog.trakr.models.Merchant;
 import me.dehoog.trakr.models.Place;
 import me.dehoog.trakr.models.PlaceDetails;
 import me.dehoog.trakr.services.GPSTracker;
@@ -49,6 +52,8 @@ public class CheckInActivity extends Activity implements PlacesService.PlacesInt
 
     private List<Place> mPlaces = new ArrayList<Place>();
     private List<Marker> mMarkers = new ArrayList<Marker>();
+
+    private Merchant mMerchant;
 
     // UI Components
     @InjectView(R.id.panel_layout) SlidingUpPanelLayout mMerchantLayout;
@@ -144,6 +149,7 @@ public class CheckInActivity extends Activity implements PlacesService.PlacesInt
                         if (mMerchantLayout.isPanelHidden()) {
                             mMerchantLayout.showPanel();
                         }
+                        mPlacesService.placeDetailSearch(place); // Get details about the selected place
                         Ion.with(mMerchantIcon)
                                 .placeholder(R.drawable.ic_general_icon)
                                 .error(R.drawable.ic_general_icon)
@@ -252,5 +258,26 @@ public class CheckInActivity extends Activity implements PlacesService.PlacesInt
     @Override
     public void onPlaceDetailsReturned(PlaceDetails details) {
 
+        if (details != null) {
+            mMerchant = new Merchant(details.getName());
+            mMerchant.setPhone(details.getFormatted_phone_number());
+            mMerchant.setPlaceId(details.getPlace_id());
+            mMerchant.setWebsite(details.getUrl());
+
+            Category category = new Category(details.getTypes().get(0));
+            category.setIcon(details.getIcon());
+            mMerchant.setCategory(new Category(details.getTypes().get(0)));
+
+            Address address = new Address(details.getLatitude(), details.getLongitude());
+            address.setLongAddress(details.getFormatted_address());
+            address.setAddress(details.getStreetAddress());
+            address.setPostal(details.getPostalCode());
+            address.setCity(details.getCity());
+            address.setProvince(details.getProvince(false));
+            address.setCountry(details.getCountry(true));
+        }
+
+
+        System.out.println("test");
     }
 }

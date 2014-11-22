@@ -27,6 +27,8 @@ import me.dehoog.trakr.models.PlacesResult;
  */
 public class PlacesService extends Service {
 
+    private static final String TAG = PlacesService.class.getSimpleName();
+
     private static PlacesService mInstance;
 
     private static final String PLACES_API = "AIzaSyATAz4Zi2av7206I5JFWqCBUzbzlpnLcdA";
@@ -117,8 +119,7 @@ public class PlacesService extends Service {
         sendRequest(url);
     }
 
-    public void sendRequest(String url)
-    {
+    public void sendRequest(String url) {
         Ion.with(mContext)
                 .load(url)
                 .asJsonObject()
@@ -174,6 +175,7 @@ public class PlacesService extends Service {
             Gson gson = new Gson();
             result = gson.fromJson(json, PlacesResult.class);
             if (result.isMoreResults()) {
+                Log.d(TAG, "Fetching more results with id: " + result.getNext_page_token());
                 getMore(result.getNext_page_token());
             }
         } catch (Exception e) {

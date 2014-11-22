@@ -16,6 +16,8 @@ public class Address extends SugarRecord<Address> implements Serializable {
     private String province;
     private String country;
     private String postal;
+    private String city;
+    private String longAddress;
 
     // Constructors
     public Address() {
@@ -42,8 +44,6 @@ public class Address extends SugarRecord<Address> implements Serializable {
     }
 
     // Accessors
-
-
     public double getLatitude() {
         return latitude;
     }
@@ -90,5 +90,21 @@ public class Address extends SugarRecord<Address> implements Serializable {
 
     public void setPostal(String postal) {
         this.postal = postal;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getLongAddress() {
+        return longAddress;
+    }
+
+    public void setLongAddress(String longAddress) {
+        this.longAddress = longAddress;
     }
 }

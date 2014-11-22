@@ -20,6 +20,93 @@ public class PlaceDetails {
     private String url;
     private String vicinity;
     private String website;
+    private PlacesLocation geometry;
+
+    // Helper
+    public double getLatitude() {
+        double lat = -1.0;
+        if (this.geometry != null) {
+            lat = this.geometry.getLocation().getLat();
+        }
+        return lat;
+    }
+
+    public double getLongitude() {
+        double lng = -1.0;
+        if (this.geometry != null) {
+            lng = this.geometry.getLocation().getLng();
+        }
+        return lng;
+    }
+
+    public int getIndexOfComponent(String component) {
+        for (AddressComponents ac : this.address_components) {
+            if (ac.getTypes().contains(component)) {
+                return this.address_components.indexOf(ac);
+            }
+        }
+        return -1;
+    }
+
+    public String getStreetAddress() {
+        int index = getIndexOfComponent("street_number");
+        String num = "", street = "";
+        if (index != -1) {
+            AddressComponents ac = this.address_components.get(index);
+            num = ac.getLong_name();
+
+            index = getIndexOfComponent("route");
+            if (index != -1) {
+                ac = this.address_components.get(index);
+                street = ac.getShort_name();
+            }
+        }
+        return num + ' ' + street;
+    }
+
+    public String getPostalCode() {
+        int index = getIndexOfComponent("postal_code");
+        if (index != -1) {
+            AddressComponents ac = this.address_components.get(index);
+            return ac.getLong_name();
+        }
+        return "";
+    }
+
+    public String getCity() {
+        int index = getIndexOfComponent("locality");
+        if (index != -1) {
+            AddressComponents ac = this.address_components.get(index);
+            return ac.getLong_name();
+        }
+        return "";
+    }
+
+    public String getProvince(boolean longName) {
+        int index = getIndexOfComponent("administrative_area_level_1");
+        if (index != -1) {
+            AddressComponents ac = this.address_components.get(index);
+            if (longName) {
+                return ac.getLong_name();
+            } else {
+                return ac.getShort_name();
+            }
+        }
+        return "";
+    }
+
+    public String getCountry(boolean longName) {
+        int index = getIndexOfComponent("country");
+        if (index != -1) {
+            AddressComponents ac = this.address_components.get(index);
+            if (longName) {
+                return ac.getLong_name();
+            } else {
+                return ac.getShort_name();
+            }
+        }
+        return "";
+    }
 
     public List<AddressComponents> getAddress_components() {
         return address_components;
@@ -110,9 +197,18 @@ public class PlaceDetails {
         this.formatted_address = formatted_address;
     }
 
+    public PlacesLocation getGeometry() {
+        return geometry;
+    }
+
+    public void setGeometry(PlacesLocation geometry) {
+        this.geometry = geometry;
+    }
+
     public class AddressComponents {
         private String long_name;
         private String short_name;
+        private List<String> types;
 
         public String getLong_name() {
             return long_name;
@@ -128,6 +224,14 @@ public class PlaceDetails {
 
         public void setShort_name(String short_name) {
             this.short_name = short_name;
+        }
+
+        public List<String> getTypes() {
+            return types;
+        }
+
+        public void setTypes(List<String> types) {
+            this.types = types;
         }
     }
 }
