@@ -84,6 +84,8 @@ public class CheckInActivity extends Activity implements PlacesService.PlacesInt
 
             ButterKnife.inject(this);
 
+            fadeView(mMerchantSubtitle, true); //fix jittery bug
+
             mMerchantLayout.hidePanel();
             mMerchantLayout.setAnchorPoint(0.8f);
             mMerchantLayout.setPanelSlideListener(new SlidingUpPanelLayout.PanelSlideListener() {
