@@ -26,6 +26,11 @@ public class Merchant extends SugarRecord<Merchant> implements Serializable {
         this.name = name;
     }
 
+    public Merchant(String name, Address location) {
+        this.name = name;
+        this.location = location;
+    }
+
     public Merchant(String name, Address location, String description) {
         this.name = name;
         this.location = location;

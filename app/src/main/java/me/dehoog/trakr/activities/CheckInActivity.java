@@ -257,7 +257,6 @@ public class CheckInActivity extends Activity implements PlacesService.PlacesInt
 
     @Override
     public void onPlaceDetailsReturned(PlaceDetails details) {
-
         if (details != null) {
             mMerchant = new Merchant(details.getName());
             mMerchant.setPhone(details.getFormatted_phone_number());
@@ -266,18 +265,18 @@ public class CheckInActivity extends Activity implements PlacesService.PlacesInt
 
             Category category = new Category(details.getTypes().get(0));
             category.setIcon(details.getIcon());
-            mMerchant.setCategory(new Category(details.getTypes().get(0)));
+            mMerchant.setCategory(category);
 
             Address address = new Address(details.getLatitude(), details.getLongitude());
             address.setLongAddress(details.getFormatted_address());
             address.setAddress(details.getStreetAddress());
             address.setPostal(details.getPostalCode());
             address.setCity(details.getCity());
-            address.setProvince(details.getProvince(false));
-            address.setCountry(details.getCountry(true));
+            address.setProvince(details.getProvince(true)); // long form
+            address.setCountry(details.getCountry(true)); // long form
+            mMerchant.setLocation(address);
         }
 
-
-        System.out.println("test");
+        //TODO setup the ui components with merchant info
     }
 }
