@@ -13,6 +13,7 @@
         sothree:shadowHeight="4dp"
         sothree:paralaxOffset="100dp"
         sothree:overlay="true"
+        android:id="@+id/panel_layout"
         sothree:dragView="@+id/panel_header">
 
         <!-- Map fragment -->
@@ -41,11 +42,14 @@
 
                 <ImageView
                     android:id="@+id/merchant_icon"
-                    android:layout_width="60dp"
-                    android:layout_height="60dp"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:scaleType="fitXY"
                     android:gravity="center_vertical"
                     android:src="@drawable/ic_general_icon"
-                    android:layout_marginEnd="10dp"/>
+                    android:layout_marginTop="5dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginStart="5dp"/>
 
                 <TextView
                     android:id="@+id/merchant_name"

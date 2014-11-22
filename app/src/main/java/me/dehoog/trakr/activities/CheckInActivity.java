@@ -3,7 +3,9 @@ package me.dehoog.trakr.activities;
 import android.app.Activity;
 import android.graphics.Bitmap;
 import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
+import android.support.v4.widget.SlidingPaneLayout;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
@@ -20,6 +22,7 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
+import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,7 +38,7 @@ import me.dehoog.trakr.services.PlacesService;
 
 public class CheckInActivity extends Activity implements PlacesService.PlacesInterface{
 
-    private static final int MAP_ZOOM = 17;
+    private static final int MAP_ZOOM = 16;
 
     private GoogleMap mMap;
 
@@ -48,6 +51,7 @@ public class CheckInActivity extends Activity implements PlacesService.PlacesInt
     private List<Marker> mMarkers = new ArrayList<Marker>();
 
     // UI Components
+    @InjectView(R.id.panel_layout) SlidingUpPanelLayout mMerchantLayout;
     @InjectView(R.id.merchant_icon) ImageView mMerchantIcon;
     @InjectView(R.id.merchant_name) TextView mMerchantName;
     @InjectView(R.id.merchant_address) TextView mMerchantAddress;
@@ -71,6 +75,8 @@ public class CheckInActivity extends Activity implements PlacesService.PlacesInt
             mPlacesService.setmListener(this);
 
             ButterKnife.inject(this);
+
+            mMerchantLayout.hidePanel();
 
             setUpMapIfNeeded();
             mPlacesService.nearbySearch(null);
@@ -106,9 +112,27 @@ public class CheckInActivity extends Activity implements PlacesService.PlacesInt
         mMap.setOnMyLocationButtonClickListener(new GoogleMap.OnMyLocationButtonClickListener() {
             @Override
             public boolean onMyLocationButtonClick() {
+                mMerchantLayout.hidePanel();
                 mCurrentLocation = mTracker.getLocation(getApplication());
-                setLocation(mCurrentLocation);
+                setLocation(convertLocation(mCurrentLocation));
+                mPlacesService.nearbySearch(null);
                 return true;
+            }
+        });
+
+        mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+            @Override
+            public void onMapClick(LatLng latLng) {
+                mMerchantLayout.hidePanel();
+            }
+        });
+
+        mMap.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
+            @Override
+            public void onMapLongClick(LatLng latLng) {
+                mMerchantLayout.hidePanel();
+                mPlacesService.nearbySearch(convertLatLng(latLng));
+                setLocation(latLng);
             }
         });
 
@@ -117,10 +141,14 @@ public class CheckInActivity extends Activity implements PlacesService.PlacesInt
             public boolean onMarkerClick(Marker marker) {
                 for (Place place : mPlaces) {
                     if (place.getId().equals(marker.getSnippet())) {
+                        if (mMerchantLayout.isPanelHidden()) {
+                            mMerchantLayout.showPanel();
+                        }
                         Ion.with(mMerchantIcon)
                                 .placeholder(R.drawable.ic_general_icon)
                                 .error(R.drawable.ic_general_icon)
                                 .load(place.getIcon());
+
                         mMerchantName.setText(place.getName());
                         mMerchantAddress.setText(place.getVicinity());
                         break;
@@ -133,14 +161,24 @@ public class CheckInActivity extends Activity implements PlacesService.PlacesInt
         });
 
         mCurrentLocation = mTracker.getLocation(this);
-        setLocation(mCurrentLocation);
+        setLocation(convertLocation(mCurrentLocation));
     }
 
-    private void setLocation(Location location) {
+    private LatLng convertLocation(Location location) {
+        return new LatLng(location.getLatitude(), location.getLongitude());
+    }
+
+    private Location convertLatLng(LatLng location) {
+        Location loc = new Location(LocationManager.GPS_PROVIDER);
+        loc.setLatitude(location.latitude);
+        loc.setLongitude(location.longitude);
+        return loc;
+    }
+
+    private void setLocation(LatLng location) {
         if (location != null) {
-            LatLng latlng = new LatLng(location.getLatitude(), location.getLongitude());
             mMap.moveCamera(CameraUpdateFactory.zoomTo(MAP_ZOOM));
-            mMap.animateCamera(CameraUpdateFactory.newLatLng(latlng), 3000, null);
+            mMap.animateCamera(CameraUpdateFactory.newLatLng(location), 3000, null);
         }
     }
 
