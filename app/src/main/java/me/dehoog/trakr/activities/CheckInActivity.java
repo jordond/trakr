@@ -57,6 +57,7 @@ public class CheckInActivity extends Activity implements PlacesService.PlacesInt
     private List<Marker> mMarkers = new ArrayList<Marker>();
 
     private Merchant mMerchant;
+    private Marker mSelectedMarker;
 
     // UI Components
     @InjectView(R.id.panel_layout) SlidingUpPanelLayout mMerchantLayout;
@@ -149,6 +150,7 @@ public class CheckInActivity extends Activity implements PlacesService.PlacesInt
             public boolean onMyLocationButtonClick() {
                 mMerchantLayout.hidePanel();
                 mCurrentLocation = mTracker.getLocation(getApplication());
+                clearMarkers();
                 setLocation(convertLocation(mCurrentLocation));
                 mPlacesService.nearbySearch(null);
                 return true;
@@ -166,6 +168,7 @@ public class CheckInActivity extends Activity implements PlacesService.PlacesInt
             @Override
             public void onMapLongClick(LatLng latLng) {
                 mMerchantLayout.hidePanel();
+                clearMarkers();
                 mPlacesService.nearbySearch(convertLatLng(latLng));
                 setLocation(latLng);
             }
@@ -174,11 +177,15 @@ public class CheckInActivity extends Activity implements PlacesService.PlacesInt
         mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
             @Override
             public boolean onMarkerClick(Marker marker) {
+                if (mSelectedMarker != null && mSelectedMarker.getId().equals(marker.getId())) {
+                    return true;
+                }
                 for (Place place : mPlaces) {
                     if (place.getId().equals(marker.getSnippet())) {
                         if (mMerchantLayout.isPanelHidden()) {
                             mMerchantLayout.showPanel();
                         }
+                        mSelectedMarker = marker;
                         mPlacesService.placeDetailSearch(place); // Get details about the selected place
                         Ion.with(mMerchantIcon)
                                 .placeholder(R.drawable.ic_general_icon)

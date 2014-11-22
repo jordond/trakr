@@ -153,6 +153,7 @@ public class PlacesService extends Service {
     }
 
     public void sendDetailsRequest(String url) {
+        Log.d(TAG, "Sending more detail request to google");
         Ion.with(mContext)
                 .load(url)
                 .asJsonObject()
