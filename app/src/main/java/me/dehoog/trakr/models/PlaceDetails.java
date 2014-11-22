@@ -49,19 +49,23 @@ public class PlaceDetails {
     }
 
     public String getStreetAddress() {
+        AddressComponents ac;
         int index = getIndexOfComponent("street_number");
         String num = "", street = "";
         if (index != -1) {
-            AddressComponents ac = this.address_components.get(index);
+            ac = this.address_components.get(index);
             num = ac.getLong_name();
-
-            index = getIndexOfComponent("route");
-            if (index != -1) {
-                ac = this.address_components.get(index);
-                street = ac.getShort_name();
-            }
         }
-        return num + ' ' + street;
+        index = getIndexOfComponent("route");
+        if (index != -1) {
+            ac = this.address_components.get(index);
+            street = ac.getShort_name();
+        }
+        if (num.isEmpty()) {
+            return street;
+        } else {
+            return num + ' ' + street;
+        }
     }
 
     public String getPostalCode() {
