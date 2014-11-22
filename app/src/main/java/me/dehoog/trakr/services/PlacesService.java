@@ -150,6 +150,7 @@ public class PlacesService extends Service {
                 .load(url)
                 .asJsonObject()
                 .setCallback(fCb);
+        
     }
 
     public void sendDetailsRequest(String url) {

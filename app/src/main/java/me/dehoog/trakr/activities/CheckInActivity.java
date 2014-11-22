@@ -3,11 +3,14 @@ package me.dehoog.trakr.activities;
 import android.animation.ArgbEvaluator;
 import android.animation.ValueAnimator;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.util.AttributeSet;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -84,12 +87,8 @@ public class CheckInActivity extends Activity implements PlacesService.PlacesInt
         int resultCode = GooglePlayServicesUtil.isGooglePlayServicesAvailable(this);
         if (ConnectionResult.SUCCESS == resultCode) {
             mTracker = GPSTracker.getInstance();
-            mPlacesService = PlacesService.getInstance(this);
-            mPlacesService.setmListener(this);
 
             ButterKnife.inject(this);
-
-            fadeView(mMerchantSubtitle, true); //fix jittery bug
 
             mMerchantLayout.hidePanel();
             mMerchantLayout.setPanelSlideListener(new SlidingUpPanelLayout.PanelSlideListener() {
@@ -123,7 +122,6 @@ public class CheckInActivity extends Activity implements PlacesService.PlacesInt
             });
 
             setUpMapIfNeeded();
-            mPlacesService.nearbySearch(null); // Search current location
         } else {
             new SweetAlertDialog(this, SweetAlertDialog.ERROR_TYPE)
                     .setTitleText("Error")
@@ -137,6 +135,15 @@ public class CheckInActivity extends Activity implements PlacesService.PlacesInt
                     })
                     .show();
         }
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        mPlacesService = PlacesService.getInstance(getApplicationContext());
+        mPlacesService.setmListener(this);
+        fadeView(mMerchantSubtitle, true); //fix jittery bug
+        mPlacesService.nearbySearch(null); // Search current location
     }
 
     private void setUpMapIfNeeded() {
