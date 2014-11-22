@@ -48,19 +48,27 @@ public class PlaceDetails {
         return -1;
     }
 
-    public String getStreetAddress() {
-        AddressComponents ac;
+    public String getStreetNumber() {
         int index = getIndexOfComponent("street_number");
-        String num = "", street = "";
         if (index != -1) {
-            ac = this.address_components.get(index);
-            num = ac.getLong_name();
+            AddressComponents ac = this.address_components.get(index);
+            return ac.getLong_name();
         }
-        index = getIndexOfComponent("route");
+        return "";
+    }
+
+    public String getRoute() {
+        int index = getIndexOfComponent("route");
         if (index != -1) {
-            ac = this.address_components.get(index);
-            street = ac.getShort_name();
+            AddressComponents ac = this.address_components.get(index);
+            return ac.getLong_name();
         }
+        return "";
+    }
+
+    public String getStreetAddress() {
+        String num = getStreetNumber();
+        String street = getRoute();
         if (num.isEmpty()) {
             return street;
         } else {
