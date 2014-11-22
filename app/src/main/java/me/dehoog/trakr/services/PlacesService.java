@@ -168,18 +168,15 @@ public class PlacesService extends Service {
         Log.d(TAG, "Sending more detail request to google");
         Ion.with(mContext)
                 .load(url)
-                .asJsonObject()
-                .setCallback(new FutureCallback<JsonObject>() {
+                .as(PlaceDetailsResult.class)
+                .setCallback(new FutureCallback<PlaceDetailsResult>() {
                     @Override
-                    public void onCompleted(Exception e, JsonObject result) {
+                    public void onCompleted(Exception e, PlaceDetailsResult result) {
                         if (mListener != null) {
-                            PlaceDetailsResult detailResult = new PlaceDetailsResult();
-                            try {
-                                Gson gson = new Gson();
-                                detailResult = gson.fromJson(result.toString(), PlaceDetailsResult.class);
-                                mListener.onPlaceDetailsReturned(detailResult.getResults());
-                            } catch (Exception ex) {
-                                Log.e("Details request", ex.getMessage());
+                            if (result.getStatus().equals("OK")) {
+                                mListener.onPlaceDetailsReturned(result.getResults());
+                            } else {
+                                Log.e(TAG, "Google said no: " + result.getStatus());
                             }
                         }
                     }
