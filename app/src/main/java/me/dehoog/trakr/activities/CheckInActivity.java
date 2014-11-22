@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.v4.widget.SlidingPaneLayout;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -29,6 +30,7 @@ import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import butterknife.OnClick;
 import cn.pedant.SweetAlert.SweetAlertDialog;
 import me.dehoog.trakr.R;
 import me.dehoog.trakr.models.Address;
@@ -82,9 +84,10 @@ public class CheckInActivity extends Activity implements PlacesService.PlacesInt
             ButterKnife.inject(this);
 
             mMerchantLayout.hidePanel();
+            mMerchantLayout.setAnchorPoint(0.8f);
 
             setUpMapIfNeeded();
-            mPlacesService.nearbySearch(null);
+            mPlacesService.nearbySearch(null); // Search current location
         } else {
             new SweetAlertDialog(this, SweetAlertDialog.ERROR_TYPE)
                     .setTitleText("Error")
@@ -113,6 +116,7 @@ public class CheckInActivity extends Activity implements PlacesService.PlacesInt
         mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
         mMap.setMyLocationEnabled(true);
         mMap.getUiSettings().setTiltGesturesEnabled(false);
+        mMap.getUiSettings().setZoomControlsEnabled(false);
 
         mMap.setOnMyLocationButtonClickListener(new GoogleMap.OnMyLocationButtonClickListener() {
             @Override
