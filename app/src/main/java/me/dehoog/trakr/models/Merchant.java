@@ -1,6 +1,7 @@
 package me.dehoog.trakr.models;
 
 import com.orm.SugarRecord;
+import com.orm.dsl.Ignore;
 
 import java.io.Serializable;
 
@@ -17,6 +18,9 @@ public class Merchant extends SugarRecord<Merchant> implements Serializable {
     private String website;
     private String placeId;
     private Category category;
+
+    @Ignore
+    private Place place;
 
     // Constructors
     public Merchant() {
@@ -92,5 +96,13 @@ public class Merchant extends SugarRecord<Merchant> implements Serializable {
 
     public void setCategory(Category category) {
         this.category = category;
+    }
+
+    public Place getPlace() {
+        return place;
+    }
+
+    public void setPlace(Place place) {
+        this.place = place;
     }
 }

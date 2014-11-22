@@ -6,13 +6,14 @@ import android.graphics.Bitmap;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
-import android.support.v4.widget.SlidingPaneLayout;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.daimajia.androidanimations.library.Techniques;
+import com.daimajia.androidanimations.library.YoYo;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -31,7 +32,6 @@ import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
-import butterknife.OnClick;
 import cn.pedant.SweetAlert.SweetAlertDialog;
 import me.dehoog.trakr.R;
 import me.dehoog.trakr.models.Address;
@@ -56,14 +56,14 @@ public class CheckInActivity extends Activity implements PlacesService.PlacesInt
     private List<Place> mPlaces = new ArrayList<Place>();
     private List<Marker> mMarkers = new ArrayList<Marker>();
 
-    private Merchant mMerchant;
+    private Merchant mMerchant = new Merchant();
     private Marker mSelectedMarker;
 
     // UI Components
     @InjectView(R.id.panel_layout) SlidingUpPanelLayout mMerchantLayout;
     @InjectView(R.id.merchant_icon) ImageView mMerchantIcon;
-    @InjectView(R.id.merchant_name) TextView mMerchantName;
-    @InjectView(R.id.merchant_address) TextView mMerchantAddress;
+    @InjectView(R.id.merchant_name) TextView mMerchantTitle;
+    @InjectView(R.id.merchant_address) TextView mMerchantSubtitle;
 
     @InjectView(R.id.panel_slide_symbol) ImageView mSlideSymbol;
 
@@ -94,22 +94,25 @@ public class CheckInActivity extends Activity implements PlacesService.PlacesInt
 
                 @Override
                 public void onPanelCollapsed(View view) {
+                    fadeView(mMerchantSubtitle, false);
                     mSlideSymbol.setImageResource(R.drawable.ic_plus_skinny);
                 }
 
                 @Override
                 public void onPanelExpanded(View view) {
+                    fadeView(mMerchantSubtitle, true);
                     mSlideSymbol.setImageResource(R.drawable.ic_chevron_down);
                 }
 
                 @Override
                 public void onPanelAnchored(View view) {
+                    fadeView(mMerchantSubtitle, true);
                     mSlideSymbol.setImageResource(R.drawable.ic_chevron_down);
                 }
 
                 @Override
                 public void onPanelHidden(View view) {
-
+                    fadeView(mMerchantSubtitle, true);
                 }
             });
 
@@ -177,10 +180,11 @@ public class CheckInActivity extends Activity implements PlacesService.PlacesInt
         mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
             @Override
             public boolean onMarkerClick(Marker marker) {
-                if (mSelectedMarker != null && mSelectedMarker.getId().equals(marker.getId())) {
+                if (!mMerchantLayout.isPanelHidden() && mSelectedMarker != null && mSelectedMarker.getId().equals(marker.getId())) {
                     return true;
                 }
                 for (Place place : mPlaces) {
+                    mMerchant.setPlace(place);
                     if (place.getId().equals(marker.getSnippet())) {
                         if (mMerchantLayout.isPanelHidden()) {
                             mMerchantLayout.showPanel();
@@ -192,8 +196,8 @@ public class CheckInActivity extends Activity implements PlacesService.PlacesInt
                                 .error(R.drawable.ic_general_icon)
                                 .load(place.getIcon());
 
-                        mMerchantName.setText(place.getName());
-                        mMerchantAddress.setText(place.getVicinity());
+                        mMerchantTitle.setText(place.getName());
+                        mMerchantSubtitle.setText(place.getVicinity());
                         break;
 
                         //TODO fetch extra place details
@@ -222,6 +226,18 @@ public class CheckInActivity extends Activity implements PlacesService.PlacesInt
         if (location != null) {
             mMap.moveCamera(CameraUpdateFactory.zoomTo(MAP_ZOOM));
             mMap.animateCamera(CameraUpdateFactory.newLatLng(location), 1800, null);
+        }
+    }
+
+    private void fadeView(View view, boolean out) {
+        if (out) {
+            YoYo.with(Techniques.FadeOut)
+                    .duration(300)
+                    .playOn(view);
+        } else {
+            YoYo.with(Techniques.FadeIn)
+                    .duration(300)
+                    .playOn(view);
         }
     }
 
@@ -307,6 +323,8 @@ public class CheckInActivity extends Activity implements PlacesService.PlacesInt
     @Override
     public void onPlaceDetailsReturned(PlaceDetails details) {
         if (details != null) {
+            Place place = mMerchant.getPlace();
+
             mMerchant = new Merchant(details.getName());
             mMerchant.setPhone(details.getFormatted_phone_number());
             mMerchant.setPlaceId(details.getPlace_id());
@@ -324,6 +342,8 @@ public class CheckInActivity extends Activity implements PlacesService.PlacesInt
             address.setProvince(details.getProvince(true)); // long form
             address.setCountry(details.getCountry(true)); // long form
             mMerchant.setLocation(address);
+
+            mMerchant.setPlace(place);
         }
 
         //TODO setup the ui components with merchant info

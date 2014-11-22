@@ -26,7 +26,7 @@
 
         <!-- Merchant info panel -->
         <LinearLayout
-            android:id="@+id/panel_header"
+            android:id="@+id/panel_main"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
@@ -39,7 +39,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="68dp"
                 android:gravity="center_vertical"
-                android:id="@+id/panel_content">
+                android:id="@+id/panel_header">
 
                 <ImageView
                     android:id="@+id/merchant_icon"
@@ -85,6 +85,15 @@
                 </RelativeLayout>
 
             <!-- Panel content -->
+            <LinearLayout
+                android:id="@+id/panel_content"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="TEST123"/>
+                </LinearLayout>
 
             </LinearLayout>
 
