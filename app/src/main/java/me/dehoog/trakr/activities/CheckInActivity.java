@@ -6,6 +6,8 @@ import android.location.Location;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
@@ -22,6 +24,8 @@ import com.koushikdutta.ion.Ion;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.ButterKnife;
+import butterknife.InjectView;
 import cn.pedant.SweetAlert.SweetAlertDialog;
 import me.dehoog.trakr.R;
 import me.dehoog.trakr.models.Place;
@@ -43,6 +47,13 @@ public class CheckInActivity extends Activity implements PlacesService.PlacesInt
     private List<Place> mPlaces = new ArrayList<Place>();
     private List<Marker> mMarkers = new ArrayList<Marker>();
 
+    // UI Components
+    @InjectView(R.id.merchant_icon) ImageView mMerchantIcon;
+    @InjectView(R.id.merchant_name) TextView mMerchantName;
+    @InjectView(R.id.merchant_address) TextView mMerchantAddress;
+
+    @InjectView(R.id.panel_slide_symbol) ImageView mSlideSymbol;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,6 +69,8 @@ public class CheckInActivity extends Activity implements PlacesService.PlacesInt
             mTracker = GPSTracker.getInstance();
             mPlacesService = PlacesService.getInstance(this);
             mPlacesService.setmListener(this);
+
+            ButterKnife.inject(this);
 
             setUpMapIfNeeded();
             mPlacesService.nearbySearch(null);
@@ -95,6 +108,26 @@ public class CheckInActivity extends Activity implements PlacesService.PlacesInt
             public boolean onMyLocationButtonClick() {
                 mCurrentLocation = mTracker.getLocation(getApplication());
                 setLocation(mCurrentLocation);
+                return true;
+            }
+        });
+
+        mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+            @Override
+            public boolean onMarkerClick(Marker marker) {
+                for (Place place : mPlaces) {
+                    if (place.getId().equals(marker.getSnippet())) {
+                        Ion.with(mMerchantIcon)
+                                .placeholder(R.drawable.ic_general_icon)
+                                .error(R.drawable.ic_general_icon)
+                                .load(place.getIcon());
+                        mMerchantName.setText(place.getName());
+                        mMerchantAddress.setText(place.getVicinity());
+                        break;
+
+                        //TODO fetch extra place details
+                    }
+                }
                 return true;
             }
         });
@@ -159,7 +192,9 @@ public class CheckInActivity extends Activity implements PlacesService.PlacesInt
     private void addMarker(Place place) {
         final Marker marker = mMap.addMarker(new MarkerOptions()
                 .position(place.getLatLng())
-                .title(place.getName()));
+                .title(place.getName())
+                .snippet(place.getId()));
+
         mMarkers.add(marker);
 
         Ion.with(getApplicationContext())

@@ -66,6 +66,7 @@
 
 
                 <ImageView
+                    android:id="@+id/panel_slide_symbol"
                     android:layout_width="60dp"
                     android:layout_height="60dp"
                     android:src="@drawable/ic_plus_skinny"
