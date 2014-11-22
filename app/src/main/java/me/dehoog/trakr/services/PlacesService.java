@@ -129,7 +129,7 @@ public class PlacesService extends Service {
     }
 
     public void sendRequest(String url) {
-        FutureCallback fCb = new FutureCallback<JsonObject>() {
+        FutureCallback<JsonObject> fCb = new FutureCallback<JsonObject>() {
             @Override
             public void onCompleted(Exception e, JsonObject result) {
                 if (mListener != null) {
