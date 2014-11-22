@@ -290,6 +290,9 @@ public class CheckInActivity extends Activity implements PlacesService.PlacesInt
         if (mTracker != null) {
             mTracker.stopUsingGPS();
         }
+        if (mPlacesService != null) {
+            mPlacesService.setmListener(null);
+        }
     }
 
     @Override

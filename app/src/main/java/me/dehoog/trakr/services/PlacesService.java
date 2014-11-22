@@ -197,18 +197,6 @@ public class PlacesService extends Service {
         return new LatLng(lat, lng);
     }
 
-    public PlacesResult parseJSON(String json) {
-        PlacesResult result = new PlacesResult();
-        try {
-            Gson gson = new Gson();
-            result = gson.fromJson(json, PlacesResult.class);
-            Log.d(TAG, "result status:" + result.getStatus());
-        } catch (Exception e) {
-            Log.e("parseJSON", e.getMessage());
-        }
-        return result;
-    }
-
     public int getmRadius() {
         return mRadius;
     }
