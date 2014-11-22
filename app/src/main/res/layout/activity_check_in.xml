@@ -84,134 +84,135 @@
 
                 </RelativeLayout>
 
-            <!-- Panel content -->
-            <ScrollView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-            <LinearLayout
-                android:id="@+id/panel_content"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-
-
-                <TextView
-                    android:id="@+id/panel_merchant_address"
+                <!-- Panel content -->
+                <ScrollView
                     android:layout_width="match_parent"
-                    android:drawableStart="@drawable/ic_marker"
-                    android:layout_height="0dp"
-                    android:layout_weight="1"
-                    android:gravity="center_vertical"
-                    android:text="944 Dearness Drive London Ontario"/>
-
-                <TextView
-                    android:id="@+id/panel_merchant_type"
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="1"
-                    android:drawableStart="@drawable/ic_filter"
-                    android:gravity="center_vertical"
-                    android:text="Entertainment"/>
-
-                <TextView
-                    android:id="@+id/panel_merchant_phone"
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="1"
-                    android:drawableStart="@drawable/ic_phone"
-                    android:gravity="center_vertical"
-                    android:text="(519) 765-9887"/>
-
-                <TextView
-                    android:id="@+id/panel_merchant_website"
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="1"
-                    android:drawableStart="@drawable/ic_earth"
-                    android:gravity="center_vertical"
-                    android:text="@string/check_in_merchant_website_default"/>
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="1"
-                    android:drawableStart="@drawable/ic_calendar"
-                    style="?android:textAppearanceSmall"
-                    android:gravity="center_vertical"
-                    android:hint="Choose date"/>
+                    android:layout_height="match_parent">
 
                 <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="1"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical">
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/ic_bank"/>
-
-                    <Spinner
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content">
-
-                    </Spinner>
-
-                </LinearLayout>
-
-                <LinearLayout
+                    android:id="@+id/panel_content"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical">
+                    android:orientation="vertical">
 
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/ic_coin"/>
+                    <TextView
+                        android:id="@+id/panel_merchant_address"
+                        android:layout_width="match_parent"
+                        android:drawableStart="@drawable/ic_marker"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical"
+                        android:text="944 Dearness Drive London Ontario"/>
 
-                    <EditText
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                    <TextView
+                        android:id="@+id/panel_merchant_type"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:drawableStart="@drawable/ic_filter"
+                        android:gravity="center_vertical"
+                        android:text="Entertainment"/>
+
+                    <TextView
+                        android:id="@+id/panel_merchant_phone"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:drawableStart="@drawable/ic_phone"
+                        android:gravity="center_vertical"
+                        android:text="(519) 765-9887"/>
+
+                    <TextView
+                        android:id="@+id/panel_merchant_website"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:drawableStart="@drawable/ic_earth"
+                        android:gravity="center_vertical"
+                        android:text="@string/check_in_merchant_website_default"/>
+
+                    <TextView
+                        android:id="@+id/panel_transaction_date"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:drawableStart="@drawable/ic_calendar"
                         style="?android:textAppearanceSmall"
-                        android:hint="Amount spent"
-                        android:inputType="numberDecimal" />
-                    </LinearLayout>
+                        android:gravity="center_vertical"
+                        android:hint="Choose date"/>
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="1">
-
-                    <ImageButton
-                        android:id="@+id/action_save"
-                        android:layout_width="0dp"
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
                         android:layout_weight="1"
-                        android:layout_height="wrap_content"
-                        android:scaleType="fitCenter"
-                        style="?android:attr/borderlessButtonStyle"
-                        android:src="@drawable/ic_save"
-                        android:contentDescription="@string/check_in_save_image_description" />
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical">
 
-                    <ImageButton
-                        android:id="@+id/action_cancel"
-                        android:layout_width="0dp"
-                        android:layout_weight="1"
-                        android:layout_height="wrap_content"
-                        android:scaleType="fitCenter"
-                        style="?android:attr/borderlessButtonStyle"
-                        android:src="@drawable/ic_cancel"
-                        android:contentDescription="@string/check_in_cancel_image_description" />
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/ic_bank"/>
+
+                        <Spinner
+                            android:id="@+id/panel_transaction_account"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content">
+
+                        </Spinner>
 
                     </LinearLayout>
 
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical">
 
-                </LinearLayout>
-            </ScrollView>
-            <!-- End panel content -->
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/ic_coin"/>
+
+                        <EditText
+                            android:id="@+id/panel_transaction_amount"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            style="?android:textAppearanceSmall"
+                            android:hint="Amount spent"
+                            android:inputType="numberDecimal" />
+                        </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1">
+
+                        <ImageButton
+                            android:id="@+id/action_save"
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="wrap_content"
+                            android:scaleType="fitCenter"
+                            style="?android:attr/borderlessButtonStyle"
+                            android:src="@drawable/ic_save"
+                            android:contentDescription="@string/check_in_save_image_description" />
+
+                        <ImageButton
+                            android:id="@+id/action_cancel"
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="wrap_content"
+                            android:scaleType="fitCenter"
+                            style="?android:attr/borderlessButtonStyle"
+                            android:src="@drawable/ic_cancel"
+                            android:contentDescription="@string/check_in_cancel_image_description" />
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                </ScrollView>
+                <!-- End panel content -->
 
             </LinearLayout>
 
