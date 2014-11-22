@@ -85,6 +85,32 @@ public class CheckInActivity extends Activity implements PlacesService.PlacesInt
 
             mMerchantLayout.hidePanel();
             mMerchantLayout.setAnchorPoint(0.8f);
+            mMerchantLayout.setPanelSlideListener(new SlidingUpPanelLayout.PanelSlideListener() {
+                @Override
+                public void onPanelSlide(View view, float v) {
+
+                }
+
+                @Override
+                public void onPanelCollapsed(View view) {
+                    mSlideSymbol.setImageResource(R.drawable.ic_plus_skinny);
+                }
+
+                @Override
+                public void onPanelExpanded(View view) {
+                    mSlideSymbol.setImageResource(R.drawable.ic_chevron_down);
+                }
+
+                @Override
+                public void onPanelAnchored(View view) {
+                    mSlideSymbol.setImageResource(R.drawable.ic_chevron_down);
+                }
+
+                @Override
+                public void onPanelHidden(View view) {
+
+                }
+            });
 
             setUpMapIfNeeded();
             mPlacesService.nearbySearch(null); // Search current location
