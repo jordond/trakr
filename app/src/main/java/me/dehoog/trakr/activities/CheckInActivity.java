@@ -1,6 +1,7 @@
 package me.dehoog.trakr.activities;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.location.Location;
 import android.location.LocationManager;
@@ -71,7 +72,6 @@ public class CheckInActivity extends Activity implements PlacesService.PlacesInt
         setContentView(R.layout.activity_check_in);
 
         if (getActionBar() != null) {
-            getActionBar().setHomeButtonEnabled(true);
             getActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
@@ -205,9 +205,21 @@ public class CheckInActivity extends Activity implements PlacesService.PlacesInt
         if (id == R.id.action_settings) {
             return true;
         } else if (id == R.id.action_search) {
+        } else if (id == R.id.homeAsUp) {
+            Intent intent = new Intent();
+            setResult(RESULT_CANCELED, intent);
+            finish();
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (!mMerchantLayout.isPanelHidden()) {
+            mMerchantLayout.hidePanel();
+        }
     }
 
     @Override
