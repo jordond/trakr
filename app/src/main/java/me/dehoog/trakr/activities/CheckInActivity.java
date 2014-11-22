@@ -1,5 +1,7 @@
 package me.dehoog.trakr.activities;
 
+import android.animation.ArgbEvaluator;
+import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -10,6 +12,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.daimajia.androidanimations.library.Techniques;
@@ -61,6 +64,8 @@ public class CheckInActivity extends Activity implements PlacesService.PlacesInt
 
     // UI Components
     @InjectView(R.id.panel_layout) SlidingUpPanelLayout mMerchantLayout;
+    @InjectView(R.id.panel_header) RelativeLayout mPanelHeader;
+
     @InjectView(R.id.merchant_icon) ImageView mMerchantIcon;
     @InjectView(R.id.merchant_name) TextView mMerchantTitle;
     @InjectView(R.id.merchant_address) TextView mMerchantSubtitle;
@@ -87,7 +92,6 @@ public class CheckInActivity extends Activity implements PlacesService.PlacesInt
             fadeView(mMerchantSubtitle, true); //fix jittery bug
 
             mMerchantLayout.hidePanel();
-            mMerchantLayout.setAnchorPoint(0.8f);
             mMerchantLayout.setPanelSlideListener(new SlidingUpPanelLayout.PanelSlideListener() {
                 @Override
                 public void onPanelSlide(View view, float v) {
