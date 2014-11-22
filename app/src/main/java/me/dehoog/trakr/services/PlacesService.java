@@ -125,7 +125,7 @@ public class PlacesService extends Service {
                 Log.d(TAG, "I've waited my turn, time to DDOS Google!");
                 sendRequest(url); // Slow it down baby
             }
-        }, 1600); // How low can ya go
+        }, 1700); // How low can ya go
     }
 
     public void sendRequest(String url) {
