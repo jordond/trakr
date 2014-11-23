@@ -45,6 +45,7 @@ public class ExpandAccountCard extends CardExpand {
 
         //TODO add item click event on transactions list to show the current transaction
         ListView listView = (ListView) view.findViewById(R.id.card_account_expand_transaction_list);
+
         List<Purchase> transactions = mAccount.getAllPurchases();
         int numTransactions = transactions.size();
         if (transactions.isEmpty()) {
@@ -52,8 +53,9 @@ public class ExpandAccountCard extends CardExpand {
             recentTransHeader.setText("no transactions");
         }
         if (numTransactions > 3) {
-            transactions = transactions.subList(0,3);
+            transactions = transactions.subList(numTransactions - 3, numTransactions);
         }
+
         RecentTransactionAdapter adapter = new RecentTransactionAdapter(mContext, transactions);
         listView.setAdapter(adapter);
         listView.setDivider(mContext.getResources().getDrawable(R.drawable.transperent_color));

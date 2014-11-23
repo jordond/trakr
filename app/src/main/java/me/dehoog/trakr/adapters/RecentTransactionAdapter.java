@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
+import java.util.Collections;
 import java.util.List;
 
 import me.dehoog.trakr.R;
@@ -61,7 +62,7 @@ public class RecentTransactionAdapter extends BaseAdapter {
         TextView tAmount = (TextView) convertView.findViewById(R.id.list_transaction_amount);
 
         Purchase p = mPurchases.get(position);
-        String date = new SimpleDateFormat("MMM dd h:mma").format(p.getDate());
+        String date = new SimpleDateFormat("MMM dd").format(p.getDate());
 
         tDate.setText(date);
         tMerchant.setText(p.getMerchant().getName());
