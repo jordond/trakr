@@ -43,5 +43,8 @@
     <string name="check_in_save_image_description">Save transaction</string>
     <string name="check_in_cancel_image_description">Cancel transaction</string>
     <string name="check_in_merchant_website_default">no website found</string>
+    <string name="check_in_amount_hint">Amount spent</string>
+    <string name="check_in_account_description">Bank account</string>
+    <string name="check_in_date_hint">Choose date</string>
 
 </resources>

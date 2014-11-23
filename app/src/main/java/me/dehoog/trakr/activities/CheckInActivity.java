@@ -35,11 +35,14 @@ import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import butterknife.OnClick;
 import cn.pedant.SweetAlert.SweetAlertDialog;
 import me.dehoog.trakr.R;
 import me.dehoog.trakr.models.Address;
@@ -67,6 +70,8 @@ public class CheckInActivity extends Activity implements PlacesService.PlacesInt
     private Merchant mMerchant = new Merchant();
     private Marker mSelectedMarker;
 
+    private SimpleDateFormat mDateFormat;
+
     // UI Components
     @InjectView(R.id.panel_layout) SlidingUpPanelLayout mMerchantLayout;
     @InjectView(R.id.panel_header) RelativeLayout mPanelHeader;
@@ -86,6 +91,17 @@ public class CheckInActivity extends Activity implements PlacesService.PlacesInt
     @InjectView(R.id.panel_transaction_date) TextView mPanelDate;
     @InjectView(R.id.panel_transaction_account) Spinner mPanelAccount;
     @InjectView(R.id.panel_transaction_amount) EditText mPanelAmount;
+
+    // Panel Content - Buttons
+    @OnClick(R.id.action_save)
+    public void addTransaction() {
+        //TODO implement
+    }
+
+    @OnClick(R.id.action_cancel)
+    public void closePanel() {
+        mMerchantLayout.collapsePanel();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -133,6 +149,7 @@ public class CheckInActivity extends Activity implements PlacesService.PlacesInt
                 }
             });
 
+            mDateFormat = new SimpleDateFormat("EE MM d, yyyy");
             setUpMapIfNeeded();
         } else {
             new SweetAlertDialog(this, SweetAlertDialog.ERROR_TYPE)
@@ -307,6 +324,8 @@ public class CheckInActivity extends Activity implements PlacesService.PlacesInt
         }
     }
 
+    // Places Service handler + map helpers
+
     @Override
     public void onPlacesReturned(List<Place> places) {
         for (Place place : places) {
@@ -358,7 +377,7 @@ public class CheckInActivity extends Activity implements PlacesService.PlacesInt
             mMerchant.setPlaceId(details.getPlace_id());
             mMerchant.setWebsite(details.getUrl());
 
-            Category category = new Category(details.getTypes().get(0));
+            Category category = new Category(details.typeToString()); // Helper method, takes first type and cleans it up
             category.setIcon(details.getIcon());
             mMerchant.setCategory(category);
 
@@ -371,9 +390,14 @@ public class CheckInActivity extends Activity implements PlacesService.PlacesInt
             address.setCountry(details.getCountry(true)); // long form
             mMerchant.setLocation(address);
 
-            mMerchant.setPlace(place);
-        }
+            mMerchant.setPlace(place); // Might be useful to keep around
 
-        //TODO setup the ui components with merchant info
+            mPanelAddress.setText(mMerchant.getLocation().getLongAddress()); // Might change to short address
+            mPanelType.setText(mMerchant.getCategory().getName());
+            mPanelPhone.setText(mMerchant.getPhone());
+            mPanelWebsite.setText(mMerchant.getWebsite());
+
+            mPanelDate.setText(mDateFormat.format(new Date()));
+        }
     }
 }
