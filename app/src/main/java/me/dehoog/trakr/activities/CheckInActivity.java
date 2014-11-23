@@ -119,6 +119,8 @@ public class CheckInActivity extends Activity implements PlacesService.PlacesInt
 
     @OnClick(R.id.action_cancel)
     public void closePanel() {
+        mPanelAccount.setSelection(0);
+        mPanelAmount.setText("");
         mMerchantLayout.collapsePanel();
     }
 
@@ -131,15 +133,27 @@ public class CheckInActivity extends Activity implements PlacesService.PlacesInt
             getActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
+        SharedPreferences settings = getSharedPreferences(MainActivity.PREFS_NAME, 0);
+        String email = settings.getString("email", "none");
+        mUser = new User().findUser(email);
+
+        if (mUser == null || mUser.getAllAccounts().isEmpty()) {
+            new SweetAlertDialog(this, SweetAlertDialog.ERROR_TYPE)
+                    .setTitleText("Error")
+                    .setContentText("You don't have any accounts setup!")
+                    .setConfirmText("Ok, I'll add some")
+                    .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                        @Override
+                        public void onClick(SweetAlertDialog sweetAlertDialog) {
+                            finish();
+                        }
+                    }).show();
+        }
+
         int resultCode = GooglePlayServicesUtil.isGooglePlayServicesAvailable(this);
         if (ConnectionResult.SUCCESS == resultCode) {
             mTracker = GPSTracker.getInstance();
-            mUser = new User();
             ButterKnife.inject(this);
-
-            SharedPreferences settings = getSharedPreferences(MainActivity.PREFS_NAME, 0);
-            String email = settings.getString("email", "none");
-            mUser = new User().findUser(email);
 
             mMerchantLayout.hidePanel();
             mMerchantLayout.setPanelSlideListener(new SlidingUpPanelLayout.PanelSlideListener() {
@@ -183,10 +197,11 @@ public class CheckInActivity extends Activity implements PlacesService.PlacesInt
                     .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
                         @Override
                         public void onClick(SweetAlertDialog sweetAlertDialog) {
+                            Intent intent = new Intent();
+                            setResult(RESULT_CANCELED, intent);
                             finish();
                         }
-                    })
-                    .show();
+                    }).show();
         }
     }
 
@@ -347,9 +362,6 @@ public class CheckInActivity extends Activity implements PlacesService.PlacesInt
     @Override
     protected void onResume() {
         super.onResume();
-        if (!mMerchantLayout.isPanelHidden()) {
-            mMerchantLayout.hidePanel();
-        }
     }
 
     @Override
