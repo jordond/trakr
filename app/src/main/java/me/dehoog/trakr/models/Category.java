@@ -47,6 +47,19 @@ public class Category extends SugarRecord<Category> implements Serializable {
         return found;
     }
 
+    public String parseTypeFromURL(String url) {
+        if (url == null) {
+            url = this.icon;
+        }
+        String raw = url.substring(url.lastIndexOf('/') + 1, url.length());
+        raw = raw.substring(0, raw.lastIndexOf('-'));
+        raw = raw.replaceAll("_", " ").toLowerCase();
+        if (raw.equals("geocode")) {
+            raw = "general";
+        }
+        return raw.substring(0, 1).toUpperCase() + raw.substring(1);
+    }
+
     // Accessors
     public String getName() {
         return name;

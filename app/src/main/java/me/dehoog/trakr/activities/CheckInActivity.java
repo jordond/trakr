@@ -79,6 +79,9 @@ public class CheckInActivity extends Activity implements PlacesService.PlacesInt
     private User mUser = new User();
     private Merchant mMerchant = new Merchant();
     private Marker mSelectedMarker;
+    private List<Category> mCategories = new ArrayList<Category>();
+    private List<String> mIconUrls = new ArrayList<String>();
+    private List<String> mCategoryFilter;
 
     private SimpleDateFormat mDateFormat;
     private Date mDate; // I hate dates so much
@@ -426,6 +429,8 @@ public class CheckInActivity extends Activity implements PlacesService.PlacesInt
             Intent intent = new Intent();
             setResult(RESULT_CANCELED, intent);
             finish();
+        } else if (id == R.id.action_filter) {
+
         }
 
         return super.onOptionsItemSelected(item);
@@ -475,6 +480,22 @@ public class CheckInActivity extends Activity implements PlacesService.PlacesInt
                 .snippet(place.getId()));
 
         mMarkers.add(marker);
+
+        Category type = new Category();
+        type.setIcon(place.getIcon());
+        type.setName(type.parseTypeFromURL(place.getIcon()));
+
+        if (mIconUrls.contains(type.getIcon())) {
+            for (Category c : mCategories) {
+                if (c.getIcon().equals(type.getIcon())) {
+                    mCategories.set(mCategories.indexOf(c), type);
+                    break;
+                }
+            }
+        } else {
+            mCategories.add(type);
+            mIconUrls.add(type.getIcon());
+        }
 
         Ion.with(getApplicationContext())
                 .load(place.getIcon())

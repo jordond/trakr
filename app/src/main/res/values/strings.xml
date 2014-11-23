@@ -47,5 +47,6 @@
     <string name="check_in_account_description">Bank account</string>
     <string name="check_in_date_hint">Choose date</string>
     <string name="expand_list_total_transactions_desc">total transactions</string>
+    <string name="menu_check_in_filter">Filter</string>
 
 </resources>

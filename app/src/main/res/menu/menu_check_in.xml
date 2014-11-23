@@ -2,6 +2,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="me.dehoog.trakr.activities.CheckInActivity">
+    <item android:id="@+id/action_filter"
+        android:title="@string/menu_check_in_filter"
+        android:showAsAction="always"
+        android:icon="@drawable/ic_action_filter" />
     <item android:id="@+id/action_search"
         android:title="@string/action_search"
         android:showAsAction="ifRoom"
