@@ -205,7 +205,6 @@ public class CheckInActivity extends Activity implements PlacesService.PlacesInt
         }
     }
 
-    // TODO if there are no accounts, suggest to the user to add some
     private void setupAccountSpinner() {
         List<Account> accounts = mUser.getAllAccounts();
         if (!accounts.isEmpty()) {
