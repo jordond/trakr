@@ -58,6 +58,7 @@ import me.dehoog.trakr.models.User;
 import me.dehoog.trakr.services.GPSTracker;
 import me.dehoog.trakr.services.PlacesService;
 
+// TODO add a "view" feature to this activity, so the user can view a previous transaction, only show the one marker on the map
 public class CheckInActivity extends Activity implements PlacesService.PlacesInterface{
 
     private static final int MAP_ZOOM = 16;
@@ -294,8 +295,6 @@ public class CheckInActivity extends Activity implements PlacesService.PlacesInt
                         mMerchantTitle.setText(place.getName());
                         mMerchantSubtitle.setText(place.getVicinity());
                         break;
-
-                        //TODO fetch extra place details
                     }
                 }
                 return true;
