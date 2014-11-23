@@ -46,11 +46,12 @@ public class ExpandAccountCard extends CardExpand {
         //TODO add item click event on transactions list to show the current transaction
         ListView listView = (ListView) view.findViewById(R.id.card_account_expand_transaction_list);
         List<Purchase> transactions = mAccount.getAllPurchases();
+        int numTransactions = transactions.size();
         if (transactions.isEmpty()) {
             TextView recentTransHeader = (TextView) view.findViewById(R.id.recent_transaction_header);
             recentTransHeader.setText("no transactions");
         }
-        if (transactions.size() > 3) {
+        if (numTransactions > 3) {
             transactions = transactions.subList(0,3);
         }
         RecentTransactionAdapter adapter = new RecentTransactionAdapter(mContext, transactions);
@@ -58,6 +59,9 @@ public class ExpandAccountCard extends CardExpand {
         listView.setDivider(mContext.getResources().getDrawable(R.drawable.transperent_color));
         listView.setDividerHeight(0);
         setListViewHeight(listView);
+
+        TextView totalTransactions = (TextView) view.findViewById(R.id.total_transactions_num);
+        totalTransactions.setText(String.valueOf(numTransactions));
 
         TextView totalAmount = (TextView) view.findViewById(R.id.total_spent_text);
         String total = new DecimalFormat("$###,###,###.00").format(mAccount.getTotal());

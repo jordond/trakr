@@ -46,5 +46,6 @@
     <string name="check_in_amount_hint">Amount spent</string>
     <string name="check_in_account_description">Bank account</string>
     <string name="check_in_date_hint">Choose date</string>
+    <string name="expand_list_total_transactions_desc">total transactions</string>
 
 </resources>
