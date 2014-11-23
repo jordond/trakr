@@ -385,6 +385,7 @@ public class CheckInActivity extends Activity implements PlacesService.PlacesInt
                             Intent intent = new Intent();
                             intent.putExtra("add", true);
                             setResult(RESULT_OK, intent);
+                            dialog.dismiss();
                             finish();
                         } else {
                             dialog.setTitleText("Error!")
