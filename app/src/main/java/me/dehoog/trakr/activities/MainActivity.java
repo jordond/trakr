@@ -155,15 +155,7 @@ public class MainActivity extends FragmentActivity implements AccountsInteractio
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == CHECK_IN_REQUEST) {
             if (resultCode == RESULT_OK) {
-                new SweetAlertDialog(this, SweetAlertDialog.NORMAL_TYPE)
-                        .setTitleText("Success!")
-                        .setContentText("You have checked in!")
-                        .setConfirmText("OK")
-                        .showCancelButton(false)
-                        .setCancelClickListener(null)
-                        .setConfirmClickListener(null)
-                        .show();
-
+                mPager.getAdapter().notifyDataSetChanged();
                 //TODO debug code for testing add of check-in
                 boolean result = data.getBooleanExtra("add", false);
                 List<Purchase> purchases = mUser.getAllPurchases();
