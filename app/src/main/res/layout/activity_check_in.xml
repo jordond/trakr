@@ -140,6 +140,12 @@
                         android:gravity="center_vertical"
                         android:hint="@string/check_in_date_hint"/>
 
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dip"
+                        android:alpha="0.6"
+                        android:background="@color/primary"/>
+
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
@@ -156,6 +162,7 @@
                             android:id="@+id/panel_transaction_account"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            style="?android:textAppearanceSmall"
                             android:spinnerMode="dropdown"
                             android:clickable="true">
 
