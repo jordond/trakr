@@ -95,7 +95,7 @@ public class CheckInActivity extends Activity implements PlacesService.PlacesInt
     @OnClick(R.id.panel_merchant_phone)
     public void openDialer() {
         Intent intent = new Intent(Intent.ACTION_DIAL);
-        intent.setData(Uri.parse(mMerchant.getPhone()));
+        intent.setData(Uri.parse("tel:" + mMerchant.getPhone()));
         startActivity(intent);
     }
     @InjectView(R.id.panel_merchant_website) TextView mPanelWebsite;
