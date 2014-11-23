@@ -1,8 +1,10 @@
 package me.dehoog.trakr.models;
 
 import com.orm.SugarRecord;
+import com.orm.dsl.Ignore;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * Created by jordon on 2014-11-09.
@@ -13,9 +15,20 @@ public class Merchant extends SugarRecord<Merchant> implements Serializable {
     private String name;
     private Address location;
     private String description;
+    private String phone;
+    private String website;
+    private String placeId;
+    private Category category;
+
+    @Ignore
+    private Place place;
 
     // Constructors
     public Merchant() {
+    }
+
+    public Merchant(String name) {
+        this.name = name;
     }
 
     public Merchant(String name, Address location) {
@@ -27,6 +40,19 @@ public class Merchant extends SugarRecord<Merchant> implements Serializable {
         this.name = name;
         this.location = location;
         this.description = description;
+    }
+
+    // Helpers
+    public Merchant findOrCreate(String placeId, String name) {
+        Merchant found = null;
+        List<Merchant> request = Merchant.find(Merchant.class, "place_id = ?", placeId);
+        if (!request.isEmpty()) {
+            found = request.get(0);
+        } else {
+            found = new Merchant(name);
+            this.placeId = placeId;
+        }
+        return found;
     }
 
     // Accessors
@@ -52,5 +78,45 @@ public class Merchant extends SugarRecord<Merchant> implements Serializable {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getWebsite() {
+        return website;
+    }
+
+    public void setWebsite(String website) {
+        this.website = website;
+    }
+
+    public String getPlaceId() {
+        return placeId;
+    }
+
+    public void setPlaceId(String placeId) {
+        this.placeId = placeId;
+    }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
+    }
+
+    public Place getPlace() {
+        return place;
+    }
+
+    public void setPlace(Place place) {
+        this.place = place;
     }
 }

@@ -11,8 +11,11 @@ import android.view.MenuItem;
 
 import com.astuetz.PagerSlidingTabStrip;
 
+import java.util.List;
+
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import cn.pedant.SweetAlert.SweetAlertDialog;
 import de.keyboardsurfer.android.widget.crouton.Crouton;
 import me.dehoog.trakr.R;
 import me.dehoog.trakr.adapters.MainPagerAdapter;
@@ -22,6 +25,7 @@ import me.dehoog.trakr.interfaces.AddAccountInteraction;
 import me.dehoog.trakr.interfaces.EditAccountCallback;
 import me.dehoog.trakr.interfaces.RecentTransactionsInteraction;
 import me.dehoog.trakr.models.Account;
+import me.dehoog.trakr.models.Purchase;
 import me.dehoog.trakr.models.User;
 
 
@@ -31,7 +35,7 @@ public class MainActivity extends FragmentActivity implements AccountsInteractio
                                                               RecentTransactionsInteraction {
 
     public static final String PREFS_NAME = "TrakrPrefs";
-    public static final int RECENT_TRANSACTION_REQUEST = 1;
+    public static final int CHECK_IN_REQUEST = 1;
     public SharedPreferences mSettings;
 
     public User mUser;
@@ -144,15 +148,28 @@ public class MainActivity extends FragmentActivity implements AccountsInteractio
     @Override
     public void onRecentTransactionInteraction() {  // Recent transaction, action button
         Intent intent = new Intent(this, CheckInActivity.class);
-        startActivityForResult(intent, RECENT_TRANSACTION_REQUEST);
+        startActivityForResult(intent, CHECK_IN_REQUEST);
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == RECENT_TRANSACTION_REQUEST) {
+        if (requestCode == CHECK_IN_REQUEST) {
             if (resultCode == RESULT_OK) {
+                new SweetAlertDialog(this, SweetAlertDialog.NORMAL_TYPE)
+                        .setTitleText("Success!")
+                        .setContentText("You have checked in!")
+                        .setConfirmText("OK")
+                        .showCancelButton(false)
+                        .setCancelClickListener(null)
+                        .setConfirmClickListener(null)
+                        .show();
 
+                //TODO debug code for testing add of check-in
+                boolean result = data.getBooleanExtra("add", false);
+                List<Purchase> purchases = mUser.getAllPurchases();
+                System.out.println("just a debug breakpoint");
             }
+            mPager.setCurrentItem(1);
         }
     }
 }

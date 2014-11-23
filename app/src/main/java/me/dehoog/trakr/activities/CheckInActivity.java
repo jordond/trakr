@@ -1,50 +1,249 @@
 package me.dehoog.trakr.activities;
 
+import android.animation.ArgbEvaluator;
+import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.location.Location;
 import android.location.LocationManager;
-import android.support.v7.app.ActionBarActivity;
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.text.TextUtils;
+import android.util.AttributeSet;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
+import android.widget.Spinner;
+import android.widget.TextView;
 
+import com.daimajia.androidanimations.library.Techniques;
+import com.daimajia.androidanimations.library.YoYo;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.GoogleMapOptions;
 import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
+import com.koushikdutta.async.future.FutureCallback;
+import com.koushikdutta.ion.Ion;
+import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+import butterknife.ButterKnife;
+import butterknife.InjectView;
+import butterknife.OnClick;
 import cn.pedant.SweetAlert.SweetAlertDialog;
 import me.dehoog.trakr.R;
+import me.dehoog.trakr.models.Account;
+import me.dehoog.trakr.models.Address;
+import me.dehoog.trakr.models.Category;
+import me.dehoog.trakr.models.Merchant;
+import me.dehoog.trakr.models.Place;
+import me.dehoog.trakr.models.PlaceDetails;
+import me.dehoog.trakr.models.Purchase;
+import me.dehoog.trakr.models.User;
+import me.dehoog.trakr.services.GPSTracker;
+import me.dehoog.trakr.services.PlacesService;
 
-public class CheckInActivity extends Activity {
+// TODO add a "view" feature to this activity, so the user can view a previous transaction, only show the one marker on the map
+public class CheckInActivity extends Activity implements PlacesService.PlacesInterface{
+
+    private static final int MAP_ZOOM = 16;
 
     private GoogleMap mMap;
+
+    private GPSTracker mTracker;
+    private PlacesService mPlacesService;
+
     private Location mCurrentLocation;
+
+    private List<Place> mPlaces = new ArrayList<Place>();
+    private List<Marker> mMarkers = new ArrayList<Marker>();
+
+    private User mUser = new User();
+    private Merchant mMerchant = new Merchant();
+    private Marker mSelectedMarker;
+
+    private SimpleDateFormat mDateFormat;
+    private Date mDate; // I hate dates so much
+
+    // UI Components
+    @InjectView(R.id.panel_layout) SlidingUpPanelLayout mMerchantLayout;
+    @InjectView(R.id.panel_header) RelativeLayout mPanelHeader;
+
+    // Panel Header
+    @InjectView(R.id.merchant_icon) ImageView mMerchantIcon;
+    @InjectView(R.id.merchant_name) TextView mMerchantTitle;
+    @InjectView(R.id.merchant_address) TextView mMerchantSubtitle;
+    @InjectView(R.id.panel_slide_symbol) ImageView mSlideSymbol;
+
+    // Panel Content
+    @InjectView(R.id.panel_merchant_address) TextView mPanelAddress;
+    @InjectView(R.id.panel_merchant_type) TextView mPanelType; // category
+    @InjectView(R.id.panel_merchant_phone) TextView mPanelPhone;
+    @OnClick(R.id.panel_merchant_phone)
+    public void openDialer() {
+        Intent intent = new Intent(Intent.ACTION_DIAL);
+        intent.setData(Uri.parse("tel:" + mMerchant.getPhone()));
+        startActivity(intent);
+    }
+    @InjectView(R.id.panel_merchant_website) TextView mPanelWebsite;
+    @OnClick(R.id.panel_merchant_website)
+    public void openUrl() {
+        String url = mMerchant.getWebsite();
+        Intent i = new Intent(Intent.ACTION_VIEW);
+        i.setData(Uri.parse(url));
+        startActivity(i);
+    }
+
+    @InjectView(R.id.panel_transaction_date) TextView mPanelDate;   //TODO add in a date picker
+    @InjectView(R.id.panel_transaction_account) Spinner mPanelAccount;
+    @InjectView(R.id.panel_transaction_amount) EditText mPanelAmount;
+
+    // Panel Content - Buttons
+    @OnClick(R.id.action_save)
+    public void addTransaction() {
+        boolean cancel = false;
+        View focusView = null;
+        if (TextUtils.isEmpty(mPanelAmount.getText())) {
+            focusView = mPanelAmount;
+            cancel = true;
+        }
+        if (mPanelAccount.getSelectedItem() == null) {
+            focusView = mPanelAccount;
+            cancel = true;
+        }
+
+        if (cancel) {
+            focusView.requestFocus();
+            YoYo.with(Techniques.Shake)
+                    .duration(500)
+                    .playOn(focusView);
+        } else {
+            saveTransaction();
+        }
+    }
+
+    @OnClick(R.id.action_cancel)
+    public void closePanel() {
+        mPanelAccount.setSelection(0);
+        mPanelAmount.setText("");
+        mMerchantLayout.collapsePanel();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_check_in);
 
-        int resultcode = GooglePlayServicesUtil.isGooglePlayServicesAvailable(this);
-        if (ConnectionResult.SUCCESS == resultcode) {
-            setUpMapIfNeeded();
-        } else {
+        if (getActionBar() != null) {
+            getActionBar().setDisplayHomeAsUpEnabled(true);
+        }
+
+        SharedPreferences settings = getSharedPreferences(MainActivity.PREFS_NAME, 0);
+        String email = settings.getString("email", "none");
+        mUser = new User().findUser(email);
+
+        if (mUser == null || mUser.getAllAccounts().isEmpty()) {
             new SweetAlertDialog(this, SweetAlertDialog.ERROR_TYPE)
                     .setTitleText("Error")
-                    .setContentText("Google Play Services not available!")
-                    .setConfirmText("OK")
+                    .setContentText("You don't have any accounts setup!")
+                    .setConfirmText("Ok, I'll add some")
                     .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
                         @Override
                         public void onClick(SweetAlertDialog sweetAlertDialog) {
                             finish();
                         }
-                    })
-                    .show();
+                    }).show();
+        } else {
+            int resultCode = GooglePlayServicesUtil.isGooglePlayServicesAvailable(this);
+            if (ConnectionResult.SUCCESS == resultCode) {
+                mTracker = GPSTracker.getInstance();
+                ButterKnife.inject(this);
+
+                mPlacesService = PlacesService.getInstance(getApplicationContext());
+                mPlacesService.setmListener(this);
+                fadeView(mMerchantSubtitle, true); //fix jittery bug
+                mPlacesService.nearbySearch(null); // Search current location
+
+                mMerchantLayout.hidePanel();
+                mMerchantLayout.setPanelSlideListener(new SlidingUpPanelLayout.PanelSlideListener() {
+                    @Override
+                    public void onPanelSlide(View view, float v) {
+
+                    }
+
+                    @Override
+                    public void onPanelCollapsed(View view) {
+                        fadeView(mMerchantSubtitle, false);
+                        mSlideSymbol.setImageResource(R.drawable.ic_plus_skinny);
+                    }
+
+                    @Override
+                    public void onPanelExpanded(View view) {
+                        fadeView(mMerchantSubtitle, true);
+                        mSlideSymbol.setImageResource(R.drawable.ic_chevron_down);
+                    }
+
+                    @Override
+                    public void onPanelAnchored(View view) {
+                        fadeView(mMerchantSubtitle, true);
+                        mSlideSymbol.setImageResource(R.drawable.ic_chevron_down);
+                    }
+
+                    @Override
+                    public void onPanelHidden(View view) {
+                        fadeView(mMerchantSubtitle, true);
+                    }
+                });
+
+                mDateFormat = new SimpleDateFormat("EEEE MMM d, yyyy");
+                setUpMapIfNeeded();
+                setupAccountSpinner();
+            } else {
+                new SweetAlertDialog(this, SweetAlertDialog.ERROR_TYPE)
+                        .setTitleText("Error")
+                        .setContentText("Google Play Services not available!")
+                        .setConfirmText("OK")
+                        .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                            @Override
+                            public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                Intent intent = new Intent();
+                                setResult(RESULT_CANCELED, intent);
+                                finish();
+                            }
+                        }).show();
+            }
+        }
+    }
+
+    private void setupAccountSpinner() {
+        List<Account> accounts = mUser.getAllAccounts();
+        if (!accounts.isEmpty()) {
+            List<String> names = new ArrayList<String>();
+            for (Account a : accounts) {
+                names.add(a.getDescription());
+            }
+            ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+                    android.R.layout.simple_spinner_item, names);
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            mPanelAccount.setAdapter(adapter);
         }
     }
 
@@ -58,28 +257,142 @@ public class CheckInActivity extends Activity {
     }
 
     private void setUpMap() {
-        mMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
+        mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
         mMap.setMyLocationEnabled(true);
         mMap.getUiSettings().setTiltGesturesEnabled(false);
-        if (getCurrentLocation()) {
-            setLocation(mCurrentLocation);
-        }
-    }
+        mMap.getUiSettings().setZoomControlsEnabled(false);
 
-    public boolean getCurrentLocation() {
-        LocationManager manager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        if (manager != null) {
-            mCurrentLocation = manager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-            if (mCurrentLocation != null) {
+        mMap.setOnMyLocationButtonClickListener(new GoogleMap.OnMyLocationButtonClickListener() {
+            @Override
+            public boolean onMyLocationButtonClick() {
+                mMerchantLayout.hidePanel();
+                mCurrentLocation = mTracker.getLocation(getApplication());
+                clearMarkers();
+                setLocation(convertLocation(mCurrentLocation));
+                mPlacesService.nearbySearch(null);
                 return true;
             }
-        }
-        return false;
+        });
+
+        mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+            @Override
+            public void onMapClick(LatLng latLng) {
+                mMerchantLayout.hidePanel();
+            }
+        });
+
+        mMap.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
+            @Override
+            public void onMapLongClick(LatLng latLng) {
+                mMerchantLayout.hidePanel();
+                clearMarkers();
+                mPlacesService.nearbySearch(convertLatLng(latLng));
+                setLocation(latLng);
+            }
+        });
+
+        mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+            @Override
+            public boolean onMarkerClick(Marker marker) {
+                if (!mMerchantLayout.isPanelHidden() && mSelectedMarker != null && mSelectedMarker.getId().equals(marker.getId())) {
+                    return true;
+                }
+                for (Place place : mPlaces) {
+                    mMerchant.setPlace(place);
+                    if (place.getId().equals(marker.getSnippet())) {
+                        if (mMerchantLayout.isPanelHidden()) {
+                            mMerchantLayout.showPanel();
+                        }
+                        mSelectedMarker = marker;
+                        mPlacesService.placeDetailSearch(place); // Get details about the selected place
+                        Ion.with(mMerchantIcon)
+                                .placeholder(R.drawable.ic_general_icon)
+                                .error(R.drawable.ic_general_icon)
+                                .load(place.getIcon());
+
+                        mMerchantTitle.setText(place.getName());
+                        mMerchantSubtitle.setText(place.getVicinity());
+                        break;
+                    }
+                }
+                return true;
+            }
+        });
+
+        mCurrentLocation = mTracker.getLocation(this);
+        setLocation(convertLocation(mCurrentLocation));
     }
 
-    private void setLocation(Location location) {
-        LatLng latlng = new LatLng(location.getLatitude(), location.getLongitude());
-        mMap.animateCamera(CameraUpdateFactory.newLatLng(latlng), 3000, null);
+    private LatLng convertLocation(Location location) {
+        return new LatLng(location.getLatitude(), location.getLongitude());
+    }
+
+    private Location convertLatLng(LatLng location) {
+        Location loc = new Location(LocationManager.GPS_PROVIDER);
+        loc.setLatitude(location.latitude);
+        loc.setLongitude(location.longitude);
+        return loc;
+    }
+
+    private void setLocation(LatLng location) {
+        if (location != null) {
+            mMap.moveCamera(CameraUpdateFactory.zoomTo(MAP_ZOOM));
+            mMap.animateCamera(CameraUpdateFactory.newLatLng(location), 1800, null);
+        }
+    }
+
+    private void fadeView(View view, boolean out) {
+        if (out) {
+            YoYo.with(Techniques.FadeOut)
+                    .duration(300)
+                    .playOn(view);
+        } else {
+            YoYo.with(Techniques.FadeIn)
+                    .duration(300)
+                    .playOn(view);
+        }
+    }
+
+    public void saveTransaction() {
+        new SweetAlertDialog(this, SweetAlertDialog.NORMAL_TYPE)
+                .setTitleText("Want to Check In?")
+                .setContentText("Are you sure you want to add this Check In")
+                .setConfirmText("Check In!")
+                .setCancelText("Nope")
+                .showCancelButton(true)
+                .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                    @Override
+                    public void onClick(SweetAlertDialog dialog) {
+                        Account account = new Account().findByDescription(mPanelAccount.getSelectedItem().toString());
+
+                        if (account != null) {
+                            Purchase transaction = new Purchase(account,
+                                    Double.valueOf(mPanelAmount.getText().toString()));
+                            transaction.setDate(mDate);
+
+                            mMerchant.getCategory().save();
+                            transaction.setCategory(mMerchant.getCategory());
+
+                            mMerchant.getLocation().save();
+                            mMerchant.save();
+                            transaction.setMerchant(mMerchant);
+                            transaction.save();
+
+                            Intent intent = new Intent();
+                            intent.putExtra("add", true);
+                            setResult(RESULT_OK, intent);
+                            finish();
+                        } else {
+                            dialog.setTitleText("Error!")
+                                    .setContentText("Something went wrong...")
+                                    .setConfirmText("OK")
+                                    .showCancelButton(false)
+                                    .setCancelClickListener(null)
+                                    .setConfirmClickListener(null)
+                                    .changeAlertType(SweetAlertDialog.ERROR_TYPE);
+                        }
+                    }
+                }).show();
     }
 
     @Override
@@ -94,8 +407,108 @@ public class CheckInActivity extends Activity {
 
         if (id == R.id.action_settings) {
             return true;
+        } else if (id == R.id.action_search) {
+        } else if (id == R.id.homeAsUp) {
+            Intent intent = new Intent();
+            setResult(RESULT_CANCELED, intent);
+            finish();
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (mTracker != null) {
+            mTracker.stopUsingGPS();
+        }
+        if (mPlacesService != null) {
+            mPlacesService.setmListener(null);
+        }
+    }
+
+    // Places Service handler + map helpers
+
+    @Override
+    public void onPlacesReturned(List<Place> places) {
+        for (Place place : places) {
+            if (!place.shouldExclude()) {
+                addMarker(place);
+                mPlaces.add(place);
+            }
+        }
+    }
+
+    public void clearMarkers() {
+        for (Marker marker : mMarkers) {
+            if (marker != null) {
+                marker.remove();
+            }
+        }
+        mMarkers.clear();
+    }
+
+    private void addMarker(Place place) {
+        final Marker marker = mMap.addMarker(new MarkerOptions()
+                .position(place.getLatLng())
+                .title(place.getName())
+                .snippet(place.getId()));
+
+        mMarkers.add(marker);
+
+        Ion.with(getApplicationContext())
+                .load(place.getIcon())
+                .asBitmap()
+                .setCallback(new FutureCallback<Bitmap>() {
+                    @Override
+                    public void onCompleted(Exception e, Bitmap result) {
+                        int index = mMarkers.indexOf(marker);
+                        marker.setIcon(BitmapDescriptorFactory.fromBitmap(result));
+                        mMarkers.set(index, marker);
+                    }
+                });
+
+    }
+
+    @Override
+    public void onPlaceDetailsReturned(PlaceDetails details) {
+        if (details != null) {
+            Place place = mMerchant.getPlace();
+
+            mMerchant = new Merchant().findOrCreate(details.getPlace_id(), details.getName());
+            mMerchant.setPhone(details.getFormatted_phone_number());
+            mMerchant.setPlaceId(details.getPlace_id());
+            mMerchant.setWebsite(details.getUrl());
+
+            Category category = new Category().findOrCreate(details.typeToString());
+            category.setIcon(details.getIcon());
+            mMerchant.setCategory(category);
+
+            Address address = new Address().findOrCreate(details.getFormatted_address());
+            address.setLatitude(details.getLatitude());
+            address.setLongitude(details.getLongitude());
+            address.setAddress(details.getStreetAddress());
+            address.setPostal(details.getPostalCode());
+            address.setCity(details.getCity());
+            address.setProvince(details.getProvince(true)); // long form
+            address.setCountry(details.getCountry(true)); // long form
+            mMerchant.setLocation(address);
+
+            mMerchant.setPlace(place); // Might be useful to keep around
+
+            mPanelAddress.setText(mMerchant.getLocation().getLongAddress()); // Might change to short address
+            mPanelType.setText(mMerchant.getCategory().getName());
+            mPanelPhone.setText(mMerchant.getPhone());
+            mPanelWebsite.setText(mMerchant.getWebsite());
+
+            mPanelDate.setText(mDateFormat.format(new Date()));
+            mDate = new Date();
+        }
     }
 }

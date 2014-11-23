@@ -23,7 +23,7 @@
             android:value="trakr_dev2.db" />
         <meta-data
             android:name="VERSION"
-            android:value="8" />
+            android:value="10" />
         <meta-data
             android:name="QUERY_LOG"
             android:value="true" />
@@ -56,8 +56,13 @@
         </activity>
         <activity
             android:name="me.dehoog.trakr.activities.CheckInActivity"
+            android:icon="@drawable/logo_all_white"
             android:label="@string/title_activity_check_in"
-            android:theme="@style/AppTheme">
+            android:theme="@style/AppTheme"
+            android:parentActivityName=".activities.MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activities.MainActivity" />
         </activity>
     </application>
 
