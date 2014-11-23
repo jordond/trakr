@@ -13,7 +13,7 @@ public class Category extends SugarRecord<Category> implements Serializable {
     // Properties
     private String name;
     private String description;
-    private byte[] icon;
+    private String icon;
 
     // Constructors
     public Category() {
@@ -28,7 +28,7 @@ public class Category extends SugarRecord<Category> implements Serializable {
         this.description = description;
     }
 
-    public Category(String name, String description, byte[] icon) {
+    public Category(String name, String description, String icon) {
         this.name = name;
         this.description = description;
         this.icon = icon;
@@ -64,11 +64,11 @@ public class Category extends SugarRecord<Category> implements Serializable {
         this.description = description;
     }
 
-    public byte[] getIcon() {
+    public String getIcon() {
         return icon;
     }
 
-    public void setIcon(byte[] icon) {
+    public void setIcon(String icon) {
         this.icon = icon;
     }
 }

@@ -3,6 +3,7 @@ package me.dehoog.trakr.models;
 import com.orm.SugarRecord;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * Created by jordon on 2014-11-09.
@@ -16,9 +17,15 @@ public class Address extends SugarRecord<Address> implements Serializable {
     private String province;
     private String country;
     private String postal;
+    private String city;
+    private String longAddress;
 
     // Constructors
     public Address() {
+    }
+
+    public Address(String longAddress) {
+        this.longAddress = longAddress;
     }
 
     public Address(double lat, double lon) {
@@ -41,9 +48,19 @@ public class Address extends SugarRecord<Address> implements Serializable {
         this.postal = postal;
     }
 
+    // Helpers
+    public Address findOrCreate(String address) {
+        Address found = null;
+        List<Address> result = Address.find(Address.class, "long_address = ?", address);
+        if (!result.isEmpty()) {
+            found = result.get(0);
+        } else {
+            found = new Address(address);
+        }
+        return found;
+    }
+
     // Accessors
-
-
     public double getLatitude() {
         return latitude;
     }
@@ -90,5 +107,21 @@ public class Address extends SugarRecord<Address> implements Serializable {
 
     public void setPostal(String postal) {
         this.postal = postal;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getLongAddress() {
+        return longAddress;
+    }
+
+    public void setLongAddress(String longAddress) {
+        this.longAddress = longAddress;
     }
 }

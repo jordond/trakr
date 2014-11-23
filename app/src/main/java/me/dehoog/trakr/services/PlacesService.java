@@ -4,9 +4,11 @@ import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.location.Location;
+import android.os.Handler;
 import android.os.IBinder;
 import android.util.Log;
 
+import com.google.android.gms.analytics.ExceptionParser;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
@@ -26,6 +28,8 @@ import me.dehoog.trakr.models.PlacesResult;
  * 7:02 PM
  */
 public class PlacesService extends Service {
+
+    private static final String TAG = PlacesService.class.getSimpleName();
 
     private static PlacesService mInstance;
 
@@ -77,7 +81,11 @@ public class PlacesService extends Service {
                 + "key=" + PLACES_API
                 + "&location=" + latLng.latitude + "," + latLng.longitude
                 + "&radius=" + mRadius;
-        sendRequest(url);
+        try {
+            sendRequest(url);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public void textSearch(String query, int radius, Location location) {
@@ -95,7 +103,11 @@ public class PlacesService extends Service {
                 + "&query=" + query
                 + "&location=" + latLng.latitude + "," + latLng.longitude
                 + "&radius=" + radius;
-        sendRequest(url);
+        try {
+            sendRequest(url);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
     }
 
@@ -111,43 +123,60 @@ public class PlacesService extends Service {
     }
 
     public void getMore(String token){
-        String url = PLACES_BASE + PLACES_NEARBY
+        final String url = PLACES_BASE + PLACES_NEARBY
                 + "key=" + PLACES_API
                 + "&pagetoken=" + token;
-        sendRequest(url);
+
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() { // Delay so google won't reject request.
+            @Override
+            public void run() {
+                try {
+                    Log.d(TAG, "I've waited my turn, time to DDOS Google!");
+                    sendRequest(url); // Slow it down baby
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }, 1700); // How low can ya go
     }
 
-    public void sendRequest(String url)
-    {
+    public void sendRequest(String url) throws Exception {
         Ion.with(mContext)
                 .load(url)
-                .asJsonObject()
-                .setCallback(new FutureCallback<JsonObject>() {
+                .as(PlacesResult.class)
+                .setCallback(new FutureCallback<PlacesResult>() {
                     @Override
-                    public void onCompleted(Exception e, JsonObject result) {
+                    public void onCompleted(Exception e, PlacesResult result) {
                         if (mListener != null) {
-                            List<Place> places = parseJSON(result.toString());
-                            mListener.onPlacesReturned(places);
+                            if (result.getStatus().equals("OK")) {
+                                mListener.onPlacesReturned(result.getResults());
+                                if (result.isMoreResults()) {
+                                    Log.d(TAG, "Fetching more results with id: " + result.getNext_page_token());
+                                    getMore(result.getNext_page_token());
+                                }
+                            } else {
+                                Log.e(TAG, "Google replied with: " + result.getStatus());
+                            }
                         }
                     }
                 });
+
     }
 
     public void sendDetailsRequest(String url) {
+        Log.d(TAG, "Sending more detail request to google");
         Ion.with(mContext)
                 .load(url)
-                .asJsonObject()
-                .setCallback(new FutureCallback<JsonObject>() {
+                .as(PlaceDetailsResult.class)
+                .setCallback(new FutureCallback<PlaceDetailsResult>() {
                     @Override
-                    public void onCompleted(Exception e, JsonObject result) {
+                    public void onCompleted(Exception e, PlaceDetailsResult result) {
                         if (mListener != null) {
-                            PlaceDetailsResult detailResult = new PlaceDetailsResult();
-                            try {
-                                Gson gson = new Gson();
-                                detailResult = gson.fromJson(result.toString(), PlaceDetailsResult.class);
-                                mListener.onPlaceDetailsReturned(detailResult.getResults());
-                            } catch (Exception ex) {
-                                Log.e("Details request", ex.getMessage());
+                            if (result.getStatus().equals("OK")) {
+                                mListener.onPlaceDetailsReturned(result.getResults());
+                            } else {
+                                Log.e(TAG, "Google said no: " + result.getStatus());
                             }
                         }
                     }
@@ -166,20 +195,6 @@ public class PlacesService extends Service {
         double lng = location.getLongitude();
 
         return new LatLng(lat, lng);
-    }
-
-    public List<Place> parseJSON(String json) {
-        PlacesResult result = new PlacesResult();
-        try {
-            Gson gson = new Gson();
-            result = gson.fromJson(json, PlacesResult.class);
-            if (result.isMoreResults()) {
-                getMore(result.getNext_page_token());
-            }
-        } catch (Exception e) {
-            Log.e("parseJSON", e.getMessage());
-        }
-        return result.getResults();
     }
 
     public int getmRadius() {

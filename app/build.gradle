@@ -40,6 +40,7 @@ dependencies {
     compile 'com.balysv:material-ripple:0.9.3-SNAPSHOT@aar'
     compile 'com.google.code.gson:gson:2.3'
     compile 'com.squareup.picasso:picasso:2.4.0'
-    compile 'com.koushikdutta.ion:ion:2.+'
+    compile 'com.koushikdutta.ion:ion:2.0.0'
+    compile 'com.sothree.slidinguppanel:library:+'
 
 }

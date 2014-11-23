@@ -9,15 +9,15 @@ import java.util.List;
  */
 public class PlaceDetailsResult {
 
-    private PlaceDetails results;
+    private PlaceDetails result;
     private String status;
 
     public PlaceDetails getResults() {
-        return results;
+        return result;
     }
 
-    public void setResults(PlaceDetails results) {
-        this.results = results;
+    public void setResult(PlaceDetails result) {
+        this.result = result;
     }
 
     public String getStatus() {
