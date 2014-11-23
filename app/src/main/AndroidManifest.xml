@@ -23,7 +23,7 @@
             android:value="trakr_dev2.db" />
         <meta-data
             android:name="VERSION"
-            android:value="8" />
+            android:value="10" />
         <meta-data
             android:name="QUERY_LOG"
             android:value="true" />

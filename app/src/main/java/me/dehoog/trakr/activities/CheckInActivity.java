@@ -115,6 +115,7 @@ public class CheckInActivity extends Activity implements PlacesService.PlacesInt
     // Panel Content - Buttons
     @OnClick(R.id.action_save)
     public void addTransaction() {
+
         //TODO implement
     }
 
@@ -149,60 +150,65 @@ public class CheckInActivity extends Activity implements PlacesService.PlacesInt
                             finish();
                         }
                     }).show();
-        }
-
-        int resultCode = GooglePlayServicesUtil.isGooglePlayServicesAvailable(this);
-        if (ConnectionResult.SUCCESS == resultCode) {
-            mTracker = GPSTracker.getInstance();
-            ButterKnife.inject(this);
-
-            mMerchantLayout.hidePanel();
-            mMerchantLayout.setPanelSlideListener(new SlidingUpPanelLayout.PanelSlideListener() {
-                @Override
-                public void onPanelSlide(View view, float v) {
-
-                }
-
-                @Override
-                public void onPanelCollapsed(View view) {
-                    fadeView(mMerchantSubtitle, false);
-                    mSlideSymbol.setImageResource(R.drawable.ic_plus_skinny);
-                }
-
-                @Override
-                public void onPanelExpanded(View view) {
-                    fadeView(mMerchantSubtitle, true);
-                    mSlideSymbol.setImageResource(R.drawable.ic_chevron_down);
-                }
-
-                @Override
-                public void onPanelAnchored(View view) {
-                    fadeView(mMerchantSubtitle, true);
-                    mSlideSymbol.setImageResource(R.drawable.ic_chevron_down);
-                }
-
-                @Override
-                public void onPanelHidden(View view) {
-                    fadeView(mMerchantSubtitle, true);
-                }
-            });
-
-            mDateFormat = new SimpleDateFormat("EEEE MMM d, yyyy");
-            setUpMapIfNeeded();
-            setupAccountSpinner();
         } else {
-            new SweetAlertDialog(this, SweetAlertDialog.ERROR_TYPE)
-                    .setTitleText("Error")
-                    .setContentText("Google Play Services not available!")
-                    .setConfirmText("OK")
-                    .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                        @Override
-                        public void onClick(SweetAlertDialog sweetAlertDialog) {
-                            Intent intent = new Intent();
-                            setResult(RESULT_CANCELED, intent);
-                            finish();
-                        }
-                    }).show();
+            int resultCode = GooglePlayServicesUtil.isGooglePlayServicesAvailable(this);
+            if (ConnectionResult.SUCCESS == resultCode) {
+                mTracker = GPSTracker.getInstance();
+                ButterKnife.inject(this);
+
+                mPlacesService = PlacesService.getInstance(getApplicationContext());
+                mPlacesService.setmListener(this);
+                fadeView(mMerchantSubtitle, true); //fix jittery bug
+                mPlacesService.nearbySearch(null); // Search current location
+
+                mMerchantLayout.hidePanel();
+                mMerchantLayout.setPanelSlideListener(new SlidingUpPanelLayout.PanelSlideListener() {
+                    @Override
+                    public void onPanelSlide(View view, float v) {
+
+                    }
+
+                    @Override
+                    public void onPanelCollapsed(View view) {
+                        fadeView(mMerchantSubtitle, false);
+                        mSlideSymbol.setImageResource(R.drawable.ic_plus_skinny);
+                    }
+
+                    @Override
+                    public void onPanelExpanded(View view) {
+                        fadeView(mMerchantSubtitle, true);
+                        mSlideSymbol.setImageResource(R.drawable.ic_chevron_down);
+                    }
+
+                    @Override
+                    public void onPanelAnchored(View view) {
+                        fadeView(mMerchantSubtitle, true);
+                        mSlideSymbol.setImageResource(R.drawable.ic_chevron_down);
+                    }
+
+                    @Override
+                    public void onPanelHidden(View view) {
+                        fadeView(mMerchantSubtitle, true);
+                    }
+                });
+
+                mDateFormat = new SimpleDateFormat("EEEE MMM d, yyyy");
+                setUpMapIfNeeded();
+                setupAccountSpinner();
+            } else {
+                new SweetAlertDialog(this, SweetAlertDialog.ERROR_TYPE)
+                        .setTitleText("Error")
+                        .setContentText("Google Play Services not available!")
+                        .setConfirmText("OK")
+                        .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                            @Override
+                            public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                Intent intent = new Intent();
+                                setResult(RESULT_CANCELED, intent);
+                                finish();
+                            }
+                        }).show();
+            }
         }
     }
 
@@ -218,15 +224,6 @@ public class CheckInActivity extends Activity implements PlacesService.PlacesInt
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             mPanelAccount.setAdapter(adapter);
         }
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        mPlacesService = PlacesService.getInstance(getApplicationContext());
-        mPlacesService.setmListener(this);
-        fadeView(mMerchantSubtitle, true); //fix jittery bug
-        mPlacesService.nearbySearch(null); // Search current location
     }
 
     private void setUpMapIfNeeded() {
@@ -421,17 +418,18 @@ public class CheckInActivity extends Activity implements PlacesService.PlacesInt
         if (details != null) {
             Place place = mMerchant.getPlace();
 
-            mMerchant = new Merchant(details.getName());
+            mMerchant = new Merchant().findOrCreate(details.getPlace_id(), details.getName());
             mMerchant.setPhone(details.getFormatted_phone_number());
             mMerchant.setPlaceId(details.getPlace_id());
             mMerchant.setWebsite(details.getUrl());
 
-            Category category = new Category(details.typeToString()); // Helper method, takes first type and cleans it up
+            Category category = new Category().findOrCreate(details.typeToString());
             category.setIcon(details.getIcon());
             mMerchant.setCategory(category);
 
-            Address address = new Address(details.getLatitude(), details.getLongitude());
-            address.setLongAddress(details.getFormatted_address());
+            Address address = new Address().findOrCreate(details.getFormatted_address());
+            address.setLatitude(details.getLatitude());
+            address.setLongitude(details.getLongitude());
             address.setAddress(details.getStreetAddress());
             address.setPostal(details.getPostalCode());
             address.setCity(details.getCity());

@@ -4,6 +4,7 @@ import com.orm.SugarRecord;
 import com.orm.dsl.Ignore;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * Created by jordon on 2014-11-09.
@@ -39,6 +40,19 @@ public class Merchant extends SugarRecord<Merchant> implements Serializable {
         this.name = name;
         this.location = location;
         this.description = description;
+    }
+
+    // Helpers
+    public Merchant findOrCreate(String placeId, String name) {
+        Merchant found = null;
+        List<Merchant> request = Merchant.find(Merchant.class, "place_id = ?", placeId);
+        if (!request.isEmpty()) {
+            found = request.get(0);
+        } else {
+            found = new Merchant(name);
+            this.placeId = placeId;
+        }
+        return found;
     }
 
     // Accessors
