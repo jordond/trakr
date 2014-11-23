@@ -9,6 +9,7 @@ import java.io.Serializable;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
@@ -33,8 +34,14 @@ public class User extends SugarRecord<User> implements Serializable {
     @Ignore
     private List<Account> accounts;
 
+    @Ignore List<Purchase> purchases;
+
     public List<Account> getAccounts() {
-        return accounts;
+        if (this.accounts == null) {
+            return this.getAllAccounts();
+        } else {
+            return accounts;
+        }
     }
 
     public void setAccounts(List<Account> accounts) {
@@ -110,6 +117,16 @@ public class User extends SugarRecord<User> implements Serializable {
         } else {
             return accounts;
         }
+    }
+
+    public List<Purchase> getAllPurchases() {
+        purchases = new ArrayList<Purchase>();
+        for (Account account : this.getAllAccounts() ) {
+            for (Purchase purchase : account.getAllPurchases()) {
+                purchases.add(purchase);
+            }
+        }
+        return purchases;
     }
 
     // Validators
@@ -201,5 +218,13 @@ public class User extends SugarRecord<User> implements Serializable {
 
     public void setFirstLogin(boolean firstLogin) {
         this.firstLogin = firstLogin;
+    }
+
+    public List<Purchase> getPurchases() {
+        return purchases;
+    }
+
+    public void setPurchases(List<Purchase> purchases) {
+        this.purchases = purchases;
     }
 }

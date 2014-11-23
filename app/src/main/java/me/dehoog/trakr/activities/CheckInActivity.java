@@ -12,6 +12,7 @@ import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -38,6 +39,7 @@ import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -54,6 +56,7 @@ import me.dehoog.trakr.models.Category;
 import me.dehoog.trakr.models.Merchant;
 import me.dehoog.trakr.models.Place;
 import me.dehoog.trakr.models.PlaceDetails;
+import me.dehoog.trakr.models.Purchase;
 import me.dehoog.trakr.models.User;
 import me.dehoog.trakr.services.GPSTracker;
 import me.dehoog.trakr.services.PlacesService;
@@ -78,6 +81,7 @@ public class CheckInActivity extends Activity implements PlacesService.PlacesInt
     private Marker mSelectedMarker;
 
     private SimpleDateFormat mDateFormat;
+    private Date mDate; // I hate dates so much
 
     // UI Components
     @InjectView(R.id.panel_layout) SlidingUpPanelLayout mMerchantLayout;
@@ -108,15 +112,32 @@ public class CheckInActivity extends Activity implements PlacesService.PlacesInt
         startActivity(i);
     }
 
-    @InjectView(R.id.panel_transaction_date) TextView mPanelDate;
+    @InjectView(R.id.panel_transaction_date) TextView mPanelDate;   //TODO add in a date picker
     @InjectView(R.id.panel_transaction_account) Spinner mPanelAccount;
     @InjectView(R.id.panel_transaction_amount) EditText mPanelAmount;
 
     // Panel Content - Buttons
     @OnClick(R.id.action_save)
     public void addTransaction() {
+        boolean cancel = false;
+        View focusView = null;
+        if (TextUtils.isEmpty(mPanelAmount.getText())) {
+            focusView = mPanelAmount;
+            cancel = true;
+        }
+        if (mPanelAccount.getSelectedItem() == null) {
+            focusView = mPanelAccount;
+            cancel = true;
+        }
 
-        //TODO implement
+        if (cancel) {
+            focusView.requestFocus();
+            YoYo.with(Techniques.Shake)
+                    .duration(500)
+                    .playOn(focusView);
+        } else {
+            saveTransaction();
+        }
     }
 
     @OnClick(R.id.action_cancel)
@@ -332,6 +353,48 @@ public class CheckInActivity extends Activity implements PlacesService.PlacesInt
         }
     }
 
+    public void saveTransaction() {
+        new SweetAlertDialog(this, SweetAlertDialog.NORMAL_TYPE)
+                .setTitleText("Want to Check In?")
+                .setContentText("Are you sure you want to add this Check In")
+                .setConfirmText("Check In!")
+                .setCancelText("Nope")
+                .showCancelButton(true)
+                .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                    @Override
+                    public void onClick(SweetAlertDialog dialog) {
+                        Account account = new Account().findByDescription(mPanelAccount.getSelectedItem().toString());
+
+                        if (account != null) {
+                            Purchase transaction = new Purchase(account,
+                                    Double.valueOf(mPanelAmount.getText().toString()));
+                            transaction.setDate(mDate);
+
+                            mMerchant.getCategory().save();
+                            transaction.setCategory(mMerchant.getCategory());
+
+                            mMerchant.getLocation().save();
+                            mMerchant.save();
+                            transaction.setMerchant(mMerchant);
+                            transaction.save();
+
+                            Intent intent = new Intent();
+                            intent.putExtra("add", true);
+                            setResult(RESULT_OK, intent);
+                            finish();
+                        } else {
+                            dialog.setTitleText("Error!")
+                                    .setContentText("Something went wrong...")
+                                    .setConfirmText("OK")
+                                    .showCancelButton(false)
+                                    .setCancelClickListener(null)
+                                    .setConfirmClickListener(null)
+                                    .changeAlertType(SweetAlertDialog.ERROR_TYPE);
+                        }
+                    }
+                }).show();
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_check_in, menu);
@@ -445,6 +508,7 @@ public class CheckInActivity extends Activity implements PlacesService.PlacesInt
             mPanelWebsite.setText(mMerchant.getWebsite());
 
             mPanelDate.setText(mDateFormat.format(new Date()));
+            mDate = new Date();
         }
     }
 }
