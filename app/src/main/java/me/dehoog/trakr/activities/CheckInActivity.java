@@ -5,6 +5,7 @@ import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.location.Location;
 import android.location.LocationManager;
@@ -14,6 +15,7 @@ import android.util.AttributeSet;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -45,11 +47,13 @@ import butterknife.InjectView;
 import butterknife.OnClick;
 import cn.pedant.SweetAlert.SweetAlertDialog;
 import me.dehoog.trakr.R;
+import me.dehoog.trakr.models.Account;
 import me.dehoog.trakr.models.Address;
 import me.dehoog.trakr.models.Category;
 import me.dehoog.trakr.models.Merchant;
 import me.dehoog.trakr.models.Place;
 import me.dehoog.trakr.models.PlaceDetails;
+import me.dehoog.trakr.models.User;
 import me.dehoog.trakr.services.GPSTracker;
 import me.dehoog.trakr.services.PlacesService;
 
@@ -67,6 +71,7 @@ public class CheckInActivity extends Activity implements PlacesService.PlacesInt
     private List<Place> mPlaces = new ArrayList<Place>();
     private List<Marker> mMarkers = new ArrayList<Marker>();
 
+    private User mUser = new User();
     private Merchant mMerchant = new Merchant();
     private Marker mSelectedMarker;
 
@@ -115,8 +120,12 @@ public class CheckInActivity extends Activity implements PlacesService.PlacesInt
         int resultCode = GooglePlayServicesUtil.isGooglePlayServicesAvailable(this);
         if (ConnectionResult.SUCCESS == resultCode) {
             mTracker = GPSTracker.getInstance();
-
+            mUser = new User();
             ButterKnife.inject(this);
+
+            SharedPreferences settings = getSharedPreferences(MainActivity.PREFS_NAME, 0);
+            String email = settings.getString("email", "none");
+            mUser = new User().findUser(email);
 
             mMerchantLayout.hidePanel();
             mMerchantLayout.setPanelSlideListener(new SlidingUpPanelLayout.PanelSlideListener() {
@@ -149,8 +158,9 @@ public class CheckInActivity extends Activity implements PlacesService.PlacesInt
                 }
             });
 
-            mDateFormat = new SimpleDateFormat("EE MM d, yyyy");
+            mDateFormat = new SimpleDateFormat("EEEE MMM d, yyyy");
             setUpMapIfNeeded();
+            setupAccountSpinner();
         } else {
             new SweetAlertDialog(this, SweetAlertDialog.ERROR_TYPE)
                     .setTitleText("Error")
@@ -163,6 +173,21 @@ public class CheckInActivity extends Activity implements PlacesService.PlacesInt
                         }
                     })
                     .show();
+        }
+    }
+
+    // TODO if there are no accounts, suggest to the user to add some
+    private void setupAccountSpinner() {
+        List<Account> accounts = mUser.getAllAccounts();
+        if (!accounts.isEmpty()) {
+            List<String> names = new ArrayList<String>();
+            for (Account a : accounts) {
+                names.add(a.getDescription());
+            }
+            ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+                    android.R.layout.simple_spinner_item, names);
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            mPanelAccount.setAdapter(adapter);
         }
     }
 
