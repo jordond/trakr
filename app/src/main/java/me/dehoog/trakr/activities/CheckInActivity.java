@@ -500,7 +500,7 @@ public class CheckInActivity extends Activity implements PlacesService.PlacesInt
             mMerchant.setPlaceId(details.getPlace_id());
             mMerchant.setWebsite(details.getUrl());
 
-            Category category = new Category().findOrCreate(details.typeToString());
+            Category category = new Category().findOrCreate(details.typeToString(0));
             category.setIcon(details.getIcon());
             mMerchant.setCategory(category);
 
@@ -517,7 +517,7 @@ public class CheckInActivity extends Activity implements PlacesService.PlacesInt
             mMerchant.setPlace(place); // Might be useful to keep around
 
             mPanelAddress.setText(mMerchant.getLocation().getLongAddress()); // Might change to short address
-            mPanelType.setText(mMerchant.getCategory().getName());
+            mPanelType.setText(details.typesToString());
             mPanelPhone.setText(mMerchant.getPhone());
             mPanelWebsite.setText(mMerchant.getWebsite());
 

@@ -120,14 +120,25 @@ public class PlaceDetails {
         return "";
     }
 
-    public String typeToString() {
+    public String typeToString(int index) {
         String type = "";
         if (this.types != null) {
-            String raw = this.types.get(0);
+            String raw = this.types.get(index);
             raw = raw.replaceAll("_", " ").toLowerCase();
             type = raw.substring(0, 1).toUpperCase() + raw.substring(1);
         }
         return type;
+    }
+
+    public String typesToString() {
+        String typeConcat = "";
+        if (this.types != null) {
+            for (int i = 0; i < this.types.size(); i++) {
+                typeConcat += this.typeToString(i) + ", ";
+            }
+            typeConcat = typeConcat.substring(0, typeConcat.length() - 2); // removing trailing comma
+        }
+        return typeConcat;
     }
 
     public List<AddressComponents> getAddress_components() {

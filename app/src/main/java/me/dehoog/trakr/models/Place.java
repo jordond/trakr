@@ -29,6 +29,7 @@ public class Place {
     private String formatted_address; // for text search
     private List<String> types;
     private PlacesLocation geometry;
+    private LatLng latLng;
 
     // Helper
     public double getLatitude() {
@@ -48,8 +49,12 @@ public class Place {
     }
 
     public LatLng getLatLng() {
-        if (this.geometry != null) {
-            return new LatLng(this.getLatitude(), this.getLongitude());
+        if (this.latLng == null) {
+            if (this.geometry != null) {
+                return new LatLng(this.getLatitude(), this.getLongitude());
+            }
+        } else {
+            return this.latLng;
         }
         return null;
     }
@@ -127,6 +132,10 @@ public class Place {
 
     public void setFormatted_address(String formatted_address) {
         this.formatted_address = formatted_address;
+    }
+
+    public void setLatLng(LatLng latLng) {
+        this.latLng = latLng;
     }
 }
 
