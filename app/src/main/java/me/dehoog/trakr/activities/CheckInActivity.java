@@ -9,6 +9,7 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.location.Location;
 import android.location.LocationManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
@@ -91,7 +92,20 @@ public class CheckInActivity extends Activity implements PlacesService.PlacesInt
     @InjectView(R.id.panel_merchant_address) TextView mPanelAddress;
     @InjectView(R.id.panel_merchant_type) TextView mPanelType; // category
     @InjectView(R.id.panel_merchant_phone) TextView mPanelPhone;
+    @OnClick(R.id.panel_merchant_phone)
+    public void openDialer() {
+        Intent intent = new Intent(Intent.ACTION_DIAL);
+        intent.setData(Uri.parse(mMerchant.getPhone()));
+        startActivity(intent);
+    }
     @InjectView(R.id.panel_merchant_website) TextView mPanelWebsite;
+    @OnClick(R.id.panel_merchant_website)
+    public void openUrl() {
+        String url = mMerchant.getWebsite();
+        Intent i = new Intent(Intent.ACTION_VIEW);
+        i.setData(Uri.parse(url));
+        startActivity(i);
+    }
 
     @InjectView(R.id.panel_transaction_date) TextView mPanelDate;
     @InjectView(R.id.panel_transaction_account) Spinner mPanelAccount;
