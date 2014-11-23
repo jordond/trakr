@@ -396,6 +396,15 @@ public class CheckInActivity extends Activity implements PlacesService.PlacesInt
     }
 
     @Override
+    public void onBackPressed() {
+        if (mMerchantLayout.isPanelExpanded()) {
+            mMerchantLayout.collapsePanel();
+        } else {
+            super.onBackPressed();
+        }
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_check_in, menu);
         return true;
