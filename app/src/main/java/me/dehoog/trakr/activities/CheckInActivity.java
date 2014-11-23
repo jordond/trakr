@@ -378,6 +378,10 @@ public class CheckInActivity extends Activity implements PlacesService.PlacesInt
                             transaction.setMerchant(mMerchant);
                             transaction.save();
 
+                            double total = account.getTotal() + Double.valueOf(mPanelAmount.getText().toString());
+                            account.setTotal(total);
+                            account.save();
+
                             Intent intent = new Intent();
                             intent.putExtra("add", true);
                             setResult(RESULT_OK, intent);
