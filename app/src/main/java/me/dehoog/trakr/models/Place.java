@@ -18,7 +18,7 @@ public class Place {
 
     private static final String[] TYPE_EXCLUSIONS = {
             "bus_station", "cemetery", "church", "park", "place_of_worship", "police", "roofing_contractor",
-            "rv_park", "school", "synagogue", "fire_station", "funeral_home",
+            "rv_park", "school", "synagogue", "fire_station", "funeral_home", "neighborhood",
             "hindu_temple", "hospital", "local_government_office", "mosque"};
 
     private String id;
