@@ -460,7 +460,7 @@ public class CheckInActivity extends Activity implements PlacesService.PlacesInt
                     public void onPositive(MaterialDialog dialog) {
                         clearForNewSearch();
                         String query = searchInput.getText().toString();
-                        mPlacesService.textSearch(query, 600, null);
+                        mPlacesService.textSearch(query, 600, mCurrentLocation);
                     }
 
                     @Override

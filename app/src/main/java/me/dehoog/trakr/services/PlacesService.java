@@ -102,7 +102,7 @@ public class PlacesService extends Service {
         try {
             query = URLEncoder.encode(query, "UTF-8");
         } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
+            Log.e(TAG, "Error encoding the query: " + e.getMessage());
         }
 
         LatLng latLng = locationToLatLng(location);
@@ -111,12 +111,7 @@ public class PlacesService extends Service {
                 + "&query=" + query
                 + "&location=" + latLng.latitude + "," + latLng.longitude
                 + "&radius=" + radius;
-        try {
-            sendRequest(url);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
+        sendRequest(url);
     }
 
     public void placeDetailSearch(Place place) {
@@ -149,7 +144,7 @@ public class PlacesService extends Service {
         }, 1700); // How low can ya go
     }
 
-    public void sendRequest(String url) throws Exception {
+    public void sendRequest(String url) {
         Ion.with(mContext)
                 .load(url)
                 .as(PlacesResult.class)
