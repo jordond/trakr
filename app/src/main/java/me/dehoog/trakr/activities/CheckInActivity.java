@@ -15,6 +15,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -85,7 +86,7 @@ public class CheckInActivity extends Activity implements PlacesService.PlacesInt
 
     // UI Components
     @InjectView(R.id.panel_layout) SlidingUpPanelLayout mMerchantLayout;
-    @InjectView(R.id.panel_header) RelativeLayout mPanelHeader;
+    @InjectView(R.id.panel_header) LinearLayout mPanelHeader;
 
     // Panel Header
     @InjectView(R.id.merchant_icon) ImageView mMerchantIcon;
@@ -315,7 +316,8 @@ public class CheckInActivity extends Activity implements PlacesService.PlacesInt
                                 .load(place.getIcon());
 
                         mMerchantTitle.setText(place.getName());
-                        mMerchantSubtitle.setText(place.getVicinity());
+                        String address = place.getVicinity() == null ? place.getFormatted_address() : place.getVicinity();
+                        mMerchantSubtitle.setText(address);
                         break;
                     }
                 }
@@ -444,6 +446,8 @@ public class CheckInActivity extends Activity implements PlacesService.PlacesInt
         } else if (id == R.id.action_filter) {
             showFilterDialog();
         }
+        mMerchantLayout.collapsePanel();
+        mMerchantLayout.hidePanel();
 
         return super.onOptionsItemSelected(item);
     }

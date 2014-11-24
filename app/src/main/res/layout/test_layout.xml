@@ -1,132 +1,56 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:id="@+id/layout"
-    android:background="@color/white_background">
+    android:layout_height="68dp"
+    android:orientation="horizontal"
+    android:gravity="center_vertical"
+    android:id="@+id/panel_header"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:drawableStart="@drawable/ic_marker"
-        android:layout_height="0dp"
+    <ImageView
+        android:id="@+id/merchant_icon"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:scaleType="fitXY"
+        android:gravity="center_vertical"
+        android:src="@drawable/ic_general_icon"
+        android:layout_marginEnd="10dp"
+        android:layout_marginStart="5dp" />
+
+    <LinearLayout
+        android:layout_width="0dp"
         android:layout_weight="1"
-        android:gravity="center_vertical"
-        android:text="944 Dearness Drive London Ontario"/>
-
-    <TextView
-        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:drawableStart="@drawable/ic_filter"
-        android:gravity="center_vertical"
-        android:text="Entertainment"/>
+        android:orientation="vertical">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:drawableStart="@drawable/ic_phone"
-        android:gravity="center_vertical"
-        android:text="(519) 765-9887"/>
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:drawableStart="@drawable/ic_earth"
-        android:gravity="center_vertical"
-        android:text="www.totallyrealywebsite.com"/>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center_vertical">
-
-        <ImageView
+        <TextView
+            android:id="@+id/merchant_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_calendar"/>
+            style="?android:textAppearanceMedium"
+            android:gravity="center_vertical"
+            android:singleLine="true"
+            android:layout_marginTop="5dp"
+            android:ellipsize="end" />
 
-        <EditText
-            android:layout_width="40dp"
-            android:layout_weight="1"
+        <TextView
+            android:id="@+id/merchant_address"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             style="?android:textAppearanceSmall"
-            android:hint="Choose date"/>
-
-        <Space
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_weight="2.5" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center_vertical">
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_bank"/>
-
-        <Spinner
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-
-            </Spinner>
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center_vertical">
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_coin"/>
-
-        <EditText
-            android:layout_width="40dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            style="?android:textAppearanceSmall"
-            android:hint="Amount spent"
-            android:inputType="numberDecimal" />
-
-        <Space
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_weight="2.5" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <ImageButton
-            android:id="@+id/action_save"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="80dp"
-            android:scaleType="fitCenter"
-            style="?android:attr/borderlessButtonStyle"
-            android:src="@drawable/ic_save"
-            android:contentDescription="@string/check_in_save_image_description" />
-
-        <ImageButton
-            android:id="@+id/action_cancel"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="80dp"
-            android:scaleType="fitCenter"
-            style="?android:attr/borderlessButtonStyle"
-            android:src="@drawable/ic_cancel"
-            android:contentDescription="@string/check_in_cancel_image_description" />
+            android:maxLines="1"
+            android:singleLine="true"
+            android:ellipsize="end" />
 
         </LinearLayout>
+
+
+
+    <ImageView
+        android:id="@+id/panel_slide_symbol"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:src="@drawable/ic_plus_skinny"
+        android:layout_marginEnd="10dp"
+        android:gravity="end"/>
 
 </LinearLayout>

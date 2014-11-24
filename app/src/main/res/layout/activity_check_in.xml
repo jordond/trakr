@@ -35,11 +35,13 @@
             android:background="@color/white_background">
 
             <!-- Panel bar layout -->
-            <RelativeLayout
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="68dp"
+                android:orientation="horizontal"
                 android:gravity="center_vertical"
-                android:id="@+id/panel_header">
+                android:id="@+id/panel_header"
+                xmlns:android="http://schemas.android.com/apk/res/android">
 
                 <ImageView
                     android:id="@+id/merchant_icon"
@@ -48,31 +50,35 @@
                     android:scaleType="fitXY"
                     android:gravity="center_vertical"
                     android:src="@drawable/ic_general_icon"
-                    android:layout_marginTop="5dp"
                     android:layout_marginEnd="10dp"
-                    android:layout_marginStart="5dp"/>
+                    android:layout_marginStart="5dp" />
 
-                <TextView
-                    android:id="@+id/merchant_name"
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
                     android:layout_height="wrap_content"
-                    style="?android:textAppearanceMedium"
-                    android:gravity="center_vertical"
-                    android:singleLine="true"
-                    android:layout_marginTop="5dp"
-                    android:ellipsize="end"
-                    android:layout_toEndOf="@+id/merchant_icon"/>
+                    android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/merchant_address"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    style="?android:textAppearanceSmall"
-                    android:maxLines="1"
-                    android:singleLine="true"
-                    android:layout_below="@id/merchant_name"
-                    android:layout_toEndOf="@id/merchant_icon"/>
+                    <TextView
+                        android:id="@+id/merchant_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        style="?android:textAppearanceMedium"
+                        android:gravity="center_vertical"
+                        android:singleLine="true"
+                        android:layout_marginTop="5dp"
+                        android:ellipsize="end" />
 
+                    <TextView
+                        android:id="@+id/merchant_address"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        style="?android:textAppearanceSmall"
+                        android:maxLines="1"
+                        android:singleLine="true"
+                        android:ellipsize="end" />
+
+                </LinearLayout>
 
                 <ImageView
                     android:id="@+id/panel_slide_symbol"
@@ -80,9 +86,9 @@
                     android:layout_height="60dp"
                     android:src="@drawable/ic_plus_skinny"
                     android:layout_marginEnd="10dp"
-                    android:layout_alignParentEnd="true" />
+                    android:gravity="end"/>
 
-                </RelativeLayout>
+            </LinearLayout>
 
                 <!-- Panel content -->
                 <ScrollView
