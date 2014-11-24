@@ -33,7 +33,7 @@
     <string name="add_account_action_cancel">Cancel</string>
     <string name="add_account_action_confirm">Add</string>
     <string name="credit_type_visa">VISA</string>
-    <string name="credit_type_mastercard">MasterCard</string>
+    <string name="credit_type_mastercard">Master Card</string>
     <string name="credit_type_amex">Amex</string>
     <string name="credit_type_other">Other</string>
     <string name="add_account_button_delete_description">Delete account button</string>

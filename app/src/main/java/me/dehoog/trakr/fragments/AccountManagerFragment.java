@@ -20,6 +20,8 @@ import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
 import com.github.devnied.emvnfccard.model.EmvCard;
 
+import java.util.Calendar;
+
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
@@ -28,6 +30,7 @@ import me.dehoog.trakr.R;
 import me.dehoog.trakr.activities.CardReaderActivity;
 import me.dehoog.trakr.interfaces.AddAccountInteraction;
 import me.dehoog.trakr.models.Account;
+import me.dehoog.trakr.models.CardNFC;
 import me.dehoog.trakr.models.User;
 
 public class AccountManagerFragment extends Fragment {
@@ -111,7 +114,7 @@ public class AccountManagerFragment extends Fragment {
     public void onReadNfcClick() {
         Intent intent = new Intent(getActivity(), CardReaderActivity.class);
         intent.putExtra("fromAccountManager", true);
-        startActivity(intent);
+        startActivityForResult(intent, NFC_CARD_READ_REQUEST);
     }
 
     @OnClick(R.id.action_cancel)
@@ -331,14 +334,27 @@ public class AccountManagerFragment extends Fragment {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == NFC_CARD_READ_REQUEST) {
             if (resultCode == Activity.RESULT_OK) {
-                processCardResult((EmvCard) data.getSerializableExtra("card"));
+                processCardResult((CardNFC) data.getSerializableExtra("card"));
             }
         }
     }
 
-    private void processCardResult(EmvCard card) {
+    private void processCardResult(CardNFC card) {
+        if (card != null) {
+            mCredit.toggle();
+            mCategory = "Credit";
+            mType = card.getType();
+            mAccountNumber.setText(card.getAccountNumber());
+
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(card.getExpiry());
+            int month = calendar.get(Calendar.MONTH) + 1;
+            int year = calendar.get(Calendar.YEAR);
+            String exp = String.valueOf(month) + "/" + String.valueOf(year).substring(2, 4);
+            mExpiry.setText(exp);
+
+        }
     }
 }

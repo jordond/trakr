@@ -27,6 +27,7 @@ import cn.pedant.SweetAlert.SweetAlertDialog;
 import de.keyboardsurfer.android.widget.crouton.Crouton;
 import de.keyboardsurfer.android.widget.crouton.Style;
 import me.dehoog.trakr.R;
+import me.dehoog.trakr.models.CardNFC;
 import me.dehoog.trakr.providers.NFCProvider;
 import me.dehoog.trakr.tasks.NFCTask;
 import me.dehoog.trakr.utils.NFCUtils;
@@ -109,7 +110,6 @@ public class CardReaderActivity extends Activity {
                     if (!mException) {
                         if (mCard != null) {
                             if (StringUtils.isNotBlank(mCard.getCardNumber())) {
-                                Crouton.makeText(CardReaderActivity.this, "Read card successfully!", Style.CONFIRM).show();
                                 mReadCard = mCard;
                                 cardReadSuccess();
                             }
@@ -126,9 +126,10 @@ public class CardReaderActivity extends Activity {
     }
 
     private void cardReadSuccess() {
+        final CardNFC card = new CardNFC(mReadCard.getCardNumber(), mReadCard.getExpireDate(), mReadCard.getType().getName());
         new SweetAlertDialog(this, SweetAlertDialog.NORMAL_TYPE)
                 .setTitleText("Success!")
-                .setContentText("Card was successfully read, found account number: " + mReadCard.getCardNumber() + ", is this correct?")
+                .setContentText("Card was successfully read, found account number: " + card.getAccountNumber() + ", is this correct?")
                 .setConfirmText("Yup!")
                 .setCancelText("Try Again")
                 .showCancelButton(true)
@@ -136,10 +137,16 @@ public class CardReaderActivity extends Activity {
                     @Override
                     public void onClick(SweetAlertDialog dialog) {
                         Intent returnIntent = new Intent();
-                        returnIntent.putExtra("card", mReadCard);
+                        returnIntent.putExtra("card", card);
                         setResult(RESULT_OK,returnIntent);
                         dialog.dismiss();
+                        mAlertDialog = null;
                         finish();
+                    }
+                }).setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                    @Override
+                    public void onClick(SweetAlertDialog dialog) {
+                        dialog.dismiss();
                     }
                 }).show();
     }
@@ -159,6 +166,7 @@ public class CardReaderActivity extends Activity {
                         @Override
                         public void onClick(SweetAlertDialog dialog) {
                             dialog.dismiss();
+                            mAlertDialog = null;
                             finish();
                         }
                     });
