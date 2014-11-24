@@ -151,10 +151,10 @@ public class PlacesService extends Service {
                         if (mListener != null) {
                             if (result.getStatus().equals("OK")) {
                                 mListener.onPlacesReturned(result.getResults());
-                                if (result.isMoreResults()) {
-                                    Log.d(TAG, "Fetching more results with id: " + result.getNext_page_token());
-                                    getMore(result.getNext_page_token());
-                                }
+//                                if (result.isMoreResults()) {
+//                                    Log.d(TAG, "Fetching more results with id: " + result.getNext_page_token());
+//                                    getMore(result.getNext_page_token());
+//                                }
                             } else {
                                 Log.e(TAG, "Google replied with: " + result.getStatus());
                             }
