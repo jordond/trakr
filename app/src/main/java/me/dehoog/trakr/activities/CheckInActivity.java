@@ -458,7 +458,7 @@ public class CheckInActivity extends Activity implements PlacesService.PlacesInt
                     @Override
                     public void onSelection(MaterialDialog materialDialog, Integer[] integers, CharSequence[] charSequences) {
                         for (Integer i : integers) {
-                            mFilterUrls.add(charSequences[i].toString());
+                            mFilterUrls.add(mIconUrls.get(i));
                         }
                         filterMarkers();
                     }
@@ -468,7 +468,14 @@ public class CheckInActivity extends Activity implements PlacesService.PlacesInt
     }
 
     public void filterMarkers() {
-        
+        clearMarkers();
+        for (int i = 0; i < mPlaces.size(); i++) {
+            Place place = mPlaces.get(i);
+            if (mFilterUrls.contains(place.getIcon())) {
+                Marker temp = addMarker(place);
+                mMarkers.add(i, temp);
+            }
+        }
     }
 
     @Override
@@ -488,7 +495,6 @@ public class CheckInActivity extends Activity implements PlacesService.PlacesInt
     }
 
     // Places Service handler + map helpers
-
     @Override
     public void onPlacesReturned(List<Place> places) {
         for (Place place : places) {
@@ -510,7 +516,7 @@ public class CheckInActivity extends Activity implements PlacesService.PlacesInt
                     mIconUrls.add(type.getIcon());
                 }
                 mPlaces.add(place);
-                addMarker(place);
+                mMarkers.add(addMarker(place));
             }
         }
     }
@@ -524,13 +530,11 @@ public class CheckInActivity extends Activity implements PlacesService.PlacesInt
         mMarkers.clear();
     }
 
-    private void addMarker(Place place) {
+    private Marker addMarker(Place place) {
         final Marker marker = mMap.addMarker(new MarkerOptions()
                 .position(place.getLatLng())
                 .title(place.getName())
                 .snippet(place.getId()));
-
-        mMarkers.add(marker);
 
         Ion.with(getApplicationContext())
                 .load(place.getIcon())
@@ -543,7 +547,7 @@ public class CheckInActivity extends Activity implements PlacesService.PlacesInt
                         mMarkers.set(index, marker);
                     }
                 });
-
+        return marker;
     }
 
     @Override
