@@ -15,6 +15,8 @@ import com.google.gson.JsonObject;
 import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.List;
 
 import me.dehoog.trakr.models.Place;
@@ -95,6 +97,12 @@ public class PlacesService extends Service {
             if (location == null) {
                 return;
             }
+        }
+
+        try {
+            query = URLEncoder.encode(query, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
         }
 
         LatLng latLng = locationToLatLng(location);

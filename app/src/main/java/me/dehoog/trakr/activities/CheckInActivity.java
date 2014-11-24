@@ -437,6 +437,7 @@ public class CheckInActivity extends Activity implements PlacesService.PlacesInt
         if (id == R.id.action_settings) {
             return true;
         } else if (id == R.id.action_search) {
+            showSearchDialog();
         } else if (id == R.id.homeAsUp) {
             Intent intent = new Intent();
             setResult(RESULT_CANCELED, intent);
@@ -446,6 +447,29 @@ public class CheckInActivity extends Activity implements PlacesService.PlacesInt
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    EditText searchInput;
+    private void showSearchDialog() {
+        MaterialDialog dialog = new MaterialDialog.Builder(this)
+                .title("Search nearby")
+                .customView(R.layout.check_in_text_search)
+                .positiveText("search")
+                .negativeText("cancel")
+                .callback(new MaterialDialog.Callback() {
+                    @Override
+                    public void onPositive(MaterialDialog dialog) {
+                        clearForNewSearch();
+                        String query = searchInput.getText().toString();
+                        mPlacesService.textSearch(query, 600, null);
+                    }
+
+                    @Override
+                    public void onNegative(MaterialDialog dialog) {
+                    }
+                }).build();
+        searchInput = (EditText) dialog.getCustomView().findViewById(R.id.search_query);
+        dialog.show();
     }
 
     private void showFilterDialog() {
