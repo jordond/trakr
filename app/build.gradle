@@ -42,5 +42,5 @@ dependencies {
     compile 'com.squareup.picasso:picasso:2.4.0'                        // https://github.com/square/picasso
     compile 'com.koushikdutta.ion:ion:2.0.0'                            // https://github.com/koush/ion
     compile 'com.sothree.slidinguppanel:library:2.0.2'                  // https://github.com/umano/AndroidSlidingUpPanel
-    compile 'me.drakeet.materialdialog:library:1.1.0'                   // https://github.com/drakeet/MaterialDialog
+    compile 'com.afollestad:material-dialogs:0.3.0'                     // https://github.com/afollestad/material-dialogs
 }

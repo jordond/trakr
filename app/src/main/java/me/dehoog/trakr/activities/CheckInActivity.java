@@ -24,6 +24,7 @@ import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
 import com.google.android.gms.common.ConnectionResult;
@@ -42,6 +43,7 @@ import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -79,9 +81,11 @@ public class CheckInActivity extends Activity implements PlacesService.PlacesInt
     private User mUser = new User();
     private Merchant mMerchant = new Merchant();
     private Marker mSelectedMarker;
+
+    private boolean mFirstRun = true;
     private List<Category> mCategories = new ArrayList<Category>();
     private List<String> mIconUrls = new ArrayList<String>();
-    private List<String> mCategoryFilter;
+    private List<String> mFilterUrls = new ArrayList<String>();
 
     private SimpleDateFormat mDateFormat;
     private Date mDate; // I hate dates so much
@@ -100,6 +104,7 @@ public class CheckInActivity extends Activity implements PlacesService.PlacesInt
     @InjectView(R.id.panel_merchant_address) TextView mPanelAddress;
     @InjectView(R.id.panel_merchant_type) TextView mPanelType; // category
     @InjectView(R.id.panel_merchant_phone) TextView mPanelPhone;
+
     @OnClick(R.id.panel_merchant_phone)
     public void openDialer() {
         Intent intent = new Intent(Intent.ACTION_DIAL);
@@ -183,7 +188,6 @@ public class CheckInActivity extends Activity implements PlacesService.PlacesInt
                 mPlacesService = PlacesService.getInstance(getApplicationContext());
                 mPlacesService.setmListener(this);
                 fadeView(mMerchantSubtitle, true); //fix jittery bug
-                mPlacesService.nearbySearch(null); // Search current location
 
                 mMerchantLayout.hidePanel();
                 mMerchantLayout.setPanelSlideListener(new SlidingUpPanelLayout.PanelSlideListener() {
@@ -218,6 +222,9 @@ public class CheckInActivity extends Activity implements PlacesService.PlacesInt
 
                 mDateFormat = new SimpleDateFormat("EEEE MMM d, yyyy");
                 setUpMapIfNeeded();
+                mPlacesService.nearbySearch(mCurrentLocation);
+
+
                 setupAccountSpinner();
             } else {
                 new SweetAlertDialog(this, SweetAlertDialog.ERROR_TYPE)
@@ -289,7 +296,8 @@ public class CheckInActivity extends Activity implements PlacesService.PlacesInt
             public void onMapLongClick(LatLng latLng) {
                 mMerchantLayout.hidePanel();
                 clearMarkers();
-                mPlacesService.nearbySearch(convertLatLng(latLng));
+                mCurrentLocation = convertLatLng(latLng);
+                mPlacesService.nearbySearch(mCurrentLocation);
                 setLocation(latLng);
             }
         });
@@ -430,10 +438,37 @@ public class CheckInActivity extends Activity implements PlacesService.PlacesInt
             setResult(RESULT_CANCELED, intent);
             finish();
         } else if (id == R.id.action_filter) {
-
+            showFilterDialog();
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void showFilterDialog() {
+        final String[] types = new String[mCategories.size()];
+        final Integer[] ints = new Integer[mCategories.size()];
+        for (int i = 0; i < types.length; i++) {
+            types[i] = mCategories.get(i).getName();
+            ints[i] = i;
+        }
+        new MaterialDialog.Builder(this)
+                .title("Filter by Category")
+                .items(types)
+                .itemsCallbackMultiChoice(ints, new MaterialDialog.ListCallbackMulti() {
+                    @Override
+                    public void onSelection(MaterialDialog materialDialog, Integer[] integers, CharSequence[] charSequences) {
+                        for (Integer i : integers) {
+                            mFilterUrls.add(charSequences[i].toString());
+                        }
+                        filterMarkers();
+                    }
+                })
+                .positiveText("Filter")
+                .show();
+    }
+
+    public void filterMarkers() {
+        
     }
 
     @Override
@@ -458,8 +493,24 @@ public class CheckInActivity extends Activity implements PlacesService.PlacesInt
     public void onPlacesReturned(List<Place> places) {
         for (Place place : places) {
             if (!place.shouldExclude()) {
-                addMarker(place);
+
+                Category type = new Category();
+                type.setIcon(place.getIcon());
+                type.setName(type.parseTypeFromURL(place.getIcon()));
+
+                if (mIconUrls.contains(type.getIcon())) {
+                    for (Category c : mCategories) {
+                        if (c.getIcon().equals(type.getIcon())) {
+                            mCategories.set(mCategories.indexOf(c), type);
+                            break;
+                        }
+                    }
+                } else {
+                    mCategories.add(type);
+                    mIconUrls.add(type.getIcon());
+                }
                 mPlaces.add(place);
+                addMarker(place);
             }
         }
     }
@@ -480,22 +531,6 @@ public class CheckInActivity extends Activity implements PlacesService.PlacesInt
                 .snippet(place.getId()));
 
         mMarkers.add(marker);
-
-        Category type = new Category();
-        type.setIcon(place.getIcon());
-        type.setName(type.parseTypeFromURL(place.getIcon()));
-
-        if (mIconUrls.contains(type.getIcon())) {
-            for (Category c : mCategories) {
-                if (c.getIcon().equals(type.getIcon())) {
-                    mCategories.set(mCategories.indexOf(c), type);
-                    break;
-                }
-            }
-        } else {
-            mCategories.add(type);
-            mIconUrls.add(type.getIcon());
-        }
 
         Ion.with(getApplicationContext())
                 .load(place.getIcon())
