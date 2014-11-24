@@ -78,7 +78,7 @@ public class CheckInActivity extends Activity implements PlacesService.PlacesInt
     private List<Category> mCategories = new ArrayList<Category>();     // Contains a list of found categories
     private List<String> mIconUrls = new ArrayList<String>();           // Contains the urls of of all found categories
     private List<String> mFilterUrls = new ArrayList<String>();         // Contains the urls of the filtered categories
-    private Integer[] mSelectedFilter;
+    private Integer[] mSelectedFilters;
 
     private SimpleDateFormat mDateFormat;                               // Date pattern "EEEE MMM d, yyyy"
     private Date mDate; // I hate dates so much                         // Object to store the current date, I used it as a fix for a bug
@@ -271,7 +271,8 @@ public class CheckInActivity extends Activity implements PlacesService.PlacesInt
                 mMerchantLayout.hidePanel();
                 mCurrentLocation = mTracker.getLocation(getApplication());
                 clearMarkers();
-                setLocation(convertLocation(mCurrentLocation));
+                clearForNewSearch();
+                setLocation(convertLocation(mCurrentLocation), true);
                 mPlacesService.nearbySearch(null);
                 return true;
             }
@@ -289,9 +290,10 @@ public class CheckInActivity extends Activity implements PlacesService.PlacesInt
             public void onMapLongClick(LatLng latLng) {
                 mMerchantLayout.hidePanel();
                 clearMarkers();
+                clearForNewSearch();
                 mCurrentLocation = convertLatLng(latLng);
                 mPlacesService.nearbySearch(mCurrentLocation);
-                setLocation(latLng);
+                setLocation(latLng, false);
             }
         });
 
@@ -324,7 +326,7 @@ public class CheckInActivity extends Activity implements PlacesService.PlacesInt
         });
 
         mCurrentLocation = mTracker.getLocation(this);
-        setLocation(convertLocation(mCurrentLocation));
+        setLocation(convertLocation(mCurrentLocation), true);
     }
 
     private LatLng convertLocation(Location location) {
@@ -338,11 +340,20 @@ public class CheckInActivity extends Activity implements PlacesService.PlacesInt
         return loc;
     }
 
-    private void setLocation(LatLng location) {
+    private void setLocation(LatLng location, boolean zoom) {
         if (location != null) {
-            mMap.moveCamera(CameraUpdateFactory.zoomTo(MAP_ZOOM));
+            if (zoom) {
+                mMap.moveCamera(CameraUpdateFactory.zoomTo(MAP_ZOOM));
+            }
             mMap.animateCamera(CameraUpdateFactory.newLatLng(location), 1800, null);
         }
+    }
+
+    private void clearForNewSearch() {
+        mCategories.clear();
+        mIconUrls.clear();
+        mPlaces.clear();
+        mSelectedFilters = null;
     }
 
     private void fadeView(View view, boolean out) {
@@ -444,17 +455,21 @@ public class CheckInActivity extends Activity implements PlacesService.PlacesInt
             types[i] = mCategories.get(i).getName();
             ints[i] = i;
         }
-        mSelectedFilter = mSelectedFilter == null ? ints : mSelectedFilter;
-        
+        if (mSelectedFilters == null) {
+            mSelectedFilters = ints;
+        }
+
         new MaterialDialog.Builder(this)
                 .title("Filter by Category")
                 .items(types)
-                .itemsCallbackMultiChoice(mSelectedFilter, new MaterialDialog.ListCallbackMulti() {
+                .itemsCallbackMultiChoice(mSelectedFilters, new MaterialDialog.ListCallbackMulti() {
                     @Override
                     public void onSelection(MaterialDialog materialDialog, Integer[] integers, CharSequence[] charSequences) {
+                        mFilterUrls.clear();
                         for (Integer i : integers) {
                             mFilterUrls.add(mIconUrls.get(i));
                         }
+                        mSelectedFilters = integers;
                         filterMarkers();
                     }
                 })
@@ -513,7 +528,7 @@ public class CheckInActivity extends Activity implements PlacesService.PlacesInt
                 addMarker(place);
             }
         }
-        mSelectedFilter = null;
+        mSelectedFilters = null;
     }
 
     public void clearMarkers() {
