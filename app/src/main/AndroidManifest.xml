@@ -7,6 +7,7 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.NFC" />
 
     <uses-feature
         android:glEsVersion="0x00020000"
@@ -66,8 +67,21 @@
         </activity>
         <activity
             android:name="me.dehoog.trakr.activities.CardReaderActivity"
-            android:label="@string/title_activity_card_reader" >
+            android:label="@string/title_activity_card_reader"
+            android:theme="@style/AppTheme"
+            android:icon="@drawable/logo_all_white">
+
+            <intent-filter>
+                <action android:name="android.nfc.action.TECH_DISCOVERED" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.nfc.action.TECH_DISCOVERED"
+                android:resource="@xml/nfc_list" />
+
         </activity>
+
     </application>
 
 </manifest>

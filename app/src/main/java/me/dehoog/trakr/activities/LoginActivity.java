@@ -17,7 +17,6 @@ import de.keyboardsurfer.android.widget.crouton.Style;
 import me.dehoog.trakr.R;
 import me.dehoog.trakr.fragments.LoginFragment;
 import me.dehoog.trakr.fragments.RegisterFragment;
-import me.dehoog.trakr.helpers.SeedDatabase;
 import me.dehoog.trakr.interfaces.OnTaskResult;
 import me.dehoog.trakr.models.User;
 import me.dehoog.trakr.tasks.UserLoginTask;

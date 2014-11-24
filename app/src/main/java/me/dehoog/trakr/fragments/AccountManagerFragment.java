@@ -2,6 +2,7 @@ package me.dehoog.trakr.fragments;
 
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -23,6 +24,7 @@ import butterknife.InjectView;
 import butterknife.OnClick;
 import cn.pedant.SweetAlert.SweetAlertDialog;
 import me.dehoog.trakr.R;
+import me.dehoog.trakr.activities.CardReaderActivity;
 import me.dehoog.trakr.interfaces.AddAccountInteraction;
 import me.dehoog.trakr.models.Account;
 import me.dehoog.trakr.models.User;
@@ -104,7 +106,8 @@ public class AccountManagerFragment extends Fragment {
 
     @OnClick(R.id.action_nfc)
     public void onReadNfcClick() {
-        //TODO implement
+        Intent intent = new Intent(getActivity(), CardReaderActivity.class);
+        startActivity(intent);
     }
 
     @OnClick(R.id.action_cancel)
