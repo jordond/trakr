@@ -270,7 +270,6 @@ public class CheckInActivity extends Activity implements PlacesService.PlacesInt
             public boolean onMyLocationButtonClick() {
                 mMerchantLayout.hidePanel();
                 mCurrentLocation = mTracker.getLocation(getApplication());
-                clearMarkers();
                 clearForNewSearch();
                 setLocation(convertLocation(mCurrentLocation), true);
                 mPlacesService.nearbySearch(null);
@@ -289,7 +288,6 @@ public class CheckInActivity extends Activity implements PlacesService.PlacesInt
             @Override
             public void onMapLongClick(LatLng latLng) {
                 mMerchantLayout.hidePanel();
-                clearMarkers();
                 clearForNewSearch();
                 mCurrentLocation = convertLatLng(latLng);
                 mPlacesService.nearbySearch(mCurrentLocation);
@@ -353,6 +351,7 @@ public class CheckInActivity extends Activity implements PlacesService.PlacesInt
         mCategories.clear();
         mIconUrls.clear();
         mPlaces.clear();
+        clearMarkers();
         mSelectedFilters = null;
     }
 
