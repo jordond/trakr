@@ -126,8 +126,22 @@ public class CardReaderActivity extends Activity {
     }
 
     private void cardReadSuccess() {
-        // Do something with the card
-        System.out.println("Debug spot");
+        new SweetAlertDialog(this, SweetAlertDialog.NORMAL_TYPE)
+                .setTitleText("Success!")
+                .setContentText("Card was successfully read, found account number: " + mReadCard.getCardNumber() + ", is this correct?")
+                .setConfirmText("Yup!")
+                .setCancelText("Try Again")
+                .showCancelButton(true)
+                .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                    @Override
+                    public void onClick(SweetAlertDialog dialog) {
+                        Intent returnIntent = new Intent();
+                        returnIntent.putExtra("card", mReadCard);
+                        setResult(RESULT_OK,returnIntent);
+                        dialog.dismiss();
+                        finish();
+                    }
+                }).show();
     }
 
     @Override

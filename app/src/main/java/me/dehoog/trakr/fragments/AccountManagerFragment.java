@@ -18,6 +18,7 @@ import android.widget.ToggleButton;
 
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
+import com.github.devnied.emvnfccard.model.EmvCard;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -30,6 +31,8 @@ import me.dehoog.trakr.models.Account;
 import me.dehoog.trakr.models.User;
 
 public class AccountManagerFragment extends Fragment {
+
+    public static final int NFC_CARD_READ_REQUEST = 8;
 
     private static final String ARG_USER = "user";
     private static final String ARG_ACTION = "action";
@@ -107,6 +110,7 @@ public class AccountManagerFragment extends Fragment {
     @OnClick(R.id.action_nfc)
     public void onReadNfcClick() {
         Intent intent = new Intent(getActivity(), CardReaderActivity.class);
+        intent.putExtra("fromAccountManager", true);
         startActivity(intent);
     }
 
@@ -323,5 +327,18 @@ public class AccountManagerFragment extends Fragment {
             }
             close();
         }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == NFC_CARD_READ_REQUEST) {
+            if (resultCode == Activity.RESULT_OK) {
+                processCardResult((EmvCard) data.getSerializableExtra("card"));
+            }
+        }
+    }
+
+    private void processCardResult(EmvCard card) {
     }
 }
