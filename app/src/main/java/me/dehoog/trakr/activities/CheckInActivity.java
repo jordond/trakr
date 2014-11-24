@@ -472,8 +472,7 @@ public class CheckInActivity extends Activity implements PlacesService.PlacesInt
         for (int i = 0; i < mPlaces.size(); i++) {
             Place place = mPlaces.get(i);
             if (mFilterUrls.contains(place.getIcon())) {
-                Marker temp = addMarker(place);
-                mMarkers.add(i, temp);
+                addMarker(place);
             }
         }
     }
@@ -516,7 +515,7 @@ public class CheckInActivity extends Activity implements PlacesService.PlacesInt
                     mIconUrls.add(type.getIcon());
                 }
                 mPlaces.add(place);
-                mMarkers.add(addMarker(place));
+                addMarker(place);
             }
         }
     }
@@ -530,11 +529,13 @@ public class CheckInActivity extends Activity implements PlacesService.PlacesInt
         mMarkers.clear();
     }
 
-    private Marker addMarker(Place place) {
+    private void addMarker(Place place) {
         final Marker marker = mMap.addMarker(new MarkerOptions()
                 .position(place.getLatLng())
                 .title(place.getName())
                 .snippet(place.getId()));
+
+        mMarkers.add(marker);
 
         Ion.with(getApplicationContext())
                 .load(place.getIcon())
@@ -547,7 +548,6 @@ public class CheckInActivity extends Activity implements PlacesService.PlacesInt
                         mMarkers.set(index, marker);
                     }
                 });
-        return marker;
     }
 
     @Override
