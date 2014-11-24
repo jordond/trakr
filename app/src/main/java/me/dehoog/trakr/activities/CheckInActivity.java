@@ -1,9 +1,6 @@
 package me.dehoog.trakr.activities;
 
-import android.animation.ArgbEvaluator;
-import android.animation.ValueAnimator;
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
@@ -11,9 +8,7 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.text.TextUtils;
-import android.util.AttributeSet;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -40,10 +35,8 @@ import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -64,31 +57,31 @@ import me.dehoog.trakr.services.GPSTracker;
 import me.dehoog.trakr.services.PlacesService;
 
 // TODO add a "view" feature to this activity, so the user can view a previous transaction, only show the one marker on the map
-public class CheckInActivity extends Activity implements PlacesService.PlacesInterface{
+public class CheckInActivity extends Activity implements PlacesService.PlacesInterface {
 
-    private static final int MAP_ZOOM = 16;
+    private static final int MAP_ZOOM = 16;                             // Holds the zoom level for the map
 
-    private GoogleMap mMap;
+    private GoogleMap mMap;                                             // Google Maps object
 
-    private GPSTracker mTracker;
-    private PlacesService mPlacesService;
+    private GPSTracker mTracker;                                        // Service for getting the current location, from GPS or network
+    private PlacesService mPlacesService;                               // Service for interacting with the Google Places API
 
-    private Location mCurrentLocation;
+    private Location mCurrentLocation;                                  // Holds the current location
 
-    private List<Place> mPlaces = new ArrayList<Place>();
-    private List<Marker> mMarkers = new ArrayList<Marker>();
+    private List<Place> mPlaces = new ArrayList<Place>();                   // Holds a list of all the returned Place objects
+    private List<Marker> mMarkers = new ArrayList<Marker>();                 // A list of Google Map Markers
 
-    private User mUser = new User();
-    private Merchant mMerchant = new Merchant();
-    private Marker mSelectedMarker;
+    private User mUser = new User();                                    // The current logged in user object
+    private Merchant mMerchant = new Merchant();                        // Holds the information for the selected map marker
+    private Marker mSelectedMarker;                                     // Current selected map marker
 
-    private boolean mFirstRun = true;
-    private List<Category> mCategories = new ArrayList<Category>();
-    private List<String> mIconUrls = new ArrayList<String>();
-    private List<String> mFilterUrls = new ArrayList<String>();
+    private List<Category> mCategories = new ArrayList<Category>();     // Contains a list of found categories
+    private List<String> mIconUrls = new ArrayList<String>();           // Contains the urls of of all found categories
+    private List<String> mFilterUrls = new ArrayList<String>();         // Contains the urls of the filtered categories
+    private Integer[] mSelectedFilter;
 
-    private SimpleDateFormat mDateFormat;
-    private Date mDate; // I hate dates so much
+    private SimpleDateFormat mDateFormat;                               // Date pattern "EEEE MMM d, yyyy"
+    private Date mDate; // I hate dates so much                         // Object to store the current date, I used it as a fix for a bug
 
     // UI Components
     @InjectView(R.id.panel_layout) SlidingUpPanelLayout mMerchantLayout;
@@ -451,10 +444,12 @@ public class CheckInActivity extends Activity implements PlacesService.PlacesInt
             types[i] = mCategories.get(i).getName();
             ints[i] = i;
         }
+        mSelectedFilter = mSelectedFilter == null ? ints : mSelectedFilter;
+        
         new MaterialDialog.Builder(this)
                 .title("Filter by Category")
                 .items(types)
-                .itemsCallbackMultiChoice(ints, new MaterialDialog.ListCallbackMulti() {
+                .itemsCallbackMultiChoice(mSelectedFilter, new MaterialDialog.ListCallbackMulti() {
                     @Override
                     public void onSelection(MaterialDialog materialDialog, Integer[] integers, CharSequence[] charSequences) {
                         for (Integer i : integers) {
@@ -518,6 +513,7 @@ public class CheckInActivity extends Activity implements PlacesService.PlacesInt
                 addMarker(place);
             }
         }
+        mSelectedFilter = null;
     }
 
     public void clearMarkers() {
