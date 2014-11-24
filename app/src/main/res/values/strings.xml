@@ -2,7 +2,6 @@
 <resources>
 
     <string name="google_maps_key">AIzaSyDEedsYQzLtHaCgBekXbp2RkxO3_J9KITg</string>
-
     <string name="app_name">Trakr</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
@@ -48,5 +47,6 @@
     <string name="check_in_date_hint">Choose date</string>
     <string name="expand_list_total_transactions_desc">total transactions</string>
     <string name="menu_check_in_filter">Filter</string>
+    <string name="title_activity_card_reader">CardReaderActivity</string>
 
 </resources>
