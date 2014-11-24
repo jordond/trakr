@@ -3,7 +3,9 @@ package me.dehoog.trakr.models;
 import com.orm.SugarRecord;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by jordon on 2014-11-09.
@@ -35,6 +37,7 @@ public class Purchase extends SugarRecord<Purchase> implements Serializable {
     }
 
     // Helper methods
+
 
 
     // Accessors

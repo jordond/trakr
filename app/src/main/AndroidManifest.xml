@@ -2,47 +2,68 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="me.dehoog.trakr" >
 
-    <!-- To auto-complete the email text field in the login form with the user's emails -->
-    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
-    <uses-permission android:name="android.permission.READ_PROFILE" />
-    <uses-permission android:name="android.permission.READ_CONTACTS" />
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+
+    <uses-feature
+        android:glEsVersion="0x00020000"
+        android:required="true"/>
 
     <application
+        android:name="com.orm.SugarApp"
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme"
-        android:name="com.orm.SugarApp">
+        android:theme="@style/AppTheme" >
         <meta-data
             android:name="DATABASE"
             android:value="trakr_dev2.db" />
         <meta-data
             android:name="VERSION"
-            android:value="8" />
+            android:value="10" />
         <meta-data
             android:name="QUERY_LOG"
             android:value="true" />
         <meta-data
             android:name="DOMAIN_PACKAGE_NAME"
             android:value="me.dehoog" />
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+        <meta-data
+            android:name="com.google.android.maps.v2.API_KEY"
+            android:value="@string/google_maps_key"/>
 
         <activity
             android:name="me.dehoog.trakr.activities.LoginActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
-            android:theme="@style/LoginTheme">
+            android:theme="@style/LoginTheme" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name="me.dehoog.trakr.activities.MainActivity"
-            android:label=""
             android:icon="@drawable/logo_all_white"
-            android:theme="@style/AppTheme">
+            android:label=""
+            android:theme="@style/AppTheme" >
         </activity>
-
+        <activity
+            android:name="me.dehoog.trakr.activities.CheckInActivity"
+            android:icon="@drawable/logo_all_white"
+            android:label="@string/title_activity_check_in"
+            android:theme="@style/AppTheme"
+            android:parentActivityName=".activities.MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activities.MainActivity" />
+        </activity>
     </application>
+
 </manifest>

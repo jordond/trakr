@@ -11,8 +11,11 @@ import android.view.MenuItem;
 
 import com.astuetz.PagerSlidingTabStrip;
 
+import java.util.List;
+
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import cn.pedant.SweetAlert.SweetAlertDialog;
 import de.keyboardsurfer.android.widget.crouton.Crouton;
 import me.dehoog.trakr.R;
 import me.dehoog.trakr.adapters.MainPagerAdapter;
@@ -20,15 +23,19 @@ import me.dehoog.trakr.fragments.AccountManagerFragment;
 import me.dehoog.trakr.interfaces.AccountsInteraction;
 import me.dehoog.trakr.interfaces.AddAccountInteraction;
 import me.dehoog.trakr.interfaces.EditAccountCallback;
+import me.dehoog.trakr.interfaces.RecentTransactionsInteraction;
 import me.dehoog.trakr.models.Account;
+import me.dehoog.trakr.models.Purchase;
 import me.dehoog.trakr.models.User;
 
 
 public class MainActivity extends FragmentActivity implements AccountsInteraction,      // Interface callback for Accounts Cardview fragment
                                                               AddAccountInteraction,    // Callback for adding, and editing account
-                                                              EditAccountCallback {      // Button click inside AccountCard
+                                                              EditAccountCallback,      // Button click inside AccountCard
+                                                              RecentTransactionsInteraction {
 
     public static final String PREFS_NAME = "TrakrPrefs";
+    public static final int CHECK_IN_REQUEST = 1;
     public SharedPreferences mSettings;
 
     public User mUser;
@@ -117,7 +124,7 @@ public class MainActivity extends FragmentActivity implements AccountsInteractio
     }
 
     @Override
-    public void onAccountsInteraction(String action, Account account) {
+    public void onAccountsInteraction(String action, Account account) { // Accounts Fragment
         mAccountManager = AccountManagerFragment.newInstance(mUser, action, account);
         ft = getSupportFragmentManager().beginTransaction();
         ft.setCustomAnimations(R.animator.fade_in, R.animator.fade_out, R.animator.fade_in, R.animator.fade_out);
@@ -126,13 +133,35 @@ public class MainActivity extends FragmentActivity implements AccountsInteractio
         ft.commit();
     }
 
+    // Fragment callbacks
+
     @Override
-    public void onAddInteraction() {
+    public void onAddInteraction() {    // Accounts Manager Fragment
         mPager.getAdapter().notifyDataSetChanged();
     }
 
     @Override
-    public void editButton(Account account) {
+    public void editButton(Account account) {   // Accounts Fragment, AccountCard edit button
         onAccountsInteraction("edit", account);
+    }
+
+    @Override
+    public void onRecentTransactionInteraction() {  // Recent transaction, action button
+        Intent intent = new Intent(this, CheckInActivity.class);
+        startActivityForResult(intent, CHECK_IN_REQUEST);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == CHECK_IN_REQUEST) {
+            if (resultCode == RESULT_OK) {
+                mPager.getAdapter().notifyDataSetChanged();
+                //TODO debug code for testing add of check-in
+                boolean result = data.getBooleanExtra("add", false);
+                List<Purchase> purchases = mUser.getAllPurchases();
+                System.out.println("just a debug breakpoint");
+            }
+            mPager.setCurrentItem(1);
+        }
     }
 }

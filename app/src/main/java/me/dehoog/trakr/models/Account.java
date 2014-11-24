@@ -55,6 +55,15 @@ public class Account extends SugarRecord<Account> implements Serializable {
         return found;
     }
 
+    public Account findByDescription(String description) {
+        Account found = null;
+        List<Account> request = Account.find(Account.class, "description = ?", description);
+        if (!request.isEmpty()) {
+            found = request.get(0);
+        }
+        return found;
+    }
+
     public List<Purchase> getAllPurchases() {
         if (purchases == null) {
             return purchases = Purchase.find(Purchase.class, "account = ?", String.valueOf(this.getId()));
@@ -163,7 +172,12 @@ public class Account extends SugarRecord<Account> implements Serializable {
         this.user = user;
     }
 
-    public List<Purchase> getPurchases() { return purchases; }
+    public List<Purchase> getPurchases() {
+        if (purchases == null) {
+            return this.getAllPurchases();
+        }
+        return purchases;
+    }
 
     public void setPurchases(List<Purchase> purchases) {
         this.purchases = purchases;

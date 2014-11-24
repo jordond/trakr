@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="horizontal">
 
 
     <TextView
@@ -12,21 +13,22 @@
         android:clickable="false"/>
 
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
+        android:layout_weight="1"
         android:layout_height="wrap_content"
         android:id="@+id/list_transaction_merchant"
-        android:paddingStart="5dp"
-        android:paddingEnd="0dp"
-        android:layout_toEndOf="@+id/list_transaction_date"
+        android:singleLine="true"
+        android:ellipsize="end"
         style="@style/Now.card_expand_inner_layout.gray_bold_nobackground"
         android:clickable="false"/>
 
     <TextView
         android:layout_width="wrap_content"
+        android:gravity="end"
         android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
         android:id="@+id/list_transaction_amount"
+        android:singleLine="true"
         style="@style/Now.card_expand_inner_layout.gray_bold_nobackground"
         android:clickable="false"/>
 
-</RelativeLayout>
+</LinearLayout>

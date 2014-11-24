@@ -13,7 +13,7 @@ public class Category extends SugarRecord<Category> implements Serializable {
     // Properties
     private String name;
     private String description;
-    private byte[] icon;
+    private String icon;
 
     // Constructors
     public Category() {
@@ -28,7 +28,7 @@ public class Category extends SugarRecord<Category> implements Serializable {
         this.description = description;
     }
 
-    public Category(String name, String description, byte[] icon) {
+    public Category(String name, String description, String icon) {
         this.name = name;
         this.description = description;
         this.icon = icon;
@@ -45,6 +45,19 @@ public class Category extends SugarRecord<Category> implements Serializable {
             found.save();
         }
         return found;
+    }
+
+    public String parseTypeFromURL(String url) {
+        if (url == null) {
+            url = this.icon;
+        }
+        String raw = url.substring(url.lastIndexOf('/') + 1, url.length());
+        raw = raw.substring(0, raw.lastIndexOf('-'));
+        raw = raw.replaceAll("_", " ").toLowerCase();
+        if (raw.equals("geocode")) {
+            raw = "general";
+        }
+        return raw.substring(0, 1).toUpperCase() + raw.substring(1);
     }
 
     // Accessors
@@ -64,11 +77,11 @@ public class Category extends SugarRecord<Category> implements Serializable {
         this.description = description;
     }
 
-    public byte[] getIcon() {
+    public String getIcon() {
         return icon;
     }
 
-    public void setIcon(byte[] icon) {
+    public void setIcon(String icon) {
         this.icon = icon;
     }
 }

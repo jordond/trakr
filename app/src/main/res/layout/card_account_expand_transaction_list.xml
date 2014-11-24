@@ -39,4 +39,22 @@
         android:layout_height="wrap_content"
         android:textColor="@color/primary"/>
 
+    <TextView
+        android:id="@+id/total_transactions_desc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/total_spent_desc"
+        style="@style/Now.card_expand_inner_layout.light_gray.bold"
+        android:text="@string/expand_list_total_transactions_desc"/>
+
+    <TextView
+        android:id="@+id/total_transactions_num"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@+id/total_spent_text"
+        style="@style/Now.card_expand_inner_layout.light_gray.bold"/>
+
+
+
 </RelativeLayout>
