@@ -41,7 +41,6 @@ public class CardReaderActivity extends Activity {
     private static final String TAG = CardReaderActivity.class.getSimpleName();
 
     private NFCUtils mNfcUtils;
-    private ProgressDialog mDialog; // potentially not needed
     private SweetAlertDialog mAlertDialog;
 
     private NFCProvider mProvider = new NFCProvider();
@@ -115,9 +114,6 @@ public class CardReaderActivity extends Activity {
 
                 @Override
                 protected void onPostExecute(Object result) {
-                    if (mDialog != null) {
-                        mDialog.cancel();
-                    }
                     if (!mException) {
                         if (mCard != null) {
                             if (StringUtils.isNotBlank(mCard.getCardNumber())) {
@@ -151,10 +147,13 @@ public class CardReaderActivity extends Activity {
                         Intent returnIntent = new Intent();
                         returnIntent.putExtra("card", card);
                         setResult(RESULT_OK, returnIntent);
-                        mRippleBackground.stopRippleAnimation();
-                        dialog.dismiss();
+
+                        mNfcUtils.disableDispatch();
+                        mNfcUtils = null;
                         mAlertDialog = null;
-                        mDialog = null;
+                        mRippleBackground.stopRippleAnimation();
+
+                        dialog.dismiss();
                         finish();
                     }
                 }).setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
@@ -207,7 +206,6 @@ public class CardReaderActivity extends Activity {
                     .show();
         } else {
             mAlertDialog = null;
-            mDialog = null;
             Intent returnIntent = new Intent();
             setResult(RESULT_CANCELED, returnIntent);
             finish();
