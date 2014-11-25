@@ -5,10 +5,7 @@ import android.support.annotation.NonNull;
 import com.orm.SugarRecord;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.Date;
-import java.util.List;
 
 /**
  * Created by jordon on 2014-11-09.

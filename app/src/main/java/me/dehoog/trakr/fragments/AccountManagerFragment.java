@@ -18,7 +18,6 @@ import android.widget.ToggleButton;
 
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
-import com.github.devnied.emvnfccard.model.EmvCard;
 
 import java.util.Calendar;
 

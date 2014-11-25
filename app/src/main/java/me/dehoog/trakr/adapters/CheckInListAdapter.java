@@ -13,10 +13,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.TreeSet;
 
 import me.dehoog.trakr.R;
-import me.dehoog.trakr.models.Account;
 import me.dehoog.trakr.models.Merchant;
 import me.dehoog.trakr.models.Purchase;
 

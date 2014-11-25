@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.nfc.NfcAdapter;
 import android.nfc.tech.IsoDep;
-import android.nfc.tech.NfcA;
 import android.util.Log;
 
 /**

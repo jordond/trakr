@@ -1,7 +1,5 @@
 package me.dehoog.trakr.models;
 
-import java.util.List;
-
 /**
  * Author:  jordon
  * Created: November, 20, 2014

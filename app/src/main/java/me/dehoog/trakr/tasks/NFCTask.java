@@ -3,8 +3,6 @@ package me.dehoog.trakr.tasks;
 import android.os.AsyncTask;
 import android.util.Log;
 
-import com.github.devnied.emvnfccard.model.EmvCard;
-
 /**
  * Author:  jordon
  * Created: November, 24, 2014
