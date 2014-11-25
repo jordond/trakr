@@ -4,8 +4,14 @@
     android:layout_height="68dp"
     android:orientation="horizontal"
     android:gravity="center_vertical"
-    android:paddingStart="15dp"
-    android:paddingEnd="15dp">
+    android:paddingEnd="10dp">
+
+    <ImageView
+        android:id="@+id/merchant_icon"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:gravity="center_vertical"
+        android:src="@drawable/ic_credit" />
 
     <LinearLayout
         android:layout_width="0dp"

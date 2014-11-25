@@ -79,6 +79,7 @@ public class CheckInsFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
 
         FloatingActionButton fab = (FloatingActionButton) getActivity().findViewById(R.id.button_new_checkin);
+        fab.attachToListView(mListView);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

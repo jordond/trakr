@@ -162,11 +162,11 @@ public class AccountCard extends Card {
         if (category != null) {
             category = category.toLowerCase();
             if (category.equals("cash")) {
-                return R.drawable.ic_card_cash;
+                return R.drawable.ic_cash;
             } else if (category.equals("debit")) {
-                return R.drawable.ic_card_debit;
+                return R.drawable.ic_debit;
             } else {
-                return R.drawable.ic_card_credit;
+                return R.drawable.ic_credit;
             }
         }
         return -1;

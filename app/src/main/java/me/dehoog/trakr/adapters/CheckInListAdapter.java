@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.text.DecimalFormat;
@@ -15,6 +16,7 @@ import java.util.List;
 import java.util.TreeSet;
 
 import me.dehoog.trakr.R;
+import me.dehoog.trakr.models.Account;
 import me.dehoog.trakr.models.Merchant;
 import me.dehoog.trakr.models.Purchase;
 
@@ -98,6 +100,7 @@ public class CheckInListAdapter extends BaseAdapter {
             } else {
                 viewHolder = new ViewHolder();
                 convertView = mInflater.inflate(R.layout.check_in_list_item, parent, false);
+                viewHolder.icon = (ImageView) convertView.findViewById(R.id.merchant_icon);
                 viewHolder.title = (TextView) convertView.findViewById(R.id.merchant_name);
                 viewHolder.subtitle = (TextView) convertView.findViewById(R.id.merchant_address);
                 viewHolder.extra = (TextView) convertView.findViewById(R.id.check_in_amount);
@@ -112,6 +115,8 @@ public class CheckInListAdapter extends BaseAdapter {
         } else {
             Purchase p = mCheckIns.get(position);
             Merchant m = p.getMerchant();
+            String accountType = p.getAccount().getCategory().toLowerCase();
+            viewHolder.icon.setImageResource(viewHolder.getIconResourse(accountType));
             viewHolder.title.setText(m.getName());
             viewHolder.subtitle.setText(m.getLocation().getLongAddress());
             viewHolder.extra.setText(mDecimalFormat.format(p.getAmount()));
@@ -120,8 +125,19 @@ public class CheckInListAdapter extends BaseAdapter {
     }
 
     public static class ViewHolder {
+        public ImageView icon;
         public TextView title;
         public TextView subtitle;
         public TextView extra;
+
+        public int getIconResourse(String type) {
+            if (type.equals("cash")) {
+                return R.drawable.ic_cash;
+            } else if (type.equals("credit")) {
+                return R.drawable.ic_credit;
+            } else {
+                return R.drawable.ic_debit;
+            }
+        }
     }
 }
