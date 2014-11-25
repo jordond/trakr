@@ -48,4 +48,5 @@ dependencies {
     compile 'com.sothree.slidinguppanel:library:2.0.2'                  // https://github.com/umano/AndroidSlidingUpPanel
     compile 'com.afollestad:material-dialogs:0.3.0'                     // https://github.com/afollestad/material-dialogs
     compile 'com.github.devnied.emvnfccard:library:2.1.0'               // https://github.com/devnied/EMV-NFC-Paycard-Enrollment
+    compile 'com.skyfishjy.ripplebackground:library:1.0.1'              // https://github.com/skyfishjy/android-ripple-background
 }

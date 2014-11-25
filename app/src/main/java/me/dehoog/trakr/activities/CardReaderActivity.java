@@ -17,6 +17,7 @@ import android.view.MenuItem;
 
 import com.github.devnied.emvnfccard.model.EmvCard;
 import com.github.devnied.emvnfccard.parser.EmvParser;
+import com.skyfishjy.library.RippleBackground;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -38,11 +39,13 @@ public class CardReaderActivity extends Activity {
     private static final String TAG = CardReaderActivity.class.getSimpleName();
 
     private NFCUtils mNfcUtils;
-    private ProgressDialog mDialog;
+    private ProgressDialog mDialog; // potentially not needed
     private SweetAlertDialog mAlertDialog;
 
     private NFCProvider mProvider = new NFCProvider();
     private EmvCard mReadCard;
+
+    private RippleBackground mRippleBackground;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,7 +56,11 @@ public class CardReaderActivity extends Activity {
         if (actionBar != null) {
             actionBar.setHomeButtonEnabled(true);
             actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setDisplayShowHomeEnabled(true);
         }
+
+        mRippleBackground = (RippleBackground) findViewById(R.id.ripple_background);
+        mRippleBackground.startRippleAnimation();
 
         mNfcUtils = new NFCUtils(this);
 
@@ -78,12 +85,7 @@ public class CardReaderActivity extends Activity {
                 @Override
                 protected void onPreExecute() {
                     super.onPreExecute();
-                    if (mDialog == null) {
-                        mDialog = ProgressDialog.show(CardReaderActivity.this, "Reading Card",
-                                "Reading your card, please do not move the card", true, false);
-                    } else {
-                        mDialog.show();
-                    }
+                    Crouton.makeText(CardReaderActivity.this, "Reading card, do not move card!", Style.INFO).show();
                 }
 
                 @Override
@@ -145,9 +147,11 @@ public class CardReaderActivity extends Activity {
                     public void onClick(SweetAlertDialog dialog) {
                         Intent returnIntent = new Intent();
                         returnIntent.putExtra("card", card);
-                        setResult(RESULT_OK,returnIntent);
+                        setResult(RESULT_OK, returnIntent);
+                        mRippleBackground.stopRippleAnimation();
                         dialog.dismiss();
                         mAlertDialog = null;
+                        mDialog = null;
                         finish();
                     }
                 }).setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
@@ -182,4 +186,18 @@ public class CardReaderActivity extends Activity {
         super.onResume();
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        mAlertDialog = null;
+        mDialog = null;
+        Intent returnIntent = new Intent();
+        setResult(RESULT_CANCELED, returnIntent);
+        finish();
+        return super.onOptionsItemSelected(item);
+    }
 }
