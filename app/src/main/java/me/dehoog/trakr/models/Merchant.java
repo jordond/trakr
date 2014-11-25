@@ -44,7 +44,7 @@ public class Merchant extends SugarRecord<Merchant> implements Serializable {
 
     // Helpers
     public Merchant findOrCreate(String placeId, String name) {
-        Merchant found = null;
+        Merchant found;
         List<Merchant> request = Merchant.find(Merchant.class, "place_id = ?", placeId);
         if (!request.isEmpty()) {
             found = request.get(0);
