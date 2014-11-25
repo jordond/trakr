@@ -41,15 +41,16 @@ public class CheckInListAdapter extends BaseAdapter {
     }
 
     public void addCheckIn(final List<Purchase> checkIns) {
+        addHeader(checkIns.get(0).getDate());
         for (Purchase p : checkIns) {
-            mTypes.add(TYPE_SEPARATOR);
+            mTypes.add(TYPE_ITEM);
             mCheckIns.add(p);
         }
         notifyDataSetChanged();
     }
 
     public void addHeader(final Date item) {
-        mTypes.add(TYPE_ITEM);
+        mTypes.add(TYPE_SEPARATOR);
         mHeaders.add(mFormat.format(item));
     }
 
@@ -86,11 +87,11 @@ public class CheckInListAdapter extends BaseAdapter {
             viewHolder = new ViewHolder();
             if (rowType == TYPE_SEPARATOR) {
                 viewHolder = new ViewHolder();
-                convertView = mInflater.inflate(R.layout.check_in_list_header, null);
+                convertView = mInflater.inflate(R.layout.check_in_list_header, parent, false);
                 viewHolder.title = (TextView) convertView.findViewById(R.id.check_in_date);
             } else {
                 viewHolder = new ViewHolder();
-                convertView = mInflater.inflate(R.layout.check_in_list_item, null);
+                convertView = mInflater.inflate(R.layout.check_in_list_item, parent, false);
                 viewHolder.title = (TextView) convertView.findViewById(R.id.merchant_name);
                 viewHolder.subtitle = (TextView) convertView.findViewById(R.id.merchant_address);
                 viewHolder.extra = (TextView) convertView.findViewById(R.id.check_in_amount);

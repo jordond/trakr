@@ -19,7 +19,7 @@
             android:layout_height="wrap_content"
             style="?android:textAppearanceSmall"
             android:textStyle="bold"
-            android:textSize="15sp"
+            android:textSize="14sp"
             android:gravity="center_vertical"
             android:singleLine="true"
             android:ellipsize="end"
@@ -34,6 +34,7 @@
             android:singleLine="true"
             android:textSize="12sp"
             android:ellipsize="end"
+            android:textColor="@color/half_black"
             android:text="Sample Merchant Address"/>
 
     </LinearLayout>

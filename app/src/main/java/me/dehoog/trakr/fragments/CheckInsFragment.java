@@ -105,6 +105,7 @@ public class CheckInsFragment extends Fragment {
     }
 
     private void setupAdapter() {
+        Collections.sort(mCheckIns);
         Collections.reverse(mCheckIns);
         List<Purchase> group = new ArrayList<Purchase>();
         for (Purchase purchase : mCheckIns) {
@@ -115,15 +116,14 @@ public class CheckInsFragment extends Fragment {
                     group.add(purchase);
                 } else {
                     mAdapter.addCheckIn(group);
-                    mAdapter.addHeader(purchase.getDate());
                     group.clear();
                     group.add(purchase);
                 }
             }
         }
         if (!group.isEmpty()) {
-            mAdapter.addHeader(group.get(0).getDate());
             mAdapter.addCheckIn(group); // add the remaining items to adapter
+            group.clear();
         }
         System.out.println("debug");
     }
