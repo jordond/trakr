@@ -19,6 +19,7 @@ import butterknife.InjectView;
 import de.keyboardsurfer.android.widget.crouton.Crouton;
 import me.dehoog.trakr.R;
 import me.dehoog.trakr.adapters.MainPagerAdapter;
+import me.dehoog.trakr.cards.ExpandAccountCard;
 import me.dehoog.trakr.fragments.AccountManagerFragment;
 import me.dehoog.trakr.fragments.CheckInViewerFragment;
 import me.dehoog.trakr.interfaces.AccountsInteraction;
@@ -30,10 +31,11 @@ import me.dehoog.trakr.models.Purchase;
 import me.dehoog.trakr.models.User;
 
 
-public class MainActivity extends FragmentActivity implements AccountsInteraction,      // Interface callback for Accounts Card view fragment
-                                                              AddAccountInteraction,    // Callback for adding, and editing account
-                                                              EditAccountCallback,      // Button click inside AccountCard
-        CheckInsInteraction {
+public class MainActivity extends FragmentActivity implements AccountsInteraction,                  // Interface callback for Accounts Card view fragment
+                                                              AddAccountInteraction,                // Callback for adding, and editing account
+                                                              EditAccountCallback,                  // Button click inside AccountCard
+                                                              CheckInsInteraction,                  // Action performed in check in tab
+                                                              ExpandAccountCard.ExpandListClick {   // Check clicked in expanded card
 
     public static final String PREFS_NAME = "TrakrPrefs";
     public static final int CHECK_IN_REQUEST = 1;
@@ -152,6 +154,12 @@ public class MainActivity extends FragmentActivity implements AccountsInteractio
     public void onCheckInsInteraction() {  // Recent transaction, action button
         Intent intent = new Intent(this, CheckInActivity.class);
         startActivityForResult(intent, CHECK_IN_REQUEST);
+    }
+
+    @Override
+    public void expandListItemClicked(Purchase purchase) {
+        CheckInViewerFragment fragment = CheckInViewerFragment.newInstance(purchase);
+        launchFragment(fragment);
     }
 
     @Override

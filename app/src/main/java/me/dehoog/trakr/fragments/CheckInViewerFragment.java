@@ -50,7 +50,7 @@ public class CheckInViewerFragment extends Fragment {
         startActivity(intent);
     }
 
-    @OnClick(R.id.panel_merchant_website)
+    @OnClick(R.id.merchant_website)
     public void openUrl() {
         String url = mMerchant.getWebsite();
         Intent i = new Intent(Intent.ACTION_VIEW);

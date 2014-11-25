@@ -1,5 +1,6 @@
 package me.dehoog.trakr.cards;
 
+import android.app.Activity;
 import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,12 +25,15 @@ import me.dehoog.trakr.models.Account;
  */
 public class AccountCard extends Card {
 
+    private Activity mParentActivity;
+
     protected Account mAccount;
     private EditAccountCallback mListener;
 
-    public AccountCard(Context context, Account account) {
+    public AccountCard(Context context, Account account, Activity activity) {
         super(context, R.layout.card_account);
         this.mAccount = account;
+        this.mParentActivity = activity;
         init();
     }
 
@@ -129,11 +133,13 @@ public class AccountCard extends Card {
     }
 
     // Helper method for creating expanding card
-    public AccountCard createExpandCard(Account account) {
+    public AccountCard createExpandCard(Account account, Activity activity) {
 
         // Create objects
-        AccountCard card = new AccountCard(getContext(), account);
+        AccountCard card = new AccountCard(getContext(), account, activity);
         ExpandAccountCard expand = new ExpandAccountCard(getContext(), account);
+
+        expand.setmListener((ExpandAccountCard.ExpandListClick) activity);
 
         card.addCardExpand(expand);
         // Create and attach click to expand
@@ -141,7 +147,6 @@ public class AccountCard extends Card {
                 .builder().enableForExpandAction();
         card.setViewToClickToExpand(viewToClickToExpand);
 
-        // TODO add events to the expand events
         card.setOnExpandAnimatorEndListener(new Card.OnExpandAnimatorEndListener() {
             @Override
             public void onExpandEnd(Card card) {

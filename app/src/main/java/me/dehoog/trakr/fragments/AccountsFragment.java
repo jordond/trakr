@@ -90,7 +90,7 @@ public class AccountsFragment extends Fragment {
         ArrayList<Card> cards = new ArrayList<Card>();
         for (Account a : mUser.getAccounts()) {
             AccountCard card = new AccountCard(getActivity())
-                    .createExpandCard(a);
+                    .createExpandCard(a, mParentActivity);
 
             card.setmListener((EditAccountCallback) mParentActivity);
             card.setCardElevation(getResources().getDimension(R.dimen.cardview_default_elevation));
