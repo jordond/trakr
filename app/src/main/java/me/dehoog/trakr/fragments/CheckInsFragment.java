@@ -10,8 +10,13 @@ import android.view.ViewGroup;
 
 import com.melnykov.fab.FloatingActionButton;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 import me.dehoog.trakr.R;
 import me.dehoog.trakr.interfaces.CheckInsInteraction;
+import me.dehoog.trakr.models.Purchase;
 import me.dehoog.trakr.models.User;
 
 public class CheckInsFragment extends Fragment {
@@ -19,6 +24,7 @@ public class CheckInsFragment extends Fragment {
     private static final String ARG_USER = "user";
 
     private User mUser;
+    private List<Purchase> mCheckIns;
 
     private CheckInsInteraction mListener;
 
@@ -43,8 +49,15 @@ public class CheckInsFragment extends Fragment {
         if (getArguments() != null) {
             mUser = (User) getArguments().getSerializable(ARG_USER);
         }
+
+        mCheckIns = mUser.getAllPurchases();
+        if (mCheckIns != null && mCheckIns.size() != 0) {
+            setupListView();
+        }
         return view;
     }
+
+
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
@@ -76,6 +89,20 @@ public class CheckInsFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    private void setupListView() {
+        //reverse the list
+        Collections.reverse(mCheckIns);
+        List<Purchase> group = new ArrayList<Purchase>();
+        for (Purchase purchase : mCheckIns) {
+            if (group.isEmpty()) {
+                group.add(purchase);
+            } else {
+                
+            }
+        }
+        // iterate thru them, sort by date
     }
 
 }
