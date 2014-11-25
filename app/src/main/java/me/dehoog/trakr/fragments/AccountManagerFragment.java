@@ -2,6 +2,7 @@ package me.dehoog.trakr.fragments;
 
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -17,17 +18,24 @@ import android.widget.ToggleButton;
 
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
+import com.github.devnied.emvnfccard.model.EmvCard;
+
+import java.util.Calendar;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
 import cn.pedant.SweetAlert.SweetAlertDialog;
 import me.dehoog.trakr.R;
+import me.dehoog.trakr.activities.CardReaderActivity;
 import me.dehoog.trakr.interfaces.AddAccountInteraction;
 import me.dehoog.trakr.models.Account;
+import me.dehoog.trakr.models.CardNFC;
 import me.dehoog.trakr.models.User;
 
 public class AccountManagerFragment extends Fragment {
+
+    public static final int NFC_CARD_READ_REQUEST = 8;
 
     private static final String ARG_USER = "user";
     private static final String ARG_ACTION = "action";
@@ -104,7 +112,9 @@ public class AccountManagerFragment extends Fragment {
 
     @OnClick(R.id.action_nfc)
     public void onReadNfcClick() {
-        //TODO implement
+        Intent intent = new Intent(getActivity(), CardReaderActivity.class);
+        intent.putExtra("fromAccountManager", true);
+        startActivityForResult(intent, NFC_CARD_READ_REQUEST);
     }
 
     @OnClick(R.id.action_cancel)
@@ -319,6 +329,32 @@ public class AccountManagerFragment extends Fragment {
                 mListener.onAddInteraction();
             }
             close();
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == NFC_CARD_READ_REQUEST) {
+            if (resultCode == Activity.RESULT_OK) {
+                processCardResult((CardNFC) data.getSerializableExtra("card"));
+            }
+        }
+    }
+
+    private void processCardResult(CardNFC card) {
+        if (card != null) {
+            mCredit.toggle();
+            mCategory = "Credit";
+            mType = card.getType();
+            mAccountNumber.setText(card.getAccountNumber());
+
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(card.getExpiry());
+            int month = calendar.get(Calendar.MONTH) + 1;
+            int year = calendar.get(Calendar.YEAR);
+            String exp = String.valueOf(month) + "/" + String.valueOf(year).substring(2, 4);
+            mExpiry.setText(exp);
+
         }
     }
 }

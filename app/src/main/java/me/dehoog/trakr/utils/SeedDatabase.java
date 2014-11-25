@@ -1,4 +1,4 @@
-package me.dehoog.trakr.helpers;
+package me.dehoog.trakr.utils;
 
 import java.util.Date;
 import java.util.List;

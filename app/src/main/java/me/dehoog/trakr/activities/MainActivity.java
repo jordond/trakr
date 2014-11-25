@@ -2,6 +2,7 @@ package me.dehoog.trakr.activities;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.nfc.NfcAdapter;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
@@ -10,7 +11,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.astuetz.PagerSlidingTabStrip;
+import com.github.devnied.emvnfccard.model.EmvCard;
 
+import java.security.Provider;
 import java.util.List;
 
 import butterknife.ButterKnife;
@@ -27,6 +30,8 @@ import me.dehoog.trakr.interfaces.RecentTransactionsInteraction;
 import me.dehoog.trakr.models.Account;
 import me.dehoog.trakr.models.Purchase;
 import me.dehoog.trakr.models.User;
+import me.dehoog.trakr.providers.NFCProvider;
+import me.dehoog.trakr.utils.NFCUtils;
 
 
 public class MainActivity extends FragmentActivity implements AccountsInteraction,      // Interface callback for Accounts Cardview fragment
@@ -153,6 +158,7 @@ public class MainActivity extends FragmentActivity implements AccountsInteractio
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == CHECK_IN_REQUEST) {
             if (resultCode == RESULT_OK) {
                 mPager.getAdapter().notifyDataSetChanged();

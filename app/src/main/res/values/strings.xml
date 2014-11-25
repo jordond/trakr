@@ -2,7 +2,6 @@
 <resources>
 
     <string name="google_maps_key">AIzaSyDEedsYQzLtHaCgBekXbp2RkxO3_J9KITg</string>
-
     <string name="app_name">Trakr</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
@@ -34,7 +33,7 @@
     <string name="add_account_action_cancel">Cancel</string>
     <string name="add_account_action_confirm">Add</string>
     <string name="credit_type_visa">VISA</string>
-    <string name="credit_type_mastercard">MasterCard</string>
+    <string name="credit_type_mastercard">Master Card</string>
     <string name="credit_type_amex">Amex</string>
     <string name="credit_type_other">Other</string>
     <string name="add_account_button_delete_description">Delete account button</string>
@@ -48,5 +47,8 @@
     <string name="check_in_date_hint">Choose date</string>
     <string name="expand_list_total_transactions_desc">total transactions</string>
     <string name="menu_check_in_filter">Filter</string>
+    <string name="title_activity_card_reader">Read Card</string>
+    <string name="menu_card_reader_help">Help</string>
+    <string name="activity_card_reader_help_message">Place your credit card against the back of your device.  Once you find the NFC \'sweet spot\', the card will be read. Try not to move the card while reading, or else it might fail.  Note this program only grabs the Card number and Expiry date, no other information is gathered or stored.</string>
 
 </resources>
