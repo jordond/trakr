@@ -1,12 +1,14 @@
 package me.dehoog.trakr.fragments;
 
 import android.app.Activity;
+import android.support.v4.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.melnykov.fab.FloatingActionButton;
@@ -71,6 +73,13 @@ public class CheckInsFragment extends Fragment {
         if (mCheckIns != null && mCheckIns.size() != 0) {
             setupAdapter();
             mListView.setAdapter(mAdapter);
+            mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    Purchase p = mAdapter.getPurchase(position);
+                    mListener.onShowViewer(p);
+                }
+            });
         }
     }
 

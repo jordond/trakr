@@ -1,5 +1,7 @@
 package me.dehoog.trakr.interfaces;
 
+import me.dehoog.trakr.models.Purchase;
+
 /**
  * Author:  jordon
  * Created: November, 14, 2014
@@ -7,4 +9,5 @@ package me.dehoog.trakr.interfaces;
  */
 public interface CheckInsInteraction {
     public void onCheckInsInteraction();
+    public void onShowViewer(Purchase purchase);
 }

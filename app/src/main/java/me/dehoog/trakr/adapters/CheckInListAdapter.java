@@ -62,6 +62,10 @@ public class CheckInListAdapter extends BaseAdapter {
         notifyDataSetChanged();
     }
 
+    public Purchase getPurchase(int position) {
+        return mCheckIns.get(position);
+    }
+
     @Override
     public int getItemViewType(int position) {
         return mTypes.get(position);

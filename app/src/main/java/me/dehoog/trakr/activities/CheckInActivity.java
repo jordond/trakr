@@ -600,6 +600,7 @@ public class CheckInActivity extends Activity implements PlacesService.PlacesInt
 
             Category category = new Category().findOrCreate(details.typeToString(0));
             category.setIcon(details.getIcon());
+            category.setDescription(details.typesToString());
             mMerchant.setCategory(category);
 
             Address address = new Address().findOrCreate(details.getFormatted_address());
