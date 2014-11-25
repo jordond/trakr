@@ -12,19 +12,25 @@ import com.melnykov.fab.FloatingActionButton;
 
 import me.dehoog.trakr.R;
 import me.dehoog.trakr.interfaces.CheckInsInteraction;
+import me.dehoog.trakr.models.User;
 
 public class CheckInsFragment extends Fragment {
 
+    private static final String ARG_USER = "user";
+
+    private User mUser;
+
     private CheckInsInteraction mListener;
 
-    public static CheckInsFragment newInstance(String param1) {
+    public static CheckInsFragment newInstance(User user) {
         CheckInsFragment fragment = new CheckInsFragment();
+        Bundle args = new Bundle();
+        args.putSerializable(ARG_USER, user);
+        fragment.setArguments(args);
         return fragment;
     }
 
-    public CheckInsFragment() {
-        // Required empty public constructor
-    }
+    public CheckInsFragment() { }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -33,7 +39,11 @@ public class CheckInsFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_check_ins, container, false);
+        View view = inflater.inflate(R.layout.fragment_accounts, container, false);
+        if (getArguments() != null) {
+            mUser = (User) getArguments().getSerializable(ARG_USER);
+        }
+        return view;
     }
 
     @Override
