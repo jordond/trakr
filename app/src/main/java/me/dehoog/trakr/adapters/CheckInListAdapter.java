@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -35,10 +36,12 @@ public class CheckInListAdapter extends BaseAdapter {
     private LayoutInflater mInflater;
 
     private SimpleDateFormat mFormat;
+    private DecimalFormat mDecimalFormat;
 
     public CheckInListAdapter(Context context) {
         mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         mFormat = new SimpleDateFormat("MMM d, yyyy");
+        mDecimalFormat = new DecimalFormat("$###,###,###.00");
     }
 
     public void addHeader(final Date item) {
@@ -110,7 +113,7 @@ public class CheckInListAdapter extends BaseAdapter {
             Merchant m = p.getMerchant();
             viewHolder.title.setText(m.getName());
             viewHolder.subtitle.setText(m.getLocation().getLongAddress());
-            viewHolder.extra.setText(String.valueOf(p.getAmount()));
+            viewHolder.extra.setText(mDecimalFormat.format(p.getAmount()));
         }
         return convertView;
     }

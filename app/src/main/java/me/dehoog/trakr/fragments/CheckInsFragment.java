@@ -61,16 +61,18 @@ public class CheckInsFragment extends Fragment {
         ButterKnife.inject(this, view);
 
         mAdapter = new CheckInListAdapter(getActivity());
+        setupList();
 
+        return view;
+    }
+
+    public void setupList() {
         mCheckIns = mUser.getAllPurchases();
         if (mCheckIns != null && mCheckIns.size() != 0) {
             setupAdapter();
             mListView.setAdapter(mAdapter);
         }
-        return view;
     }
-
-
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {

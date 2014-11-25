@@ -39,6 +39,8 @@ public class MainActivity extends FragmentActivity implements AccountsInteractio
 
     public User mUser;
 
+    private MainPagerAdapter mAdapter;
+
     private FragmentTransaction ft;
     private AccountManagerFragment mAccountManager;
 
@@ -59,7 +61,7 @@ public class MainActivity extends FragmentActivity implements AccountsInteractio
         }
 
         ButterKnife.inject(this); // get all dem views
-        MainPagerAdapter mAdapter = new MainPagerAdapter(getSupportFragmentManager(), mUser);
+        mAdapter = new MainPagerAdapter(getSupportFragmentManager(), mUser);
         mPager.setAdapter(mAdapter);
         mTabs.setViewPager(mPager);
 
@@ -155,11 +157,8 @@ public class MainActivity extends FragmentActivity implements AccountsInteractio
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == CHECK_IN_REQUEST) {
             if (resultCode == RESULT_OK) {
+                mAdapter.getCheckInsFragment().setupList();
                 mPager.getAdapter().notifyDataSetChanged();
-                //TODO debug code for testing add of check-in
-                boolean result = data.getBooleanExtra("add", false);
-                List<Purchase> purchases = mUser.getAllPurchases();
-                System.out.println("just a debug breakpoint");
             }
             mPager.setCurrentItem(1);
         }
