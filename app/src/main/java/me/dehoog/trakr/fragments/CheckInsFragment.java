@@ -98,7 +98,6 @@ public class CheckInsFragment extends Fragment {
     }
 
     private void setupListView() {
-        //reverse the list
         Collections.reverse(mCheckIns);
         List<Purchase> group = new ArrayList<Purchase>();
         for (Purchase purchase : mCheckIns) {
@@ -109,6 +108,7 @@ public class CheckInsFragment extends Fragment {
                     group.add(purchase);
                 } else {
                     mAdapter.addCheckIn(group);
+                    mAdapter.addHeader(purchase.getDate());
                     group.clear();
                     group.add(purchase);
                 }
@@ -117,6 +117,7 @@ public class CheckInsFragment extends Fragment {
         if (!group.isEmpty()) {
             mAdapter.addCheckIn(group); // add the remaining items to adapter
         }
+        System.out.println("debug");
     }
 
     private boolean compare(Purchase lhs, Purchase rhs) {

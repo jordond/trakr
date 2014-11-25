@@ -6,7 +6,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.TreeSet;
 
@@ -27,8 +29,11 @@ public class CheckInListAdapter extends BaseAdapter {
 
     private LayoutInflater mInflater;
 
+    private SimpleDateFormat mFormat;
+
     public CheckInListAdapter(Context context) {
         mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        mFormat = new SimpleDateFormat("MMM d, yyyy");
     }
 
     public void addCheckIn(final List<Purchase> checkIns) {
@@ -38,8 +43,8 @@ public class CheckInListAdapter extends BaseAdapter {
         notifyDataSetChanged();
     }
 
-    public void addHeader(final String item) {
-
+    public void addHeader(final Date item) {
+        mHeaders.add(mFormat.format(item));
     }
 
 
