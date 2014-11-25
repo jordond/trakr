@@ -3,7 +3,7 @@
     android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="30dp"
-    android:background="@color/primary_200"
+    android:background="@color/primary_100"
     android:gravity="center">
 
     <TextView
