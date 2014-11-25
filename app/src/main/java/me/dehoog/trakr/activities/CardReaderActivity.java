@@ -119,9 +119,12 @@ public class CardReaderActivity extends Activity {
                             if (StringUtils.isNotBlank(mCard.getCardNumber())) {
                                 mReadCard = mCard;
                                 cardReadSuccess();
+                            } else {
+                                Crouton.cancelAllCroutons();
+                                Crouton.makeText(CardReaderActivity.this, "Unknown card type scanned, try another", Style.ALERT).show();
                             }
                         } else {
-                            Crouton.makeText(CardReaderActivity.this, "Card unknown error.. Only Credit supported", Style.INFO).show();
+                            Crouton.makeText(CardReaderActivity.this, "Failed to read the card.. Only Credit cards are supported", Style.ALERT).show();
                         }
                     } else {
                         Crouton.makeText(CardReaderActivity.this, "Communication error, try again", Style.ALERT).show();

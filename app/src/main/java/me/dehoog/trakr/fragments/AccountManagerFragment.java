@@ -110,6 +110,7 @@ public class AccountManagerFragment extends Fragment {
                 }).show();
     }
 
+    @InjectView(R.id.action_nfc) ImageButton mReadCard;
     @OnClick(R.id.action_nfc)
     public void onReadNfcClick() {
         Intent intent = new Intent(getActivity(), CardReaderActivity.class);
@@ -195,6 +196,9 @@ public class AccountManagerFragment extends Fragment {
         mToggleGroup.setOnCheckedChangeListener(ToggleListener);
         if (mAction.equals("add")) {
             mConfirm.setText("Add");
+            YoYo.with(Techniques.Tada)
+                    .duration(1100)
+                    .playOn(mReadCard);
         } else {
             mConfirm.setText("Save");
             mDelete.setVisibility(View.VISIBLE);
