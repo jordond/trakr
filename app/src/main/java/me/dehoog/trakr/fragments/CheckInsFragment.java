@@ -39,7 +39,7 @@ public class CheckInsFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_accounts, container, false);
+        View view = inflater.inflate(R.layout.fragment_check_ins, container, false);
         if (getArguments() != null) {
             mUser = (User) getArguments().getSerializable(ARG_USER);
         }
