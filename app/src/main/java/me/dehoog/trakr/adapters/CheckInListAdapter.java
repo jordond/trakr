@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.TreeSet;
 
 import me.dehoog.trakr.models.Purchase;
@@ -30,8 +31,10 @@ public class CheckInListAdapter extends BaseAdapter {
         mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
-    public void addCheckIn(final Purchase checkIn) {
-        mCheckIns.add(checkIn);
+    public void addCheckIn(final List<Purchase> checkIns) {
+        for (Purchase p : checkIns) {
+            mCheckIns.add(p);
+        }
         notifyDataSetChanged();
     }
 

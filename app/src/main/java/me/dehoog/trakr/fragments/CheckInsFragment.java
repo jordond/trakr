@@ -11,10 +11,12 @@ import android.view.ViewGroup;
 import com.melnykov.fab.FloatingActionButton;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
 
 import me.dehoog.trakr.R;
+import me.dehoog.trakr.adapters.CheckInListAdapter;
 import me.dehoog.trakr.interfaces.CheckInsInteraction;
 import me.dehoog.trakr.models.Purchase;
 import me.dehoog.trakr.models.User;
@@ -22,6 +24,8 @@ import me.dehoog.trakr.models.User;
 public class CheckInsFragment extends Fragment {
 
     private static final String ARG_USER = "user";
+
+    private CheckInListAdapter mAdapter;
 
     private User mUser;
     private List<Purchase> mCheckIns;
@@ -49,6 +53,8 @@ public class CheckInsFragment extends Fragment {
         if (getArguments() != null) {
             mUser = (User) getArguments().getSerializable(ARG_USER);
         }
+
+        mAdapter = new CheckInListAdapter(getActivity());
 
         mCheckIns = mUser.getAllPurchases();
         if (mCheckIns != null && mCheckIns.size() != 0) {
@@ -99,10 +105,34 @@ public class CheckInsFragment extends Fragment {
             if (group.isEmpty()) {
                 group.add(purchase);
             } else {
-                
+                if (compare(group.get(0), purchase)) { // check for same day
+                    group.add(purchase);
+                } else {
+                    mAdapter.addCheckIn(group);
+                    group.clear();
+                    group.add(purchase);
+                }
             }
         }
-        // iterate thru them, sort by date
+        if (!group.isEmpty()) {
+            mAdapter.addCheckIn(group); // add the remaining items to adapter
+        }
+    }
+
+    private boolean compare(Purchase lhs, Purchase rhs) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(lhs.getDate());
+
+        int year = calendar.get(Calendar.YEAR);
+        int day = calendar.get(Calendar.DAY_OF_YEAR);
+
+        calendar.setTime(rhs.getDate());
+        if (year == calendar.get(Calendar.YEAR)) {
+            if (day == calendar.get(Calendar.DAY_OF_YEAR)) {
+                return true; // same day
+            }
+        }
+        return false;
     }
 
 }
