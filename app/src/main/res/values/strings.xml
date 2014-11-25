@@ -24,8 +24,8 @@
     <string name="action_logout">Logout</string>
     <string name="action_profile">Profile</string>
     <string name="card_account_extra_icon_description">Credit card type icon</string>
-    <string name="card_expand_recent_transactions_text">last three transactions…</string>
-    <string name="expand_list_grand_total_text">all time total</string>
+    <string name="card_expand_recent_transactions_text">Last three check in\'s…</string>
+    <string name="expand_list_grand_total_text">All time total</string>
     <string name="add_account_hint_account_number">Account Number</string>
     <string name="add_account_hint_expires">Expires</string>
     <string name="add_account_hint_descriptive">Descriptive Name</string>
@@ -45,7 +45,7 @@
     <string name="check_in_amount_hint">Amount spent</string>
     <string name="check_in_account_description">Bank account</string>
     <string name="check_in_date_hint">Choose date</string>
-    <string name="expand_list_total_transactions_desc">total transactions</string>
+    <string name="expand_list_total_transactions_desc">Total check in\'s</string>
     <string name="menu_check_in_filter">Filter</string>
     <string name="title_activity_card_reader">Read Card</string>
     <string name="menu_card_reader_help">Help</string>

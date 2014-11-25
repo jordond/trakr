@@ -12,7 +12,7 @@ import java.util.List;
 
 import it.gmariotti.cardslib.library.internal.CardExpand;
 import me.dehoog.trakr.R;
-import me.dehoog.trakr.adapters.RecentTransactionAdapter;
+import me.dehoog.trakr.adapters.RecentCheckInsAdapter;
 import me.dehoog.trakr.models.Account;
 import me.dehoog.trakr.models.Purchase;
 
@@ -33,7 +33,7 @@ public class ExpandAccountCard extends CardExpand {
     }
 
     public ExpandAccountCard(Context context, int innerLayout) {
-        super(context, R.layout.card_account_expand);
+        super(context, R.layout.card_account_expand_transaction_list);
     }
 
     @Override
@@ -50,13 +50,13 @@ public class ExpandAccountCard extends CardExpand {
         int numTransactions = transactions.size();
         if (transactions.isEmpty()) {
             TextView recentTransHeader = (TextView) view.findViewById(R.id.recent_transaction_header);
-            recentTransHeader.setText("no transactions");
+            recentTransHeader.setText("No check in\'s");
         }
         if (numTransactions > 3) {
             transactions = transactions.subList(numTransactions - 3, numTransactions);
         }
 
-        RecentTransactionAdapter adapter = new RecentTransactionAdapter(mContext, transactions);
+        RecentCheckInsAdapter adapter = new RecentCheckInsAdapter(mContext, transactions);
         listView.setAdapter(adapter);
         listView.setDivider(mContext.getResources().getDrawable(R.drawable.transperent_color));
         listView.setDividerHeight(0);

@@ -2,7 +2,6 @@ package me.dehoog.trakr.activities;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.nfc.NfcAdapter;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
@@ -11,33 +10,28 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.astuetz.PagerSlidingTabStrip;
-import com.github.devnied.emvnfccard.model.EmvCard;
 
-import java.security.Provider;
 import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
-import cn.pedant.SweetAlert.SweetAlertDialog;
 import de.keyboardsurfer.android.widget.crouton.Crouton;
 import me.dehoog.trakr.R;
 import me.dehoog.trakr.adapters.MainPagerAdapter;
 import me.dehoog.trakr.fragments.AccountManagerFragment;
 import me.dehoog.trakr.interfaces.AccountsInteraction;
 import me.dehoog.trakr.interfaces.AddAccountInteraction;
+import me.dehoog.trakr.interfaces.CheckInsInteraction;
 import me.dehoog.trakr.interfaces.EditAccountCallback;
-import me.dehoog.trakr.interfaces.RecentTransactionsInteraction;
 import me.dehoog.trakr.models.Account;
 import me.dehoog.trakr.models.Purchase;
 import me.dehoog.trakr.models.User;
-import me.dehoog.trakr.providers.NFCProvider;
-import me.dehoog.trakr.utils.NFCUtils;
 
 
-public class MainActivity extends FragmentActivity implements AccountsInteraction,      // Interface callback for Accounts Cardview fragment
+public class MainActivity extends FragmentActivity implements AccountsInteraction,      // Interface callback for Accounts Card view fragment
                                                               AddAccountInteraction,    // Callback for adding, and editing account
                                                               EditAccountCallback,      // Button click inside AccountCard
-                                                              RecentTransactionsInteraction {
+        CheckInsInteraction {
 
     public static final String PREFS_NAME = "TrakrPrefs";
     public static final int CHECK_IN_REQUEST = 1;
@@ -151,7 +145,7 @@ public class MainActivity extends FragmentActivity implements AccountsInteractio
     }
 
     @Override
-    public void onRecentTransactionInteraction() {  // Recent transaction, action button
+    public void onCheckInsInteraction() {  // Recent transaction, action button
         Intent intent = new Intent(this, CheckInActivity.class);
         startActivityForResult(intent, CHECK_IN_REQUEST);
     }

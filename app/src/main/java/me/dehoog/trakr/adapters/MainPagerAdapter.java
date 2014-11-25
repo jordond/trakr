@@ -5,7 +5,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
 import me.dehoog.trakr.fragments.AccountsFragment;
-import me.dehoog.trakr.fragments.RecentTransactionsFragment;
+import me.dehoog.trakr.fragments.CheckInsFragment;
 import me.dehoog.trakr.fragments.SpendingFragment;
 import me.dehoog.trakr.models.User;
 
@@ -16,7 +16,7 @@ import me.dehoog.trakr.models.User;
  */
 public class MainPagerAdapter extends FragmentPagerAdapter {
 
-    private final String[] TITLES = { "Accounts", "Recent Transactions", "Spending"};
+    private final String[] TITLES = { "Accounts", "Check In\'s", "Spending"};
 
     private User mUser;
 
@@ -43,7 +43,7 @@ public class MainPagerAdapter extends FragmentPagerAdapter {
             case 0:
                 return AccountsFragment.newInstance(mUser);
             case 1:
-                return RecentTransactionsFragment.newInstance("");
+                return CheckInsFragment.newInstance("");
             case 2:
                 return SpendingFragment.newInstance("");
         }

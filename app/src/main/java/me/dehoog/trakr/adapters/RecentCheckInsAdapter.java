@@ -21,13 +21,13 @@ import me.dehoog.trakr.models.Purchase;
  * Created: November, 16, 2014
  * 4:42 PM
  */
-public class RecentTransactionAdapter extends BaseAdapter {
+public class RecentCheckInsAdapter extends BaseAdapter {
 
     private Context mContext;
     private LayoutInflater mInflater;
     private List<Purchase> mPurchases;
 
-    public RecentTransactionAdapter(Context context, List<Purchase> purchases) {
+    public RecentCheckInsAdapter(Context context, List<Purchase> purchases) {
         this.mContext = context;
         this.mPurchases = purchases;
     }

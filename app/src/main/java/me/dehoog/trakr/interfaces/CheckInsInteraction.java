@@ -5,6 +5,6 @@ package me.dehoog.trakr.interfaces;
  * Created: November, 14, 2014
  * 2:41 PM
  */
-public interface RecentTransactionsInteraction {
-    public void onRecentTransactionInteraction();
+public interface CheckInsInteraction {
+    public void onCheckInsInteraction();
 }
