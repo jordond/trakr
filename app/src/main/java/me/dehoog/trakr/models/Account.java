@@ -65,11 +65,7 @@ public class Account extends SugarRecord<Account> implements Serializable {
     }
 
     public List<Purchase> getAllPurchases() {
-        if (purchases == null) {
-            return purchases = Purchase.find(Purchase.class, "account = ?", String.valueOf(this.getId()));
-        } else {
-            return purchases;
-        }
+        return purchases = Purchase.find(Purchase.class, "account = ?", String.valueOf(this.getId()));
     }
 
     public boolean isValid() {
@@ -105,6 +101,10 @@ public class Account extends SugarRecord<Account> implements Serializable {
             count++;
         }
         return count;
+    }
+
+    public void addPurchase(Purchase purchase) {
+        this.purchases.add(purchase);
     }
 
     // Accessor

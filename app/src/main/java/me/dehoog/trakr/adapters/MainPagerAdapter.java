@@ -19,12 +19,10 @@ public class MainPagerAdapter extends FragmentPagerAdapter {
     private final String[] TITLES = { "Accounts", "Check In\'s", "Spending"};
 
     private User mUser;
-    private CheckInsFragment mCheckInsFragment;
 
     public MainPagerAdapter(FragmentManager fm, User user) {
         super(fm);
         this.mUser = user;
-        mCheckInsFragment = CheckInsFragment.newInstance(user);
     }
 
     @Override
@@ -45,7 +43,7 @@ public class MainPagerAdapter extends FragmentPagerAdapter {
             case 0:
                 return AccountsFragment.newInstance(mUser);
             case 1:
-                return mCheckInsFragment;
+                return CheckInsFragment.newInstance(mUser);
             case 2:
                 return SpendingFragment.newInstance("");
         }
@@ -55,9 +53,5 @@ public class MainPagerAdapter extends FragmentPagerAdapter {
     @Override
     public int getItemPosition(Object object) {
         return POSITION_NONE;
-    }
-
-    public CheckInsFragment getCheckInsFragment() {
-        return mCheckInsFragment;
     }
 }

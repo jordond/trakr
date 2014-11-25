@@ -157,7 +157,8 @@ public class MainActivity extends FragmentActivity implements AccountsInteractio
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == CHECK_IN_REQUEST) {
             if (resultCode == RESULT_OK) {
-                mAdapter.getCheckInsFragment().setupList();
+
+                //mAdapter.getCheckInsFragment().setupList();
                 mPager.getAdapter().notifyDataSetChanged();
             }
             mPager.setCurrentItem(1);

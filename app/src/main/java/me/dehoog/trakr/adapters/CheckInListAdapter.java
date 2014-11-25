@@ -47,6 +47,7 @@ public class CheckInListAdapter extends BaseAdapter {
     public void addHeader(final Date item) {
         mTypes.add(TYPE_SEPARATOR);
         mHeaders.add(mFormat.format(item));
+        mCheckIns.add(new Purchase()); // dummy
     }
 
     public void addCheckIn(final List<Purchase> checkIns) {

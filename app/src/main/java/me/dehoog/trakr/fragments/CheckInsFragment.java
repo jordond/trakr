@@ -145,5 +145,4 @@ public class CheckInsFragment extends Fragment {
         }
         return false;
     }
-
 }
