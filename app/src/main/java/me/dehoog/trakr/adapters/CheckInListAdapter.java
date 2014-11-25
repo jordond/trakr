@@ -30,6 +30,7 @@ public class CheckInListAdapter extends BaseAdapter {
     private ArrayList<Integer> mTypes = new ArrayList<Integer>();
     private ArrayList<Purchase> mCheckIns = new ArrayList<Purchase>();
     private ArrayList<String> mHeaders = new ArrayList<String>();
+    private ArrayList<Integer> mHeaderIndex = new ArrayList<Integer>();
 
     private LayoutInflater mInflater;
 
@@ -40,18 +41,19 @@ public class CheckInListAdapter extends BaseAdapter {
         mFormat = new SimpleDateFormat("MMM d, yyyy");
     }
 
+    public void addHeader(final Date item) {
+        mTypes.add(TYPE_SEPARATOR);
+        mHeaders.add(mFormat.format(item));
+    }
+
     public void addCheckIn(final List<Purchase> checkIns) {
         addHeader(checkIns.get(0).getDate());
         for (Purchase p : checkIns) {
             mTypes.add(TYPE_ITEM);
+            mHeaderIndex.add(mHeaders.size() - 1);
             mCheckIns.add(p);
         }
         notifyDataSetChanged();
-    }
-
-    public void addHeader(final Date item) {
-        mTypes.add(TYPE_SEPARATOR);
-        mHeaders.add(mFormat.format(item));
     }
 
     @Override
@@ -101,7 +103,8 @@ public class CheckInListAdapter extends BaseAdapter {
             viewHolder = (ViewHolder) convertView.getTag();
         }
         if (rowType == TYPE_SEPARATOR) {
-            viewHolder.title.setText("tets");
+            int headerId = mHeaderIndex.get(position);
+            viewHolder.title.setText(mHeaders.get(headerId));
         } else {
             Purchase p = mCheckIns.get(position);
             Merchant m = p.getMerchant();
