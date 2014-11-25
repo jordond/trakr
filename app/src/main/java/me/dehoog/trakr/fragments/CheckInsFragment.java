@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
 
 import com.melnykov.fab.FloatingActionButton;
 
@@ -15,6 +16,8 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
 
+import butterknife.ButterKnife;
+import butterknife.InjectView;
 import me.dehoog.trakr.R;
 import me.dehoog.trakr.adapters.CheckInListAdapter;
 import me.dehoog.trakr.interfaces.CheckInsInteraction;
@@ -25,6 +28,7 @@ public class CheckInsFragment extends Fragment {
 
     private static final String ARG_USER = "user";
 
+    @InjectView(R.id.check_in_list) ListView mListView;
     private CheckInListAdapter mAdapter;
 
     private User mUser;
@@ -54,11 +58,14 @@ public class CheckInsFragment extends Fragment {
             mUser = (User) getArguments().getSerializable(ARG_USER);
         }
 
+        ButterKnife.inject(this, view);
+
         mAdapter = new CheckInListAdapter(getActivity());
 
         mCheckIns = mUser.getAllPurchases();
         if (mCheckIns != null && mCheckIns.size() != 0) {
-            setupListView();
+            setupAdapter();
+            mListView.setAdapter(mAdapter);
         }
         return view;
     }
@@ -97,7 +104,7 @@ public class CheckInsFragment extends Fragment {
         mListener = null;
     }
 
-    private void setupListView() {
+    private void setupAdapter() {
         Collections.reverse(mCheckIns);
         List<Purchase> group = new ArrayList<Purchase>();
         for (Purchase purchase : mCheckIns) {
@@ -115,6 +122,7 @@ public class CheckInsFragment extends Fragment {
             }
         }
         if (!group.isEmpty()) {
+            mAdapter.addHeader(group.get(0).getDate());
             mAdapter.addCheckIn(group); // add the remaining items to adapter
         }
         System.out.println("debug");
