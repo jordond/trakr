@@ -15,6 +15,8 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.afollestad.materialdialogs.MaterialDialog;
+import com.afollestad.materialdialogs.Theme;
 import com.github.devnied.emvnfccard.model.EmvCard;
 import com.github.devnied.emvnfccard.parser.EmvParser;
 import com.skyfishjy.library.RippleBackground;
@@ -136,9 +138,10 @@ public class CardReaderActivity extends Activity {
 
     private void cardReadSuccess() {
         final CardNFC card = new CardNFC(mReadCard.getCardNumber(), mReadCard.getExpireDate(), mReadCard.getType().getName());
+        mRippleBackground.stopRippleAnimation();
         new SweetAlertDialog(this, SweetAlertDialog.NORMAL_TYPE)
-                .setTitleText("Success!")
-                .setContentText("Card was successfully read, found account number: " + card.getAccountNumber() + ", is this correct?")
+                .setTitleText("Successful Read!")
+                .setContentText("Found a " + card.getType() + " with an account number of '" + card.getAccountNumber() + "'. Is this correct?")
                 .setConfirmText("Yup!")
                 .setCancelText("Try Again")
                 .showCancelButton(true)
@@ -157,6 +160,7 @@ public class CardReaderActivity extends Activity {
                 }).setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
                     @Override
                     public void onClick(SweetAlertDialog dialog) {
+                        mRippleBackground.startRippleAnimation();
                         dialog.dismiss();
                     }
                 }).show();
@@ -188,16 +192,26 @@ public class CardReaderActivity extends Activity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        return super.onCreateOptionsMenu(menu);
+        getMenuInflater().inflate(R.menu.menu_card_reader, menu);
+        return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        mAlertDialog = null;
-        mDialog = null;
-        Intent returnIntent = new Intent();
-        setResult(RESULT_CANCELED, returnIntent);
-        finish();
+        if (item.getItemId() == R.id.action_help) {
+            new MaterialDialog.Builder(this)
+                    .title("Reading your Card")
+                    .content(getString(R.string.activity_card_reader_help_message))
+                    .theme(Theme.LIGHT)
+                    .positiveText("Sounds Good!")
+                    .show();
+        } else {
+            mAlertDialog = null;
+            mDialog = null;
+            Intent returnIntent = new Intent();
+            setResult(RESULT_CANCELED, returnIntent);
+            finish();
+        }
         return super.onOptionsItemSelected(item);
     }
 }

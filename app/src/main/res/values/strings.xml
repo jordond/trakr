@@ -48,5 +48,7 @@
     <string name="expand_list_total_transactions_desc">total transactions</string>
     <string name="menu_check_in_filter">Filter</string>
     <string name="title_activity_card_reader">Read Card</string>
+    <string name="menu_card_reader_help">Help</string>
+    <string name="activity_card_reader_help_message">Place your credit card against the back of your device.  Once you find the NFC \'sweet spot\', the card will be read. Try not to move the card while reading, or else it might fail.  Note this program only grabs the Card number and Expiry date, no other information is gathered or stored.</string>
 
 </resources>
