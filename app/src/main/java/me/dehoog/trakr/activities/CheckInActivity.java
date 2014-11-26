@@ -189,6 +189,7 @@ public class CheckInActivity extends Activity implements PlacesService.PlacesInt
                     .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
                         @Override
                         public void onClick(SweetAlertDialog sweetAlertDialog) {
+                            sweetAlertDialog.dismiss();
                             finish();
                         }
                     }).show();

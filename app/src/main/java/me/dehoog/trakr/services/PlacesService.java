@@ -149,14 +149,16 @@ public class PlacesService extends Service {
                     @Override
                     public void onCompleted(Exception e, PlacesResult result) {
                         if (mListener != null) {
-                            if (result.getStatus().equals("OK")) {
-                                mListener.onPlacesReturned(result.getResults());
+                            if (result != null) {
+                                if (result.getStatus().equals("OK")) {
+                                    mListener.onPlacesReturned(result.getResults());
 //                                if (result.isMoreResults()) {
 //                                    Log.d(TAG, "Fetching more results with id: " + result.getNext_page_token());
 //                                    getMore(result.getNext_page_token());
 //                                }
-                            } else {
-                                Log.e(TAG, "Google replied with: " + result.getStatus());
+                                } else {
+                                    Log.e(TAG, "Google replied with: " + result.getStatus());
+                                }
                             }
                         }
                     }
@@ -173,10 +175,12 @@ public class PlacesService extends Service {
                     @Override
                     public void onCompleted(Exception e, PlaceDetailsResult result) {
                         if (mListener != null) {
-                            if (result.getStatus().equals("OK")) {
-                                mListener.onPlaceDetailsReturned(result.getResults());
-                            } else {
-                                Log.e(TAG, "Google said no: " + result.getStatus());
+                            if (result != null) {
+                                if (result.getStatus().equals("OK")) {
+                                    mListener.onPlaceDetailsReturned(result.getResults());
+                                } else {
+                                    Log.e(TAG, "Google said no: " + result.getStatus());
+                                }
                             }
                         }
                     }

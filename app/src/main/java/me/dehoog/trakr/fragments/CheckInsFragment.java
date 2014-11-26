@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.melnykov.fab.FloatingActionButton;
 
@@ -63,6 +64,9 @@ public class CheckInsFragment extends Fragment {
 
         mAdapter = new CheckInListAdapter(getActivity());
         setupList();
+        TextView empty = (TextView) view.findViewById(R.id.empty_list);
+        empty.setText("EMPTY YO");
+        mListView.setEmptyView(empty);
 
         return view;
     }
