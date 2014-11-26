@@ -112,11 +112,7 @@ public class User extends SugarRecord<User> implements Serializable {
     }
 
     public List<Account> getAllAccounts() {
-        if (accounts == null) {
             return accounts = Account.find(Account.class, "user = ?", String.valueOf(this.getId()));
-        } else {
-            return accounts;
-        }
     }
 
     public List<Purchase> getAllPurchases() {

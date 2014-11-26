@@ -3,6 +3,7 @@ package me.dehoog.trakr.activities;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
@@ -11,14 +12,14 @@ import android.view.MenuItem;
 
 import com.astuetz.PagerSlidingTabStrip;
 
-import java.util.List;
-
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import de.keyboardsurfer.android.widget.crouton.Crouton;
 import me.dehoog.trakr.R;
 import me.dehoog.trakr.adapters.MainPagerAdapter;
+import me.dehoog.trakr.cards.ExpandAccountCard;
 import me.dehoog.trakr.fragments.AccountManagerFragment;
+import me.dehoog.trakr.fragments.CheckInViewerFragment;
 import me.dehoog.trakr.interfaces.AccountsInteraction;
 import me.dehoog.trakr.interfaces.AddAccountInteraction;
 import me.dehoog.trakr.interfaces.CheckInsInteraction;
@@ -28,16 +29,19 @@ import me.dehoog.trakr.models.Purchase;
 import me.dehoog.trakr.models.User;
 
 
-public class MainActivity extends FragmentActivity implements AccountsInteraction,      // Interface callback for Accounts Card view fragment
-                                                              AddAccountInteraction,    // Callback for adding, and editing account
-                                                              EditAccountCallback,      // Button click inside AccountCard
-        CheckInsInteraction {
+public class MainActivity extends FragmentActivity implements AccountsInteraction,                  // Interface callback for Accounts Card view fragment
+                                                              AddAccountInteraction,                // Callback for adding, and editing account
+                                                              EditAccountCallback,                  // Button click inside AccountCard
+                                                              CheckInsInteraction,                  // Action performed in check in tab
+                                                              ExpandAccountCard.ExpandListClick {   // Check clicked in expanded card
 
     public static final String PREFS_NAME = "TrakrPrefs";
     public static final int CHECK_IN_REQUEST = 1;
     public SharedPreferences mSettings;
 
     public User mUser;
+
+    private MainPagerAdapter mAdapter;
 
     private FragmentTransaction ft;
     private AccountManagerFragment mAccountManager;
@@ -59,7 +63,7 @@ public class MainActivity extends FragmentActivity implements AccountsInteractio
         }
 
         ButterKnife.inject(this); // get all dem views
-        MainPagerAdapter mAdapter = new MainPagerAdapter(getSupportFragmentManager(), mUser);
+        mAdapter = new MainPagerAdapter(getSupportFragmentManager(), mUser);
         mPager.setAdapter(mAdapter);
         mTabs.setViewPager(mPager);
 
@@ -127,7 +131,7 @@ public class MainActivity extends FragmentActivity implements AccountsInteractio
         mAccountManager = AccountManagerFragment.newInstance(mUser, action, account);
         ft = getSupportFragmentManager().beginTransaction();
         ft.setCustomAnimations(R.animator.fade_in, R.animator.fade_out, R.animator.fade_in, R.animator.fade_out);
-        ft.replace(R.id.container, mAccountManager,"AddAccountTag");
+        ft.replace(R.id.container, mAccountManager);
         ft.addToBackStack(null);
         ft.commit();
     }
@@ -151,15 +155,33 @@ public class MainActivity extends FragmentActivity implements AccountsInteractio
     }
 
     @Override
+    public void expandListItemClicked(Purchase purchase) {
+        CheckInViewerFragment fragment = CheckInViewerFragment.newInstance(purchase);
+        launchFragment(fragment);
+    }
+
+    @Override
+    public void onShowViewer(Purchase purchase) {
+        CheckInViewerFragment fragment = CheckInViewerFragment.newInstance(purchase);
+        launchFragment(fragment);
+    }
+
+    public void launchFragment(Fragment fragment) {
+        ft = getSupportFragmentManager().beginTransaction();
+        ft.setCustomAnimations(R.animator.slide_in_up, R.animator.slide_out_down, R.animator.slide_in_up, R.animator.slide_out_down);
+        ft.replace(R.id.container, fragment);
+        ft.addToBackStack(null);
+        ft.commit();
+    }
+
+    @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == CHECK_IN_REQUEST) {
             if (resultCode == RESULT_OK) {
+
+                //mAdapter.getCheckInsFragment().setupList();
                 mPager.getAdapter().notifyDataSetChanged();
-                //TODO debug code for testing add of check-in
-                boolean result = data.getBooleanExtra("add", false);
-                List<Purchase> purchases = mUser.getAllPurchases();
-                System.out.println("just a debug breakpoint");
             }
             mPager.setCurrentItem(1);
         }

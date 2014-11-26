@@ -1,6 +1,9 @@
 package me.dehoog.trakr.activities;
 
 import android.app.Activity;
+import android.app.DatePickerDialog;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
@@ -9,20 +12,23 @@ import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
+import com.doomonafireball.betterpickers.calendardatepicker.CalendarDatePickerDialog;
+import com.doomonafireball.betterpickers.datepicker.DatePickerBuilder;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -38,6 +44,7 @@ import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -81,6 +88,8 @@ public class CheckInActivity extends Activity implements PlacesService.PlacesInt
     private List<String> mFilterUrls = new ArrayList<String>();         // Contains the urls of the filtered categories
     private Integer[] mSelectedFilters;
 
+    private DatePickerDialog.OnDateSetListener mDateListener;
+    private DatePickerDialog mDialog;
     private SimpleDateFormat mDateFormat;                               // Date pattern "EEEE MMM d, yyyy"
     private Date mDate; // I hate dates so much                         // Object to store the current date, I used it as a fix for a bug
 
@@ -115,6 +124,16 @@ public class CheckInActivity extends Activity implements PlacesService.PlacesInt
     }
 
     @InjectView(R.id.panel_transaction_date) TextView mPanelDate;   //TODO add in a date picker
+    @OnClick(R.id.panel_transaction_date)
+    public void selectDate() {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(new Date());
+        int year = calendar.get(Calendar.YEAR);
+        int month = calendar.get(Calendar.MONTH);
+        int day = calendar.get(Calendar.DAY_OF_MONTH);
+        mDialog = new DatePickerDialog(this, mDateListener, year, month, day);
+        mDialog.show();
+    }
     @InjectView(R.id.panel_transaction_account) Spinner mPanelAccount;
     @InjectView(R.id.panel_transaction_amount) EditText mPanelAmount;
 
@@ -218,6 +237,17 @@ public class CheckInActivity extends Activity implements PlacesService.PlacesInt
                 setUpMapIfNeeded();
                 mPlacesService.nearbySearch(mCurrentLocation);
 
+                mDateListener = new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                        Calendar c = Calendar.getInstance();
+                        c.set(year, monthOfYear, dayOfMonth);
+
+                        mPanelDate.setText(mDateFormat.format(c.getTime())); // for display
+                        mDate = c.getTime();    // for saving
+                        mDialog.dismiss();
+                    }
+                };
 
                 setupAccountSpinner();
             } else {
@@ -600,6 +630,7 @@ public class CheckInActivity extends Activity implements PlacesService.PlacesInt
 
             Category category = new Category().findOrCreate(details.typeToString(0));
             category.setIcon(details.getIcon());
+            category.setDescription(details.typesToString());
             mMerchant.setCategory(category);
 
             Address address = new Address().findOrCreate(details.getFormatted_address());

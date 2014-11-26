@@ -3,8 +3,18 @@
 
     <color name="white_background">#fff3f3f3</color>
 
+    <color name="primary_50">#E8F5E9</color>
+    <color name="primary_100">#C8E6C9</color>
+    <color name="primary_200">#A5D6A7</color>
+    <color name="primary_300">#81C784</color>
+    <color name="primary_400">#66BB6A</color>
     <color name="primary">#4CAF52</color>
     <color name="primary_pressed">#77CC7D</color>
+    <color name="primary_600">#43A047</color>
+    <color name="primary_700">#388E3C</color>
+    <color name="primary_800">#2E7D32</color>
+    <color name="primary_900">#1B5E20</color>
+
     <color name="accent">#DE6461</color>
     <color name="accent_pressed">#FF9895</color>
 

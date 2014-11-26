@@ -8,10 +8,7 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.util.Log;
 
-import com.google.android.gms.analytics.ExceptionParser;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
 import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
 

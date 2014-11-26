@@ -10,7 +10,6 @@ import android.widget.TextView;
 
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
-import java.util.Collections;
 import java.util.List;
 
 import me.dehoog.trakr.R;

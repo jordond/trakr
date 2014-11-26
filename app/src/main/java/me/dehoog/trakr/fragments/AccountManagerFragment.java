@@ -18,7 +18,8 @@ import android.widget.ToggleButton;
 
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
-import com.github.devnied.emvnfccard.model.EmvCard;
+import com.doomonafireball.betterpickers.expirationpicker.ExpirationPickerBuilder;
+import com.doomonafireball.betterpickers.expirationpicker.ExpirationPickerDialogFragment;
 
 import java.util.Calendar;
 
@@ -121,6 +122,27 @@ public class AccountManagerFragment extends Fragment {
     @OnClick(R.id.action_cancel)
     public void onCancel() { close(); }
 
+    @OnClick(R.id.expires)
+    public void expiryDateClicked() {
+        ExpirationPickerBuilder epb = new ExpirationPickerBuilder()
+                .setFragmentManager(getFragmentManager())
+                .setStyleResId(R.style.BetterPickersDialogFragment_Light);
+        epb.addExpirationPickerDialogHandler(new ExpirationPickerDialogFragment.ExpirationPickerDialogHandler() {
+            @Override
+            public void onDialogExpirationSet(int i, int year, int day) {
+                String date = "";
+                if (day < 10) {
+                    date = "0" + String.valueOf(day);
+                } else {
+                    date = String.valueOf(day);
+                }
+                date += "/" + String.valueOf(year).substring(2, 4);
+                mExpiry.setText(date);
+            }
+        });
+        epb.show();
+    }
+
     // UI - Account type toggles
     @InjectView(R.id.toggle_group) RadioGroup mToggleGroup;
     @InjectView(R.id.toggle_cash) ToggleButton mCash;
@@ -135,18 +157,15 @@ public class AccountManagerFragment extends Fragment {
                 mCategory = "Cash";
                 mAccountNumber.setEnabled(false);
                 mAccountNumber.setText("");
-                mExpiry.setEnabled(false);
                 mExpiry.setText("");
                 break;
             case R.id.toggle_debit:
                 mCategory = "Debit";
                 mAccountNumber.setEnabled(true);
-                mExpiry.setEnabled(true);
                 break;
             case R.id.toggle_credit:
                 mCategory = "Credit";
                 mAccountNumber.setEnabled(true);
-                mExpiry.setEnabled(true);
         }
 
         if (button.getId() == R.id.toggle_credit && button.isChecked()) {
@@ -209,7 +228,6 @@ public class AccountManagerFragment extends Fragment {
             mAccountNumber.setText(mAccount.getNumber());
             mAccountNumber.setEnabled(true);
             mExpiry.setText(mAccount.getExpires());
-            mExpiry.setEnabled(true);
             mName.setText(mAccount.getDescription());
 
             mCategory = mAccount.getCategory();
@@ -218,7 +236,6 @@ public class AccountManagerFragment extends Fragment {
                 mAccountNumber.setText("");
                 mAccountNumber.setEnabled(false);
                 mExpiry.setText("");
-                mExpiry.setEnabled(false);
             } else if (mCategory.equals("Debit")) {
                 mDebit.toggle();
             } else if (mCategory.equals("Credit")) {

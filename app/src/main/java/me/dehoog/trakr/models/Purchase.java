@@ -1,16 +1,16 @@
 package me.dehoog.trakr.models;
 
+import android.support.annotation.NonNull;
+
 import com.orm.SugarRecord;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 /**
  * Created by jordon on 2014-11-09.
  */
-public class Purchase extends SugarRecord<Purchase> implements Serializable {
+public class Purchase extends SugarRecord<Purchase> implements Serializable, Comparable<Purchase> {
 
     // Properties
     private Account account;
@@ -37,7 +37,13 @@ public class Purchase extends SugarRecord<Purchase> implements Serializable {
     }
 
     // Helper methods
-
+    @Override
+    public int compareTo(@NonNull Purchase another) {
+        if (getDate() == null || another.getDate() == null) {
+            return 0;
+        }
+        return getDate().compareTo(another.getDate());
+    }
 
 
     // Accessors
@@ -88,4 +94,5 @@ public class Purchase extends SugarRecord<Purchase> implements Serializable {
     public void setNotes(String notes) {
         this.notes = notes;
     }
+
 }

@@ -90,7 +90,7 @@
                 android:hint="@string/add_account_hint_expires"
                 android:maxLength="5"
                 android:id="@+id/expires"
-                android:enabled="false"
+                android:focusable="false"
                 android:layout_below="@+id/account_number"/>
 
             <EditText
