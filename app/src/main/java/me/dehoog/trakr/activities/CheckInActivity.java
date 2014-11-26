@@ -2,6 +2,9 @@ package me.dehoog.trakr.activities;
 
 import android.app.Activity;
 import android.app.DatePickerDialog;
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.content.Intent;
@@ -181,7 +184,19 @@ public class CheckInActivity extends Activity implements PlacesService.PlacesInt
         String email = settings.getString("email", "none");
         mUser = new User().findUser(email);
 
-        if (mUser == null || mUser.getAllAccounts().isEmpty()) {
+        if (!checkForNetwork()) {
+            new SweetAlertDialog(this, SweetAlertDialog.ERROR_TYPE)
+                    .setTitleText("Error")
+                    .setContentText("No internet detected! Come back with some internet.")
+                    .setConfirmText("Ok")
+                    .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                        @Override
+                        public void onClick(SweetAlertDialog sweetAlertDialog) {
+                            sweetAlertDialog.dismiss();
+                            finish();
+                        }
+                    }).show();
+        } else if (mUser == null || mUser.getAllAccounts().isEmpty()) {
             new SweetAlertDialog(this, SweetAlertDialog.ERROR_TYPE)
                     .setTitleText("Error")
                     .setContentText("You don't have any accounts setup!")
@@ -266,6 +281,12 @@ public class CheckInActivity extends Activity implements PlacesService.PlacesInt
                         }).show();
             }
         }
+    }
+
+    private boolean checkForNetwork() {
+        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 
     private void setupAccountSpinner() {
