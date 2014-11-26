@@ -243,7 +243,8 @@ public class CheckInActivity extends Activity implements PlacesService.PlacesInt
                         Calendar c = Calendar.getInstance();
                         c.set(year, monthOfYear, dayOfMonth);
 
-                        mPanelDate.setText(mDateFormat.format(c.getTime()));
+                        mPanelDate.setText(mDateFormat.format(c.getTime())); // for display
+                        mDate = c.getTime();    // for saving
                         mDialog.dismiss();
                     }
                 };
