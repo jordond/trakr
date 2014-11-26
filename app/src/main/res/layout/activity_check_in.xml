@@ -123,6 +123,7 @@
                         android:layout_height="0dp"
                         android:layout_weight="1"
                         android:clickable="true"
+                        android:background="@drawable/clickable_textview"
                         android:drawableStart="@drawable/ic_phone"
                         android:gravity="center_vertical"/>
 
@@ -131,6 +132,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:layout_weight="1"
+                        android:background="@drawable/clickable_textview"
                         android:drawableStart="@drawable/ic_earth"
                         android:gravity="center_vertical"
                         android:singleLine="true"
