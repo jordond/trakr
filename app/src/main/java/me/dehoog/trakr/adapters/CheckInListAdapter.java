@@ -54,7 +54,7 @@ public class CheckInListAdapter extends BaseAdapter {
         addHeader(checkIns.get(0).getDate());
         for (Purchase p : checkIns) {
             mTypes.add(TYPE_ITEM);
-            mHeaderIndex.add(mHeaders.size() - 1);
+            mHeaders.add("filler");
             mCheckIns.add(p);
         }
         notifyDataSetChanged();
@@ -112,8 +112,7 @@ public class CheckInListAdapter extends BaseAdapter {
             viewHolder = (ViewHolder) convertView.getTag();
         }
         if (rowType == TYPE_SEPARATOR) {
-            int headerId = mHeaderIndex.get(position);
-            viewHolder.title.setText(mHeaders.get(headerId));
+            viewHolder.title.setText(mHeaders.get(position));
         } else {
             Purchase p = mCheckIns.get(position);
             Merchant m = p.getMerchant();
