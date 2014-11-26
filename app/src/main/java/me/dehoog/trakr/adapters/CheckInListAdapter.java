@@ -31,7 +31,6 @@ public class CheckInListAdapter extends BaseAdapter {
     private ArrayList<Integer> mTypes = new ArrayList<Integer>();
     private ArrayList<Purchase> mCheckIns = new ArrayList<Purchase>();
     private ArrayList<String> mHeaders = new ArrayList<String>();
-    private ArrayList<Integer> mHeaderIndex = new ArrayList<Integer>();
 
     private LayoutInflater mInflater;
 
@@ -117,7 +116,7 @@ public class CheckInListAdapter extends BaseAdapter {
             Purchase p = mCheckIns.get(position);
             Merchant m = p.getMerchant();
             String accountType = p.getAccount().getCategory().toLowerCase();
-            viewHolder.icon.setImageResource(viewHolder.getIconResourse(accountType));
+            viewHolder.icon.setImageResource(viewHolder.getIconResource(accountType));
             viewHolder.title.setText(m.getName());
             viewHolder.subtitle.setText(m.getLocation().getLongAddress());
             viewHolder.extra.setText(mDecimalFormat.format(p.getAmount()));
@@ -131,7 +130,7 @@ public class CheckInListAdapter extends BaseAdapter {
         public TextView subtitle;
         public TextView extra;
 
-        public int getIconResourse(String type) {
+        public int getIconResource(String type) {
             if (type.equals("cash")) {
                 return R.drawable.ic_cash;
             } else if (type.equals("credit")) {
