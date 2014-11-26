@@ -10,10 +10,13 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.InjectView;
 import it.gmariotti.cardslib.library.internal.Card;
 import it.gmariotti.cardslib.library.internal.CardHeader;
 import it.gmariotti.cardslib.library.internal.base.BaseCard;
 import it.gmariotti.cardslib.library.prototypes.CardWithList;
+import it.gmariotti.cardslib.library.view.CardListView;
+import it.gmariotti.cardslib.library.view.CardView;
 import me.dehoog.trakr.R;
 import me.dehoog.trakr.models.Account;
 
@@ -31,15 +34,14 @@ public class AccountListCard extends CardWithList {
     @Override
     protected CardHeader initCardHeader() {
 
-        CardHeader header = new CardHeader(getContext(), R.layout.account_list_card_inner_header);
-
-        header.setPopupMenu(R.menu.card_popup, new CardHeader.OnClickCardHeaderPopupMenuListener() {
-            @Override
-            public void onMenuItemClick(BaseCard baseCard, MenuItem menuItem) {
-
-            }
-        });
-        header.setTitle("Accounts");
+//        CardHeader header = new AccountListCardHeader(getContext(), R.layout.account_list_card_inner_header, "Accounts");
+//        header.setPopupMenu(R.menu.card_popup, new CardHeader.OnClickCardHeaderPopupMenuListener() {
+//            @Override
+//            public void onMenuItemClick(BaseCard baseCard, MenuItem menuItem) {
+//
+//            }
+//        });
+        CardHeader header = new AccountListCardHeader(getContext(), R.layout.account_list_card_inner_header, "Accounts");
         return header;
     }
 
@@ -78,13 +80,12 @@ public class AccountListCard extends CardWithList {
 
     @Override
     public View setupChildView(int i, ListObject listObject, View view, ViewGroup viewGroup) {
-        TextView name = (TextView) view.findViewById(R.id.carddemo_weather_city);
-        ImageView icon = (ImageView) view.findViewById(R.id.carddemo_weather_icon);
-        TextView total = (TextView) view.findViewById(R.id.carddemo_weather_temperature);
+        TextView name = (TextView) view.findViewById(R.id.account_list_card_inner_title);
+        TextView total = (TextView) view.findViewById(R.id.account_list_card_inner_ammount);
 
         AccountObject obj = (AccountObject) listObject;
         name.setText(obj.name);
-        icon.setImageResource(obj.categoryIcon);
+        name.setCompoundDrawablesWithIntrinsicBounds(obj.categoryIcon, 0, 0, 0);
         total.setText(obj.total);
 
         return view;
@@ -109,6 +110,27 @@ public class AccountListCard extends CardWithList {
         private void init() {
 
         }
+    }
+
+    public class AccountListCardHeader extends CardHeader {
+
+        private String mTitle;
+
+        public AccountListCardHeader(Context context, int innerLayout, String title) {
+            super(context, innerLayout);
+            this.mTitle = title;
+        }
+
+        @Override
+        public void setupInnerViewElements(ViewGroup parent, View view) {
+            super.setupInnerViewElements(parent, view);
+
+            TextView titleView = (TextView) view.findViewById(R.id.text_birth1);
+            if (titleView != null) {
+                titleView.setText(mTitle);
+            }
+        }
+
     }
 
 }

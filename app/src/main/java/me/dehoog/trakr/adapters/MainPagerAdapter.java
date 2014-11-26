@@ -45,7 +45,7 @@ public class MainPagerAdapter extends FragmentPagerAdapter {
             case 1:
                 return CheckInsFragment.newInstance(mUser);
             case 2:
-                return SpendingFragment.newInstance("");
+                return SpendingFragment.newInstance(mUser);
         }
         return f;
     }

@@ -3,12 +3,18 @@ package me.dehoog.trakr.fragments;
 import android.app.Activity;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import butterknife.ButterKnife;
+import butterknife.InjectView;
+import it.gmariotti.cardslib.library.view.CardView;
+import it.gmariotti.cardslib.library.view.CardViewNative;
 import me.dehoog.trakr.R;
+import me.dehoog.trakr.cards.AccountListCard;
 import me.dehoog.trakr.interfaces.SpendingInteraction;
 import me.dehoog.trakr.models.User;
 
@@ -16,8 +22,10 @@ public class SpendingFragment extends Fragment {
 
     private static final String ARG_USER = "user";
 
-    private String mUser;
+    @InjectView(R.id.accounts_card) CardViewNative mAccountsCardView;
 
+    private String mUser;
+    private AccountListCard mAccountCard;
 
     private SpendingInteraction mListener;
 
@@ -42,8 +50,22 @@ public class SpendingFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view =  inflater.inflate(R.layout.fragment_spending, container, false);
-
+        ButterKnife.inject(this, view);
         return view;
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        initCard();
+    }
+
+    private void initCard() {
+        mAccountCard = new AccountListCard(getActivity());
+        mAccountCard.init(); // not really needed, havent decided if i want swipe events
+
+        mAccountsCardView.setCard(mAccountCard);
     }
 
     public void onButtonPressed(Uri uri) {
