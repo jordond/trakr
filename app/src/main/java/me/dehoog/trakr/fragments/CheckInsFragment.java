@@ -65,7 +65,7 @@ public class CheckInsFragment extends Fragment {
         mAdapter = new CheckInListAdapter(getActivity());
         setupList();
         TextView empty = (TextView) view.findViewById(R.id.empty_list);
-        empty.setText("EMPTY YO");
+        empty.setVisibility(View.VISIBLE);
         mListView.setEmptyView(empty);
 
         return view;

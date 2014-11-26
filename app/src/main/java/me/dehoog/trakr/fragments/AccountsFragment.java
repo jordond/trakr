@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.melnykov.fab.FloatingActionButton;
 
@@ -64,6 +65,11 @@ public class AccountsFragment extends Fragment {
 //        seed.accounts();
 
         ButterKnife.inject(this, view);
+
+        TextView empty = (TextView) view.findViewById(R.id.empty_list);
+        empty.setVisibility(View.VISIBLE);
+        mCardList.setEmptyView(empty);
+
         return view;
     }
 

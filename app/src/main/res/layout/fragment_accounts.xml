@@ -12,6 +12,18 @@
         style="@style/card_external"
         card:list_card_layout_resourceID="@layout/native_list_card_thumbnail_layout"/>
 
+    <TextView
+        android:visibility="gone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="?android:textAppearanceMedium"
+        android:layout_gravity="center_horizontal|bottom"
+        android:layout_marginBottom="30dp"
+        android:id="@+id/empty_list"
+        android:textColor="@color/half_black"
+        android:drawableEnd="@drawable/ic_right_arrow"
+        android:text="@string/fragments_account_empty_list_desc" />
+
     <com.melnykov.fab.FloatingActionButton
         android:id="@+id/button_floating_action"
         android:layout_width="wrap_content"

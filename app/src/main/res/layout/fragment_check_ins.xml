@@ -14,15 +14,16 @@
         </ListView>
 
     <TextView
+        android:visibility="gone"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         style="?android:textAppearanceMedium"
         android:layout_gravity="center_horizontal|bottom"
         android:layout_marginBottom="30dp"
         android:id="@+id/empty_list"
+        android:textColor="@color/half_black"
         android:drawableEnd="@drawable/ic_right_arrow"
-        android:text="Check In"
-        />
+        android:text="@string/fragment_check_in_empty_desc" />
 
     <com.melnykov.fab.FloatingActionButton
         android:id="@+id/button_new_checkin"
