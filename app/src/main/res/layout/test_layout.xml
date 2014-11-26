@@ -1,56 +1,29 @@
 <LinearLayout
     android:layout_width="match_parent"
-    android:layout_height="68dp"
-    android:orientation="horizontal"
-    android:gravity="center_vertical"
-    android:id="@+id/panel_header"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <ImageView
-        android:id="@+id/merchant_icon"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:scaleType="fitXY"
-        android:gravity="center_vertical"
-        android:src="@drawable/ic_general_icon"
-        android:layout_marginEnd="10dp"
-        android:layout_marginStart="5dp" />
-
     <LinearLayout
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
         android:layout_weight="1"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="15dp">
 
-        <TextView
-            android:id="@+id/merchant_name"
+        <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            style="?android:textAppearanceMedium"
-            android:gravity="center_vertical"
-            android:singleLine="true"
-            android:layout_marginTop="5dp"
-            android:ellipsize="end" />
+            android:src="@drawable/ic_calendar"/>
 
-        <TextView
-            android:id="@+id/merchant_address"
-            android:layout_width="wrap_content"
+        <EditText
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            style="?android:textAppearanceSmall"
-            android:maxLines="1"
-            android:singleLine="true"
-            android:ellipsize="end" />
+            android:hint="Jordon de Hoog"
+            style="?android:textAppearanceSmall" />
 
         </LinearLayout>
-
-
-
-    <ImageView
-        android:id="@+id/panel_slide_symbol"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:src="@drawable/ic_plus_skinny"
-        android:layout_marginEnd="10dp"
-        android:gravity="end"/>
 
 </LinearLayout>
