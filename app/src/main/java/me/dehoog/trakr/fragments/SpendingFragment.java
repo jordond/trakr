@@ -58,6 +58,9 @@ public class SpendingFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
+        mUser.getAllPurchases();
+        int test = mUser.getCategoryCount();
+
         initCard();
     }
 

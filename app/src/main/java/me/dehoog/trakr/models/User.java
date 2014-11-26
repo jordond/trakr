@@ -125,6 +125,16 @@ public class User extends SugarRecord<User> implements Serializable {
         return purchases;
     }
 
+    public int getCategoryCount() {
+        List<Category> categories = new ArrayList<Category>();
+        if (!this.purchases.isEmpty()) {
+            for (Purchase p : this.purchases) {
+                categories.add(p.getCategory());
+            }
+        }
+        return categories.size();
+    }
+
     // Validators
     public static boolean isUsernameValid(String username) {
         return username.length() > 4;

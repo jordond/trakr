@@ -119,11 +119,6 @@ public class AccountListCard extends CardWithList {
 
         public AccountObject(Card parentCard) {
             super(parentCard);
-            init();
-        }
-
-        private void init() {
-
         }
     }
 
