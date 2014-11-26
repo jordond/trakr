@@ -40,7 +40,7 @@ public class CheckInListAdapter extends BaseAdapter {
 
     public CheckInListAdapter(Context context) {
         mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        mFormat = new SimpleDateFormat("MMM d, yyyy");
+        mFormat = new SimpleDateFormat("MMMM d, yyyy");
         mDecimalFormat = new DecimalFormat("$###,###,###.00");
     }
 

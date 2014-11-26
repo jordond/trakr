@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,6 +20,7 @@ import it.gmariotti.cardslib.library.view.CardListView;
 import it.gmariotti.cardslib.library.view.CardView;
 import me.dehoog.trakr.R;
 import me.dehoog.trakr.models.Account;
+import me.dehoog.trakr.models.User;
 
 /**
  * Author:  jordon
@@ -27,8 +29,12 @@ import me.dehoog.trakr.models.Account;
  */
 public class AccountListCard extends CardWithList {
 
-    public AccountListCard(Context context) {
+    private User mUser;
+    private List<Account> mAccounts;
+
+    public AccountListCard(Context context, User user) {
         super(context);
+        this.mUser = user;
     }
 
     @Override
@@ -53,29 +59,38 @@ public class AccountListCard extends CardWithList {
     @Override
     protected List<ListObject> initChildren() {
 
-        List<ListObject> objects = new ArrayList<ListObject>();
-        AccountObject a1 = new AccountObject(this);
-        a1.name = "Sample Account";
-        a1.category = "Visa";
-        a1.categoryIcon = R.drawable.ic_credit;
-        a1.total = "$453.33";
-        objects.add(a1);
+        DecimalFormat decimalFormat = new DecimalFormat("$###,###,###.00");
 
-        AccountObject a2 = new AccountObject(this);
-        a2.name = "Sample Debit";
-        a2.category = "Debit";
-        a2.categoryIcon = R.drawable.ic_debit;
-        a2.total = "$14.33";
-        objects.add(a2);
+        List<Account> accounts = mUser.getAllAccounts();
+        List<ListObject> children = new ArrayList<ListObject>();
 
-        AccountObject a3 = new AccountObject(this);
-        a3.name = "Sample Cash";
-        a3.category = "Cash";
-        a3.categoryIcon = R.drawable.ic_cash;
-        a3.total = "$87.11";
-        objects.add(a3);
+        for (Account account : accounts) {
+            AccountObject ao = new AccountObject(this);
+            ao.name = account.getDescription();
 
-        return objects;
+            double total = account.getTotal();
+            if (total > 0) {
+                ao.total = String.valueOf(decimalFormat.format(account.getTotal()));
+            } else {
+                ao.total = "Zero";
+            }
+            ao.category = account.getCategory();
+
+            String category = account.getCategory();
+            if (category.equals("Cash")) {
+                ao.categoryIcon = R.drawable.ic_cash;
+            } else if (category.equals("Debit")) {
+                ao.categoryIcon = R.drawable.ic_debit;
+            } else {
+                ao.categoryIcon = R.drawable.ic_credit;
+            }
+            children.add(ao);
+        }
+        if (children.isEmpty()) {
+            return null;
+        } else {
+            return children;
+        }
     }
 
     @Override

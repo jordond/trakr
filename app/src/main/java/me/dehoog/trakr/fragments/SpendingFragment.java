@@ -24,7 +24,7 @@ public class SpendingFragment extends Fragment {
 
     @InjectView(R.id.accounts_card) CardViewNative mAccountsCardView;
 
-    private String mUser;
+    private User mUser;
     private AccountListCard mAccountCard;
 
     private SpendingInteraction mListener;
@@ -43,7 +43,7 @@ public class SpendingFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mUser = getArguments().getString(ARG_USER);
+            mUser = (User) getArguments().getSerializable(ARG_USER);
         }
     }
 
@@ -62,7 +62,7 @@ public class SpendingFragment extends Fragment {
     }
 
     private void initCard() {
-        mAccountCard = new AccountListCard(getActivity());
+        mAccountCard = new AccountListCard(getActivity(), mUser);
         mAccountCard.init(); // not really needed, havent decided if i want swipe events
 
         mAccountsCardView.setCard(mAccountCard);
