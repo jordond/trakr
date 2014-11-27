@@ -64,6 +64,9 @@ public class AccountListCard extends CardWithList {
         List<ListObject> children = new ArrayList<ListObject>();
 
         for (Account account : accounts) {
+            if (account.getTotal() == 0) {
+                continue;
+            }
             AccountObject ao = new AccountObject(this);
             ao.name = account.getDescription();
 
