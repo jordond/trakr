@@ -149,7 +149,7 @@ public class CheckInActivity extends Activity implements PlacesService.PlacesInt
             focusView = mPanelAmount;
             cancel = true;
         }
-        if (mPanelAccount.getSelectedItem() == null) {
+        if (mPanelAccount.getSelectedItem() == null || mPanelAmount.getText().toString().equals("Select Account")) {
             focusView = mPanelAccount;
             cancel = true;
         }
@@ -293,6 +293,7 @@ public class CheckInActivity extends Activity implements PlacesService.PlacesInt
         List<Account> accounts = mUser.getAllAccounts();
         if (!accounts.isEmpty()) {
             List<String> names = new ArrayList<String>();
+            names.add("Select Account");
             for (Account a : accounts) {
                 names.add(a.getDescription());
             }
