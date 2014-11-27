@@ -125,7 +125,7 @@ public class CategoryListCard extends CardWithList {
                 @Override
                 public void onItemClick(LinearListView linearListView, View view, int i, ListObject listObject) {
                     if (onCategoryItemClicked != null) {
-                        onCategoryItemClicked.itemClicked((CategoryObject) listObject);
+                        onCategoryItemClicked.itemClicked(i);
                     }
                 }
             });
@@ -180,7 +180,7 @@ public class CategoryListCard extends CardWithList {
     }
 
     public interface OnCategoryItemClicked {
-        public void itemClicked(CategoryObject categoryObject);
+        public void itemClicked(int position);
         public void pieClicked();
     }
 

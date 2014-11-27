@@ -110,23 +110,30 @@ public class SpendingFragment extends Fragment {
         mCategoryCard.init();
         mCategoryCard.setOnCategoryItemClicked(new CategoryListCard.OnCategoryItemClicked() {
             @Override
-            public void itemClicked(CategoryListCard.CategoryObject categoryObject) {
-
+            public void itemClicked(int position) {
+                CategoryPieFragment pieFragment = CategoryPieFragment.newInstance(grandTotal);
+                pieFragment.setmCategories(categories);
+                pieFragment.setmIndex(position);
+                launchPie(pieFragment);
             }
 
             @Override
             public void pieClicked() {
                 CategoryPieFragment pieFragment = CategoryPieFragment.newInstance(grandTotal);
                 pieFragment.setmCategories(categories);
-                FragmentTransaction ft  = getFragmentManager().beginTransaction();
-                ft.setCustomAnimations(R.animator.slide_in_up, R.animator.slide_out_down, R.animator.slide_in_up, R.animator.slide_out_down);
-                ft.replace(R.id.container, pieFragment);
-                ft.addToBackStack(null);
-                ft.commit();
+                launchPie(pieFragment);
             }
         });
         mCategoriesCardView.setCard(mCategoryCard);
 
+    }
+
+    public void launchPie(CategoryPieFragment fragment) {
+        FragmentTransaction ft  = getFragmentManager().beginTransaction();
+        ft.setCustomAnimations(R.animator.slide_in_up, R.animator.slide_out_down, R.animator.slide_in_up, R.animator.slide_out_down);
+        ft.replace(R.id.container, fragment);
+        ft.addToBackStack(null);
+        ft.commit();
     }
 
     public void onButtonPressed(Uri uri) {

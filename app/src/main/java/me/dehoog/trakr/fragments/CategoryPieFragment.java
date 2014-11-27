@@ -29,6 +29,7 @@ public class CategoryPieFragment extends Fragment {
 
     private double mTotal;
     private List<CategoryInformation> mCategories;
+    private int mIndex;
 
     @InjectView(R.id.piechart) PieChart mPieChart;
     @OnClick(R.id.close_pie)
@@ -54,6 +55,7 @@ public class CategoryPieFragment extends Fragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             mTotal = getArguments().getDouble(ARG_TOTAL);
+            //mIndex = 0;
         }
     }
 
@@ -74,6 +76,10 @@ public class CategoryPieFragment extends Fragment {
         this.mCategories = mCategories;
     }
 
+    public void setmIndex(int index) {
+        this.mIndex = index;
+    }
+
     @Override
     public Animation onCreateAnimation(int transit, boolean enter, int nextAnim) {
         Animation anim = AnimationUtils.loadAnimation(getActivity(), nextAnim);
@@ -85,6 +91,9 @@ public class CategoryPieFragment extends Fragment {
             @Override
             public void onAnimationEnd(Animation animation) {
                 if (mPieChart != null) {
+                    if (mIndex > 0) {
+                        mPieChart.setCurrentItem(mIndex);
+                    }
                     mPieChart.startAnimation();
                 }
             }
