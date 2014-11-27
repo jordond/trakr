@@ -1,6 +1,7 @@
 package me.dehoog.trakr.cards;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -56,7 +57,6 @@ public class CategoryListCard extends CardWithList {
 
     @Override
     protected void initCard() {
-
     }
 
     @Override

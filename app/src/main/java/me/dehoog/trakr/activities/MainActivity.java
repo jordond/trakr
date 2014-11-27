@@ -65,6 +65,7 @@ public class MainActivity extends FragmentActivity implements AccountsInteractio
         ButterKnife.inject(this); // get all dem views
         mAdapter = new MainPagerAdapter(getSupportFragmentManager(), mUser);
         mPager.setAdapter(mAdapter);
+        mPager.setOffscreenPageLimit(2);
         mTabs.setViewPager(mPager);
 
     }// onCreate
