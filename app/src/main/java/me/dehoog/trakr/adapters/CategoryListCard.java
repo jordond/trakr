@@ -5,6 +5,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.util.HashSet;
 import java.util.List;
 
 import it.gmariotti.cardslib.library.internal.Card;
@@ -23,19 +24,29 @@ public class CategoryListCard extends CardWithList {
 
     private User mUser;
     private List<Purchase> mPurchases;
-    private int mCategoryCount;
+    private HashSet<String> mCategories;
 
     public CategoryListCard(Context context, User user) {
         super(context);
         this.mUser = user;
-        mPurchases = this.mUser.getAllPurchases();
+        this.mPurchases = this.mUser.getAllPurchases();
+        this.mCategories = this.mUser.getCategories();
     }
 
     @Override
     protected CardHeader initCardHeader() {
-        CardHeader header = new CategoryListCardHeader(getContext(), R.layout.category_list_card_inner_header);
-        header.setTitle("Categories");
-        return null;
+        CategoryListCardHeader header = new CategoryListCardHeader(getContext(), R.layout.category_list_card_inner_header);
+        header.setmTitle("Categories");
+
+        int count = mCategories.size();
+        if (count > 1) {
+            header.setmSubtitle(count + " categories");
+        } else if (count == 1) {
+            header.setmSubtitle(count + " category");
+        } else {
+            header.setmSubtitle("None");
+        }
+        return header;
     }
 
     @Override

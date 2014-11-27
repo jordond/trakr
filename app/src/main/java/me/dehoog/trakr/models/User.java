@@ -6,10 +6,13 @@ import com.orm.SugarRecord;
 import com.orm.dsl.Ignore;
 
 import java.io.Serializable;
+import java.lang.reflect.Array;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 import java.util.regex.Pattern;
 
@@ -125,14 +128,14 @@ public class User extends SugarRecord<User> implements Serializable {
         return purchases;
     }
 
-    public int getCategoryCount() {
-        List<Category> categories = new ArrayList<Category>();
+    public HashSet<String> getCategories() {
+        HashSet<String> categories = new HashSet<String>();
         if (!this.purchases.isEmpty()) {
             for (Purchase p : this.purchases) {
-                categories.add(p.getCategory());
+                categories.add(p.getCategory().parseTypeFromURL(null));
             }
         }
-        return categories.size();
+        return categories;
     }
 
     // Validators
