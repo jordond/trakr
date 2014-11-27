@@ -113,7 +113,7 @@ public class SpendingFragment extends Fragment {
             int size = usedColors.size();
             String color = getRandomColor();
             usedColors.add(color);
-            while (usedColors.size() != size) {
+            while (usedColors.size() == size) {
                 color = getRandomColor();
                 usedColors.add(color);
             }
