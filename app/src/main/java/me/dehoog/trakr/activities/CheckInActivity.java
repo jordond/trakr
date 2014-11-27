@@ -149,7 +149,7 @@ public class CheckInActivity extends Activity implements PlacesService.PlacesInt
             focusView = mPanelAmount;
             cancel = true;
         }
-        if (mPanelAccount.getSelectedItem() == null || mPanelAmount.getText().toString().equals("Select Account")) {
+        if (mPanelAccount.getSelectedItemPosition() == 0) {
             focusView = mPanelAccount;
             cancel = true;
         }
