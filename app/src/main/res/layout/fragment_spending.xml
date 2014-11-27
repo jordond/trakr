@@ -26,6 +26,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="15dp" />
 
+            <it.gmariotti.cardslib.library.view.CardViewNative
+                android:id="@+id/categories_card"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                card:card_layout_resourceID="@layout/native_cardwithlist_layout"
+                style="@style/card_external"/>
 
             </LinearLayout>
 

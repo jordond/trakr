@@ -3,8 +3,13 @@ package me.dehoog.trakr.adapters;
 import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.koushikdutta.ion.Ion;
+
+import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
@@ -56,23 +61,65 @@ public class CategoryListCard extends CardWithList {
 
     @Override
     protected List<ListObject> initChildren() {
-        return null;
+
+        DecimalFormat decimalFormat = new DecimalFormat("$###,###,###.00");
+        List<ListObject> children = new ArrayList<ListObject>();
+
+        for (String category : mCategories) {
+            double total = 0.0;
+            String subCategory = "";
+
+            List<Purchase> purchases = mUser.getAllPurchases(category);
+            for (Purchase p : purchases) {
+                total += p.getAmount();
+                subCategory = p.getCategory().getDescription();
+            }
+
+            CategoryObject co = new CategoryObject(this);
+            co.main = category;
+            co.sub = subCategory;
+            co.iconURL = purchases.get(0).getCategory().getIcon();
+            co.total = String.valueOf(decimalFormat.format(total));
+            children.add(co);
+        }
+
+        if (children.isEmpty()) {
+            return null;
+        } else {
+            return children;
+        }
     }
 
     @Override
     public View setupChildView(int i, ListObject listObject, View view, ViewGroup viewGroup) {
-        return null;
+        ImageView icon = (ImageView) view.findViewById(R.id.category_list_card_inner_icon);
+        TextView main = (TextView) view.findViewById(R.id.category_list_card_inner_title);
+        TextView sub = (TextView) view.findViewById(R.id.category_list_card_inner_subtitle);
+        TextView amount = (TextView) view.findViewById(R.id.category_list_card_inner_ammount);
+
+        CategoryObject obj = (CategoryObject) listObject;
+        main.setText(obj.main);
+        sub.setText(obj.sub);
+        amount.setText(obj.total);
+
+        Ion.with(icon)
+                .placeholder(R.drawable.ic_general_icon)
+                .error(R.drawable.ic_general_icon)
+                .load(obj.iconURL);
+
+        return view;
     }
 
     @Override
     public int getChildLayoutId() {
-        return 0;
+        return R.layout.category_list_card_inner_main;
     }
 
     public class CategoryObject extends DefaultListObject {
-        public String name;
+        public String main;
+        public String sub;
         public String iconURL;
-        public double total;
+        public String total;
 
         public CategoryObject(Card parentCard) {
             super(parentCard);

@@ -16,6 +16,7 @@ import butterknife.InjectView;
 import it.gmariotti.cardslib.library.view.CardView;
 import it.gmariotti.cardslib.library.view.CardViewNative;
 import me.dehoog.trakr.R;
+import me.dehoog.trakr.adapters.CategoryListCard;
 import me.dehoog.trakr.cards.AccountListCard;
 import me.dehoog.trakr.interfaces.SpendingInteraction;
 import me.dehoog.trakr.models.User;
@@ -25,9 +26,11 @@ public class SpendingFragment extends Fragment {
     private static final String ARG_USER = "user";
 
     @InjectView(R.id.accounts_card) CardViewNative mAccountsCardView;
+    @InjectView(R.id.categories_card) CardViewNative mCategoriesCardView;
 
     private User mUser;
     private AccountListCard mAccountCard;
+    private CategoryListCard mCategoryCard;
 
     private SpendingInteraction mListener;
 
@@ -66,8 +69,10 @@ public class SpendingFragment extends Fragment {
     private void initCard() {
         mAccountCard = new AccountListCard(getActivity(), mUser);
         mAccountCard.init(); // not really needed, havent decided if i want swipe events
-
         mAccountsCardView.setCard(mAccountCard);
+
+        mCategoryCard = new CategoryListCard(getActivity(), mUser);
+        mCategoriesCardView.setCard(mCategoryCard);
     }
 
     public void onButtonPressed(Uri uri) {

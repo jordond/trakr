@@ -115,17 +115,29 @@ public class User extends SugarRecord<User> implements Serializable {
     }
 
     public List<Account> getAllAccounts() {
-            return accounts = Account.find(Account.class, "user = ?", String.valueOf(this.getId()));
+            return this.accounts = Account.find(Account.class, "user = ?", String.valueOf(this.getId()));
     }
 
     public List<Purchase> getAllPurchases() {
-        purchases = new ArrayList<Purchase>();
+        this.purchases = new ArrayList<Purchase>();
         for (Account account : this.getAllAccounts() ) {
             for (Purchase purchase : account.getAllPurchases()) {
-                purchases.add(purchase);
+                this.purchases.add(purchase);
             }
         }
-        return purchases;
+        return this.purchases;
+    }
+
+    public List<Purchase> getAllPurchases(String categoryName) {
+        List<Purchase> p = new ArrayList<Purchase>();
+        for (Account account : this.getAllAccounts()) {
+            for (Purchase purchase : account.getAllPurchases()) {
+                if (purchase.getCategory().getIconName().equals(categoryName)) {
+                    p.add(purchase);
+                }
+            }
+        }
+        return p;
     }
 
     public HashSet<String> getCategories() {
