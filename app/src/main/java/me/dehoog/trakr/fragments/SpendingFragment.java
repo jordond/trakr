@@ -6,6 +6,8 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,6 +28,7 @@ import me.dehoog.trakr.cards.CategoryListCard;
 import me.dehoog.trakr.cards.AccountListCard;
 import me.dehoog.trakr.interfaces.SpendingInteraction;
 import me.dehoog.trakr.models.Category;
+import me.dehoog.trakr.models.CategoryInformation;
 import me.dehoog.trakr.models.Purchase;
 import me.dehoog.trakr.models.User;
 
@@ -35,15 +38,11 @@ public class SpendingFragment extends Fragment {
 
     @InjectView(R.id.accounts_card) CardViewNative mAccountsCardView;
     @InjectView(R.id.categories_card) CardViewNative mCategoriesCardView;
-    @InjectView(R.id.piechart) PieChart mPieChart;
 
     private User mUser;
     private List<Category> mCategories;
 
     private SpendingInteraction mListener;
-
-    private String[] mColors = { "#F44336", "#E91E63", "#9C27B0", "#673AB7", "#3F51B5", "#2196F3", "#03A9F4", "#00BCD4",
-            "#009688", "#4CAF50", "#795548", "#607D8B", "#59ABE3", "#FFA400", "#006442", "#264348", "#317589", "#8E44AD", "#F62459" };
 
     public static SpendingFragment newInstance(User user) {
         SpendingFragment fragment = new SpendingFragment();
@@ -79,13 +78,20 @@ public class SpendingFragment extends Fragment {
         initCard();
     }
 
+    double grandTotal = 0.0;
     private void initCard() {
         AccountListCard mAccountCard = new AccountListCard(getActivity(), mUser);
-        mAccountCard.init(); // not really needed, havent decided if i want swipe events
+        mAccountCard.init();
+        mAccountCard.setOnAccountItemClicked(new AccountListCard.AccountItemClicked() {
+            @Override
+            public void itemClicked(AccountListCard.AccountObject accountObject) {
+                Log.d("tag", "tag");
+            }
+        });
         mAccountsCardView.setCard(mAccountCard);
 
-        double grandTotal = 0.0;
-        List<CategoryInformation> categories = new ArrayList<CategoryInformation>();
+
+        final List<CategoryInformation> categories = new ArrayList<CategoryInformation>();
         for (Category category : mCategories) {
             CategoryInformation ci = new CategoryInformation();
 
@@ -100,33 +106,27 @@ public class SpendingFragment extends Fragment {
             categories.add(ci);
         }
 
-        CategoryListCard mCategoryCard = new CategoryListCard(getActivity(), mUser, categories);
+        CategoryListCard mCategoryCard = new CategoryListCard(getActivity(), categories);
         mCategoryCard.init();
+        mCategoryCard.setOnCategoryItemClicked(new CategoryListCard.OnCategoryItemClicked() {
+            @Override
+            public void itemClicked(CategoryListCard.CategoryObject categoryObject) {
+
+            }
+
+            @Override
+            public void pieClicked() {
+                CategoryPieFragment pieFragment = CategoryPieFragment.newInstance(grandTotal);
+                pieFragment.setmCategories(categories);
+                FragmentTransaction ft  = getFragmentManager().beginTransaction();
+                ft.setCustomAnimations(R.animator.slide_in_up, R.animator.slide_out_down, R.animator.slide_in_up, R.animator.slide_out_down);
+                ft.replace(R.id.container, pieFragment);
+                ft.addToBackStack(null);
+                ft.commit();
+            }
+        });
         mCategoriesCardView.setCard(mCategoryCard);
 
-        //setupPieChart(grandTotal, categories);
-    }
-
-    private void setupPieChart(double grandTotal, List<CategoryInformation> cats) {
-        HashSet<String> usedColors = new HashSet<String>();
-        for (CategoryInformation category : cats) {
-            int size = usedColors.size();
-            String color = getRandomColor();
-            usedColors.add(color);
-            while (usedColors.size() == size) {
-                color = getRandomColor();
-                usedColors.add(color);
-            }
-            double percent = ( category.total / grandTotal ) * 100;
-            PieModel slice = new PieModel(category.category, (float) percent, Color.parseColor(color));
-            mPieChart.addPieSlice(slice);
-        }
-        mPieChart.startAnimation();
-    }
-
-    private String getRandomColor() {
-        int idx = new Random().nextInt(mColors.length);
-        return mColors[idx];
     }
 
     public void onButtonPressed(Uri uri) {
@@ -150,32 +150,6 @@ public class SpendingFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
-    }
-
-    public class CategoryInformation {
-        public String category;
-        public double total;
-        public String subCategory;
-        public String iconUrl;
-
-        public CategoryInformation() {
-        }
-
-        public String getCategory() {
-            return category;
-        }
-
-        public double getTotal() {
-            return total;
-        }
-
-        public String getSubCategory() {
-            return subCategory;
-        }
-
-        public String getIconUrl() {
-            return iconUrl;
-        }
     }
 
 }

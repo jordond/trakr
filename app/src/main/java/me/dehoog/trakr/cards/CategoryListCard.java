@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -17,8 +18,10 @@ import java.util.List;
 import it.gmariotti.cardslib.library.internal.Card;
 import it.gmariotti.cardslib.library.internal.CardHeader;
 import it.gmariotti.cardslib.library.prototypes.CardWithList;
+import it.gmariotti.cardslib.library.prototypes.LinearListView;
 import me.dehoog.trakr.R;
 import me.dehoog.trakr.fragments.SpendingFragment;
+import me.dehoog.trakr.models.CategoryInformation;
 import me.dehoog.trakr.models.Purchase;
 import me.dehoog.trakr.models.User;
 
@@ -29,12 +32,12 @@ import me.dehoog.trakr.models.User;
  */
 public class CategoryListCard extends CardWithList {
 
-    private User mUser;
-    private List<SpendingFragment.CategoryInformation> mCategories;
+    private List<CategoryInformation> mCategories;
 
-    public CategoryListCard(Context context, User user, List<SpendingFragment.CategoryInformation> categories) {
+    private OnCategoryItemClicked onCategoryItemClicked;
+
+    public CategoryListCard(Context context, List<CategoryInformation> categories) {
         super(context);
-        this.mUser = user;
         this.mCategories = categories;
     }
 
@@ -64,7 +67,7 @@ public class CategoryListCard extends CardWithList {
         DecimalFormat decimalFormat = new DecimalFormat("$###,###,###.00");
         List<ListObject> children = new ArrayList<ListObject>();
 
-        for (SpendingFragment.CategoryInformation category : mCategories) {
+        for (CategoryInformation category : mCategories) {
 
             CategoryObject co = new CategoryObject(this);
             co.main = category.getCategory();
@@ -114,7 +117,23 @@ public class CategoryListCard extends CardWithList {
 
         public CategoryObject(Card parentCard) {
             super(parentCard);
+            init();
         }
+
+        private void init() {
+            setOnItemClickListener(new OnItemClickListener() {
+                @Override
+                public void onItemClick(LinearListView linearListView, View view, int i, ListObject listObject) {
+                    if (onCategoryItemClicked != null) {
+                        onCategoryItemClicked.itemClicked((CategoryObject) listObject);
+                    }
+                }
+            });
+        }
+    }
+
+    public void setOnCategoryItemClicked(OnCategoryItemClicked onCategoryItemClicked) {
+        this.onCategoryItemClicked = onCategoryItemClicked;
     }
 
     public class CategoryListCardHeader extends CardHeader {
@@ -138,6 +157,17 @@ public class CategoryListCard extends CardWithList {
             if (subtitleView != null) {
                 subtitleView.setText(mSubtitle);
             }
+            ImageButton pieButton = (ImageButton) view.findViewById(R.id.action_pie);
+            if (pieButton != null) {
+                pieButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (onCategoryItemClicked != null) {
+                            onCategoryItemClicked.pieClicked();
+                        }
+                    }
+                });
+            }
         }
 
         public void setmTitle(String mTitle) {
@@ -147,6 +177,11 @@ public class CategoryListCard extends CardWithList {
         public void setmSubtitle(String mSubtitle) {
             this.mSubtitle = mSubtitle;
         }
+    }
+
+    public interface OnCategoryItemClicked {
+        public void itemClicked(CategoryObject categoryObject);
+        public void pieClicked();
     }
 
 }

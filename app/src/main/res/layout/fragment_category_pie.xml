@@ -1,0 +1,41 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#64000000"
+    android:clickable="true"
+    android:gravity="center"
+    tools:context="me.dehoog.trakr.fragments.CategoryPieFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center_horizontal"
+        android:background="@color/white_background">
+
+        <org.eazegraph.lib.charts.PieChart
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/piechart"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="2"
+            android:padding="8dp"
+            app:egLegendTextSize="18sp"
+            app:egUsePieRotation="true"
+            app:egValueTextSize="36sp"/>
+
+        <Button
+            android:id="@+id/close_pie"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:textColor="@color/white_background"
+            android:textSize="14sp"
+            android:text="OK"
+            android:layout_marginBottom="10dp"
+            android:layout_marginEnd="15dp"
+            android:layout_gravity="end"
+            android:background="@drawable/button_confirm"/>
+
+        </LinearLayout>
+
+</RelativeLayout>

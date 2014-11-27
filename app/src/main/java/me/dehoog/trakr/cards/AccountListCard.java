@@ -1,6 +1,7 @@
 package me.dehoog.trakr.cards;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +17,7 @@ import it.gmariotti.cardslib.library.internal.Card;
 import it.gmariotti.cardslib.library.internal.CardHeader;
 import it.gmariotti.cardslib.library.internal.base.BaseCard;
 import it.gmariotti.cardslib.library.prototypes.CardWithList;
+import it.gmariotti.cardslib.library.prototypes.LinearListView;
 import it.gmariotti.cardslib.library.view.CardListView;
 import it.gmariotti.cardslib.library.view.CardView;
 import me.dehoog.trakr.R;
@@ -31,6 +33,7 @@ public class AccountListCard extends CardWithList {
 
     private User mUser;
     private List<Account> mAccounts;
+    private AccountItemClicked onAccountItemClicked;
 
     public AccountListCard(Context context, User user) {
         super(context);
@@ -121,7 +124,23 @@ public class AccountListCard extends CardWithList {
 
         public AccountObject(Card parentCard) {
             super(parentCard);
+            init();
         }
+
+        private void init() {
+            setOnItemClickListener(new OnItemClickListener() {
+                @Override
+                public void onItemClick(LinearListView linearListView, View view, int i, ListObject listObject) {
+                    if (onAccountItemClicked != null) {
+                        onAccountItemClicked.itemClicked((AccountObject) listObject);
+                    }
+                }
+            });
+        }
+    }
+
+    public void setOnAccountItemClicked(AccountItemClicked listener) {
+        this.onAccountItemClicked = listener;
     }
 
     public class AccountListCardHeader extends CardHeader {
@@ -143,6 +162,10 @@ public class AccountListCard extends CardWithList {
             }
         }
 
+    }
+
+    public interface AccountItemClicked {
+        public void itemClicked(AccountObject accountObject);
     }
 
 }

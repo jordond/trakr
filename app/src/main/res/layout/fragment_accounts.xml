@@ -9,7 +9,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/cardlist_accounts"
-        style="@style/card_external"
         card:list_card_layout_resourceID="@layout/native_list_card_thumbnail_layout"/>
 
     <TextView
