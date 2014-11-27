@@ -12,6 +12,9 @@
         android:id="@+id/category_list_card_inner_icon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:paddingStart="5dp"
+        android:paddingEnd="5dp"
         android:src="@drawable/ic_general_icon"/>
 
     <LinearLayout

@@ -72,6 +72,7 @@ public class SpendingFragment extends Fragment {
         mAccountsCardView.setCard(mAccountCard);
 
         mCategoryCard = new CategoryListCard(getActivity(), mUser);
+        mCategoryCard.init();
         mCategoriesCardView.setCard(mCategoryCard);
     }
 
