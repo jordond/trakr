@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="horizontal"
+    android:layout_marginLeft="8dp"
+    android:layout_marginRight="8dp"
+    android:background="@color/white"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content" >
+
+    <ImageView
+        android:id="@+id/category_list_card_inner_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:paddingStart="5dp"
+        android:paddingEnd="5dp"
+        android:src="@drawable/ic_general_icon"/>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_weight="2"
+        android:layout_height="55dp"
+        android:gravity="center_vertical"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/category_list_card_inner_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/half_black"
+            android:gravity="center_vertical"
+            android:text="Movie Theatre"/>
+
+        <TextView
+            android:id="@+id/category_list_card_inner_subtitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="12sp"
+            android:textColor="@color/half_black"
+            android:gravity="center_vertical"
+            android:text="Bar, Entertainment, Establishment"/>
+
+        </LinearLayout>
+
+    <TextView
+        android:id="@+id/category_list_card_inner_ammount"
+        android:layout_width="wrap_content"
+        android:layout_height="55dp"
+        android:gravity="center_vertical"
+        android:layout_gravity="end"
+        android:layout_marginEnd="15dp"
+        android:textColor="@color/half_black"
+        android:text="$14.99"
+        style="@style/TextAppearance.AppCompat.Large" />
+
+</LinearLayout>

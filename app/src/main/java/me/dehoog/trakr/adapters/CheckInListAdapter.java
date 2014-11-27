@@ -25,13 +25,12 @@ import me.dehoog.trakr.models.Purchase;
  */
 public class CheckInListAdapter extends BaseAdapter {
 
-    private static final int TYPE_ITEM = 0;
-    private static final int TYPE_SEPARATOR = 1;
+    public static final int TYPE_ITEM = 0;
+    public static final int TYPE_SEPARATOR = 1;
 
     private ArrayList<Integer> mTypes = new ArrayList<Integer>();
     private ArrayList<Purchase> mCheckIns = new ArrayList<Purchase>();
     private ArrayList<String> mHeaders = new ArrayList<String>();
-    private ArrayList<Integer> mHeaderIndex = new ArrayList<Integer>();
 
     private LayoutInflater mInflater;
 
@@ -40,7 +39,7 @@ public class CheckInListAdapter extends BaseAdapter {
 
     public CheckInListAdapter(Context context) {
         mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        mFormat = new SimpleDateFormat("MMM d, yyyy");
+        mFormat = new SimpleDateFormat("MMMM d, yyyy");
         mDecimalFormat = new DecimalFormat("$###,###,###.00");
     }
 
@@ -54,7 +53,7 @@ public class CheckInListAdapter extends BaseAdapter {
         addHeader(checkIns.get(0).getDate());
         for (Purchase p : checkIns) {
             mTypes.add(TYPE_ITEM);
-            mHeaderIndex.add(mHeaders.size() - 1);
+            mHeaders.add("filler");
             mCheckIns.add(p);
         }
         notifyDataSetChanged();
@@ -62,6 +61,10 @@ public class CheckInListAdapter extends BaseAdapter {
 
     public Purchase getPurchase(int position) {
         return mCheckIns.get(position);
+    }
+
+    public int getType(int position) {
+        return mTypes.get(position);
     }
 
     @Override
@@ -112,13 +115,12 @@ public class CheckInListAdapter extends BaseAdapter {
             viewHolder = (ViewHolder) convertView.getTag();
         }
         if (rowType == TYPE_SEPARATOR) {
-            int headerId = mHeaderIndex.get(position);
-            viewHolder.title.setText(mHeaders.get(headerId));
+            viewHolder.title.setText(mHeaders.get(position));
         } else {
             Purchase p = mCheckIns.get(position);
             Merchant m = p.getMerchant();
             String accountType = p.getAccount().getCategory().toLowerCase();
-            viewHolder.icon.setImageResource(viewHolder.getIconResourse(accountType));
+            viewHolder.icon.setImageResource(viewHolder.getIconResource(accountType));
             viewHolder.title.setText(m.getName());
             viewHolder.subtitle.setText(m.getLocation().getLongAddress());
             viewHolder.extra.setText(mDecimalFormat.format(p.getAmount()));
@@ -132,7 +134,7 @@ public class CheckInListAdapter extends BaseAdapter {
         public TextView subtitle;
         public TextView extra;
 
-        public int getIconResourse(String type) {
+        public int getIconResource(String type) {
             if (type.equals("cash")) {
                 return R.drawable.ic_cash;
             } else if (type.equals("credit")) {

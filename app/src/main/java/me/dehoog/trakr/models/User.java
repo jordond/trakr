@@ -6,10 +6,13 @@ import com.orm.SugarRecord;
 import com.orm.dsl.Ignore;
 
 import java.io.Serializable;
+import java.lang.reflect.Array;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 import java.util.regex.Pattern;
 
@@ -112,17 +115,39 @@ public class User extends SugarRecord<User> implements Serializable {
     }
 
     public List<Account> getAllAccounts() {
-            return accounts = Account.find(Account.class, "user = ?", String.valueOf(this.getId()));
+            return this.accounts = Account.find(Account.class, "user = ?", String.valueOf(this.getId()));
     }
 
     public List<Purchase> getAllPurchases() {
-        purchases = new ArrayList<Purchase>();
+        this.purchases = new ArrayList<Purchase>();
         for (Account account : this.getAllAccounts() ) {
             for (Purchase purchase : account.getAllPurchases()) {
-                purchases.add(purchase);
+                this.purchases.add(purchase);
             }
         }
-        return purchases;
+        return this.purchases;
+    }
+
+    public List<Purchase> getAllPurchases(String categoryName) {
+        List<Purchase> p = new ArrayList<Purchase>();
+        for (Account account : this.getAllAccounts()) {
+            for (Purchase purchase : account.getAllPurchases()) {
+                if (purchase.getCategory().getIconName().equals(categoryName)) {
+                    p.add(purchase);
+                }
+            }
+        }
+        return p;
+    }
+
+    public HashSet<String> getCategories() {
+        HashSet<String> categories = new HashSet<String>();
+        if (!this.purchases.isEmpty()) {
+            for (Purchase p : this.purchases) {
+                categories.add(p.getCategory().parseTypeFromURL(null));
+            }
+        }
+        return categories;
     }
 
     // Validators
