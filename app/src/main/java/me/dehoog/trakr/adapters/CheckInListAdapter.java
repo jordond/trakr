@@ -25,8 +25,8 @@ import me.dehoog.trakr.models.Purchase;
  */
 public class CheckInListAdapter extends BaseAdapter {
 
-    private static final int TYPE_ITEM = 0;
-    private static final int TYPE_SEPARATOR = 1;
+    public static final int TYPE_ITEM = 0;
+    public static final int TYPE_SEPARATOR = 1;
 
     private ArrayList<Integer> mTypes = new ArrayList<Integer>();
     private ArrayList<Purchase> mCheckIns = new ArrayList<Purchase>();
@@ -61,6 +61,10 @@ public class CheckInListAdapter extends BaseAdapter {
 
     public Purchase getPurchase(int position) {
         return mCheckIns.get(position);
+    }
+
+    public int getType(int position) {
+        return mTypes.get(position);
     }
 
     @Override

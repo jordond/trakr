@@ -79,8 +79,10 @@ public class CheckInsFragment extends Fragment {
             mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    Purchase p = mAdapter.getPurchase(position);
-                    mListener.onShowViewer(p);
+                    if (mAdapter.getType(position) == CheckInListAdapter.TYPE_ITEM) {
+                        Purchase p = mAdapter.getPurchase(position);
+                        mListener.onShowViewer(p);
+                    }
                 }
             });
         }

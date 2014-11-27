@@ -53,7 +53,6 @@ public class AccountListCard extends CardWithList {
 
     @Override
     protected void initCard() {
-
     }
 
     @Override

@@ -1,4 +1,4 @@
-package me.dehoog.trakr.adapters;
+package me.dehoog.trakr.cards;
 
 import android.content.Context;
 import android.view.View;

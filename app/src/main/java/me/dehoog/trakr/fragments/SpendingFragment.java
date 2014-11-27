@@ -9,14 +9,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import java.util.HashSet;
-
 import butterknife.ButterKnife;
 import butterknife.InjectView;
-import it.gmariotti.cardslib.library.view.CardView;
 import it.gmariotti.cardslib.library.view.CardViewNative;
 import me.dehoog.trakr.R;
-import me.dehoog.trakr.adapters.CategoryListCard;
+import me.dehoog.trakr.cards.CategoryListCard;
 import me.dehoog.trakr.cards.AccountListCard;
 import me.dehoog.trakr.interfaces.SpendingInteraction;
 import me.dehoog.trakr.models.User;
@@ -29,8 +26,6 @@ public class SpendingFragment extends Fragment {
     @InjectView(R.id.categories_card) CardViewNative mCategoriesCardView;
 
     private User mUser;
-    private AccountListCard mAccountCard;
-    private CategoryListCard mCategoryCard;
 
     private SpendingInteraction mListener;
 
@@ -67,11 +62,11 @@ public class SpendingFragment extends Fragment {
     }
 
     private void initCard() {
-        mAccountCard = new AccountListCard(getActivity(), mUser);
+        AccountListCard mAccountCard = new AccountListCard(getActivity(), mUser);
         mAccountCard.init(); // not really needed, havent decided if i want swipe events
         mAccountsCardView.setCard(mAccountCard);
 
-        mCategoryCard = new CategoryListCard(getActivity(), mUser);
+        CategoryListCard mCategoryCard = new CategoryListCard(getActivity(), mUser);
         mCategoryCard.init();
         mCategoriesCardView.setCard(mCategoryCard);
     }
