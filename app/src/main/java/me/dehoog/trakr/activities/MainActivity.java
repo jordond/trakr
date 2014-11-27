@@ -125,6 +125,7 @@ public class MainActivity extends FragmentActivity implements AccountsInteractio
         if (getActionBar() != null) {
             getActionBar().setTitle("");
         }
+        mPager.getAdapter().notifyDataSetChanged();
     }
 
     @Override
