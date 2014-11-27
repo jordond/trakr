@@ -18,6 +18,7 @@ import it.gmariotti.cardslib.library.internal.Card;
 import it.gmariotti.cardslib.library.internal.CardHeader;
 import it.gmariotti.cardslib.library.prototypes.CardWithList;
 import me.dehoog.trakr.R;
+import me.dehoog.trakr.fragments.SpendingFragment;
 import me.dehoog.trakr.models.Purchase;
 import me.dehoog.trakr.models.User;
 
@@ -29,14 +30,12 @@ import me.dehoog.trakr.models.User;
 public class CategoryListCard extends CardWithList {
 
     private User mUser;
-    private List<Purchase> mPurchases;
-    private HashSet<String> mCategories;
+    private List<SpendingFragment.CategoryInformation> mCategories;
 
-    public CategoryListCard(Context context, User user) {
+    public CategoryListCard(Context context, User user, List<SpendingFragment.CategoryInformation> categories) {
         super(context);
         this.mUser = user;
-        this.mPurchases = this.mUser.getAllPurchases();
-        this.mCategories = this.mUser.getCategories();
+        this.mCategories = categories;
     }
 
     @Override
@@ -65,21 +64,13 @@ public class CategoryListCard extends CardWithList {
         DecimalFormat decimalFormat = new DecimalFormat("$###,###,###.00");
         List<ListObject> children = new ArrayList<ListObject>();
 
-        for (String category : mCategories) {
-            double total = 0.0;
-            String subCategory = "";
-
-            List<Purchase> purchases = mUser.getAllPurchases(category);
-            for (Purchase p : purchases) {
-                total += p.getAmount();
-                subCategory = p.getCategory().getDescription();
-            }
+        for (SpendingFragment.CategoryInformation category : mCategories) {
 
             CategoryObject co = new CategoryObject(this);
-            co.main = category;
-            co.sub = subCategory;
-            co.iconURL = purchases.get(0).getCategory().getIcon();
-            co.total = String.valueOf(decimalFormat.format(total));
+            co.main = category.getCategory();
+            co.sub = category.getSubCategory();
+            co.iconURL = category.getIconUrl();
+            co.total = String.valueOf(decimalFormat.format(category.getTotal()));
             children.add(co);
         }
 

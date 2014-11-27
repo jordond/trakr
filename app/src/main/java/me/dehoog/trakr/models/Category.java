@@ -2,6 +2,9 @@ package me.dehoog.trakr.models;
 
 import com.orm.SugarRecord;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+
 import java.io.Serializable;
 import java.util.List;
 

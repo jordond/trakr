@@ -140,11 +140,16 @@ public class User extends SugarRecord<User> implements Serializable {
         return p;
     }
 
-    public HashSet<String> getCategories() {
-        HashSet<String> categories = new HashSet<String>();
+    public List<Category> getCategories() {
+        List<Category> categories = new ArrayList<Category>();
+        List<String> types = new ArrayList<String>();
         if (!this.purchases.isEmpty()) {
             for (Purchase p : this.purchases) {
-                categories.add(p.getCategory().parseTypeFromURL(null));
+                String name = p.getCategory().getIconName();
+                if (!types.contains(name)) {
+                    categories.add(p.getCategory());
+                    types.add(name);
+                }
             }
         }
         return categories;

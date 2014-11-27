@@ -50,4 +50,5 @@ dependencies {
     compile 'com.afollestad:material-dialogs:0.3.0'                     // https://github.com/afollestad/material-dialogs
     compile 'com.github.devnied.emvnfccard:library:2.1.0'               // https://github.com/devnied/EMV-NFC-Paycard-Enrollment
     compile 'com.skyfishjy.ripplebackground:library:1.0.1'              // https://github.com/skyfishjy/android-ripple-background
+    compile 'com.github.blackfizz:eazegraph:1.1.14-SNAPSHOT@aar'        // https://github.com/blackfizz/EazeGraph
 }
