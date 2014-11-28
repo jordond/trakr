@@ -41,13 +41,6 @@ public class LoginFragment extends Fragment {
         }
     }
 
-    @OnClick(R.id.login_logo) // TODO remove after testing
-    public void debug() {
-        Bundle b = new Bundle();
-        b.putString("action", "debug");
-        sendBundle(b);
-    }
-
     public LoginFragment() {
     }
 

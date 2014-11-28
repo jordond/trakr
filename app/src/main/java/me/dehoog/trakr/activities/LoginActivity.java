@@ -37,20 +37,6 @@ public class LoginActivity extends Activity implements LoginFragment.OnFragmentI
 
     private User mUser = new User();
 
-    // TODO DEBUG CODE remove after
-    public void debugLogin() {
-        //debug user
-        mUser = new User().findUser("test0@test.com");
-        if (mUser == null) {
-            mUser = new User("test0@test.com", "password");
-            mUser.setUsername("username0");
-            mUser.save();
-        }
-        mLoginTask = new UserLoginTask(this, "test0@test.com", "password", mOnTaskResult);
-        mLoginTask.execute((Void) null);
-    }
-    // DEBUG CODE
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -133,8 +119,6 @@ public class LoginActivity extends Activity implements LoginFragment.OnFragmentI
                 mRegisterTask.cancel(true);
             }
             launchAnimatedFragment(mLoginFragment);
-        } else if (action.equals("debug")) {
-            debugLogin();
         }
     }
 
