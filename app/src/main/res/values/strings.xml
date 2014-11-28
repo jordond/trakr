@@ -52,5 +52,6 @@
     <string name="activity_card_reader_help_message">Place your credit card against the back of your device.  Once you find the NFC \'sweet spot\', the card will be read. Try not to move the card while reading, or else it might fail.  Note this program only grabs the Card number and Expiry date, no other information is gathered or stored.</string>
     <string name="fragment_check_in_empty_desc">Check In now!</string>
     <string name="fragments_account_empty_list_desc">Add an account!</string>
+    <string name="title_activity_import">ImportActivity</string>
 
 </resources>
