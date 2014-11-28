@@ -14,8 +14,8 @@
         android:showAsAction="never" />
 
     <item
-        android:id="@+id/action_profile"
-        android:icon="@drawable/ic_action_user"
+        android:id="@+id/action_sync"
+        android:icon="@drawable/ic_action_sync"
         android:showAsAction="ifRoom"
-        android:title="@string/action_profile"/>
+        android:title="Sync"/>
 </menu>

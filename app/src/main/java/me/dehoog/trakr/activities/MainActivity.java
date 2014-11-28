@@ -37,6 +37,7 @@ public class MainActivity extends FragmentActivity implements AccountsInteractio
 
     public static final String PREFS_NAME = "TrakrPrefs";
     public static final int CHECK_IN_REQUEST = 1;
+    public static final int IMPORT_REQUEST = 2;
     public SharedPreferences mSettings;
 
     public User mUser;
@@ -105,6 +106,10 @@ public class MainActivity extends FragmentActivity implements AccountsInteractio
             case R.id.action_settings:
                 return true;
             case R.id.action_profile:
+                break;
+            case R.id.action_sync:
+                Intent intent = new Intent(this, ImportActivity.class);
+                startActivityForResult(intent, IMPORT_REQUEST);
                 break;
             case R.id.action_logout:
                 logout();
@@ -181,11 +186,13 @@ public class MainActivity extends FragmentActivity implements AccountsInteractio
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == CHECK_IN_REQUEST) {
             if (resultCode == RESULT_OK) {
-
-                //mAdapter.getCheckInsFragment().setupList();
                 mPager.getAdapter().notifyDataSetChanged();
             }
             mPager.setCurrentItem(1);
+        } else if (requestCode == IMPORT_REQUEST) {
+            if (resultCode == RESULT_OK) {
+                mPager.getAdapter().notifyDataSetChanged();
+            }
         }
     }
 }

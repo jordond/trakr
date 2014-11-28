@@ -83,21 +83,6 @@ public class ImportActivity extends ActionBarActivity {
         dialog.dismiss();
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_import, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
     public void processResult(ImportResult result) {
         ImportResult.Message response = result.getSCSMSG();
 
