@@ -2,6 +2,7 @@ package me.dehoog.trakr.activities;
 
 import android.app.ProgressDialog;
 import android.content.SharedPreferences;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -22,8 +23,11 @@ import butterknife.InjectView;
 import me.dehoog.trakr.R;
 import me.dehoog.trakr.adapters.CheckInListAdapter;
 import me.dehoog.trakr.adapters.ImportAdapter;
+import me.dehoog.trakr.fragments.AccountManagerFragment;
+import me.dehoog.trakr.interfaces.AddAccountInteraction;
 import me.dehoog.trakr.models.Account;
 import me.dehoog.trakr.models.ImportResult;
+import me.dehoog.trakr.models.ImportResult.Transaction;
 import me.dehoog.trakr.models.Purchase;
 import me.dehoog.trakr.models.User;
 
@@ -39,6 +43,8 @@ public class ImportActivity extends ActionBarActivity {
 
     private User mUser;
     private List<Purchase> mCheckIns;
+
+    private FragmentTransaction ft;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,16 +94,32 @@ public class ImportActivity extends ActionBarActivity {
 
         Account exists = new Account().findAccount(response.getAccount_num());
         if (exists == null) {
-            addAccount();
+            addAccount(response.getAccount_num(), response.getTag().getTransactions());
         } else {
-            processCheckIns();
+            processCheckIns(response.getTag().getTransactions());
         }
     }
 
-    private void addAccount() {
+    private void addAccount(String accountNumber, final List<Transaction> transactions) {
+        Account account = new Account(mUser);
+        account.setNumber(accountNumber);
+
+        AccountManagerFragment fragment = AccountManagerFragment.newInstance(mUser, "add", account);
+        fragment.setmListener(new AddAccountInteraction() {
+            @Override
+            public void onAddInteraction() {
+                processCheckIns(transactions);
+            }
+        });
+
+        ft = getSupportFragmentManager().beginTransaction();
+        ft.setCustomAnimations(R.animator.fade_in, R.animator.fade_out, R.animator.fade_in, R.animator.fade_out);
+        ft.replace(R.id.container, fragment);
+        ft.addToBackStack(null);
+        ft.commit();
     }
 
-    private void processCheckIns() {
+    private void processCheckIns(List<Transaction> transactions) {
         // process the list of results
 
         // setup the list adapter

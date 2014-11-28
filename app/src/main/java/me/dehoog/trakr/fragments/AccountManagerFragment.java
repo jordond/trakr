@@ -378,4 +378,8 @@ public class AccountManagerFragment extends Fragment {
 
         }
     }
+
+    public void setmListener(AddAccountInteraction mListener) {
+        this.mListener = mListener;
+    }
 }
