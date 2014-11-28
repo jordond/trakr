@@ -46,7 +46,7 @@ public class LoginActivity extends Activity implements LoginFragment.OnFragmentI
             mUser.setUsername("username0");
             mUser.save();
         }
-        mLoginTask = new UserLoginTask("test0@test.com", "password", mOnTaskResult);
+        mLoginTask = new UserLoginTask(this, "test0@test.com", "password", mOnTaskResult);
         mLoginTask.execute((Void) null);
     }
     // DEBUG CODE
@@ -64,7 +64,7 @@ public class LoginActivity extends Activity implements LoginFragment.OnFragmentI
                     .apply();
 
             Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-            intent.putExtra("user_email", mUser.getEmail()); // TODO possibly remove see line 236
+            intent.putExtra("user_email", mUser.getEmail());
             startActivity(intent);
             finish();
         }
@@ -107,10 +107,7 @@ public class LoginActivity extends Activity implements LoginFragment.OnFragmentI
         boolean loggedIn = mSettings.getBoolean("loggedIn", false);
         if (loggedIn) {
             mUser = new User().findUser(mSettings.getString("email", "none"));
-            if (mUser == null) {
-                return false;
-            }
-            return true;
+            return mUser != null;
         }
         return false;
     }
@@ -215,10 +212,10 @@ public class LoginActivity extends Activity implements LoginFragment.OnFragmentI
                     .playOn(focusView);
         } else {
             if (action.equals("login")) {
-                mLoginTask = new UserLoginTask(email, password, mOnTaskResult);
+                mLoginTask = new UserLoginTask(this, email, password, mOnTaskResult);
                 mLoginTask.execute((Void) null);
             } else {
-                mRegisterTask = new UserRegisterTask(username, email, password, mOnTaskResult);
+                mRegisterTask = new UserRegisterTask(this, username, email, password, mOnTaskResult);
                 mRegisterTask.execute((Void) null);
             }
         }
@@ -231,7 +228,7 @@ public class LoginActivity extends Activity implements LoginFragment.OnFragmentI
                 .apply();
 
         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-        intent.putExtra("user_email", user.getEmail()); // TODO possibly remove as its already in shared prefs, and passing user thru intent doesn't maintain id
+        intent.putExtra("user_email", user.getEmail());
         intent.putExtra("loggingIn", true);
         startActivity(intent);
         finish();

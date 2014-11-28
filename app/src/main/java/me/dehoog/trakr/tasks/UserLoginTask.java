@@ -1,8 +1,11 @@
 package me.dehoog.trakr.tasks;
 
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 
+import me.dehoog.trakr.activities.LoginActivity;
 import me.dehoog.trakr.interfaces.OnTaskResult;
 import me.dehoog.trakr.models.User;
 
@@ -12,16 +15,28 @@ import me.dehoog.trakr.models.User;
  * 1:13 PM
  */
 public class UserLoginTask extends AsyncTask<Void, Void, User> {
+
+    ProgressDialog mDialog;
+
     private User mUser;
     private String mEmail;
     private String mPassword;
     private OnTaskResult mListener;
 
-    public UserLoginTask(String email, String password, OnTaskResult listener) {
+    public UserLoginTask(Context context, String email, String password, OnTaskResult listener) {
         mUser = new User();
         this.mEmail = email;
         this.mPassword = password;
         this.mListener = listener;
+
+        mDialog = new ProgressDialog(context);
+    }
+
+    @Override
+    protected void onPreExecute() {
+        mDialog.setMessage("Please wait");
+        mDialog.show();
+        super.onPreExecute();
     }
 
     @Override
@@ -45,6 +60,7 @@ public class UserLoginTask extends AsyncTask<Void, Void, User> {
 
     @Override
     protected void onPostExecute(final User user) {
+        mDialog.dismiss();
         Bundle bundle = new Bundle();
         bundle.putString("action", "login");
         if (user != null) {
@@ -60,6 +76,7 @@ public class UserLoginTask extends AsyncTask<Void, Void, User> {
     @Override
     protected void onCancelled() {
         mListener.onTaskCancelled("login");
+        mDialog = null;
         //mAuthTask = null;
     }
 }
