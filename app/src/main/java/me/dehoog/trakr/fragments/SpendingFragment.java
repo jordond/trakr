@@ -1,7 +1,6 @@
 package me.dehoog.trakr.fragments;
 
 import android.app.Activity;
-import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -12,13 +11,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import org.eazegraph.lib.charts.PieChart;
-import org.eazegraph.lib.models.PieModel;
-
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Random;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -27,6 +21,7 @@ import me.dehoog.trakr.R;
 import me.dehoog.trakr.cards.CategoryListCard;
 import me.dehoog.trakr.cards.AccountListCard;
 import me.dehoog.trakr.interfaces.SpendingInteraction;
+import me.dehoog.trakr.models.Account;
 import me.dehoog.trakr.models.Category;
 import me.dehoog.trakr.models.CategoryInformation;
 import me.dehoog.trakr.models.Purchase;
@@ -85,7 +80,16 @@ public class SpendingFragment extends Fragment {
         mAccountCard.setOnAccountItemClicked(new AccountListCard.AccountItemClicked() {
             @Override
             public void itemClicked(AccountListCard.AccountObject accountObject) {
-                Log.d("tag", "tag");
+                Account account = new Account().findByDescription(accountObject.name);
+                if (account != null) {
+                    CheckInListViewerFragment fragment = CheckInListViewerFragment.newInstance("account");
+                    fragment.setmAccount(account);
+                    FragmentTransaction ft  = getFragmentManager().beginTransaction();
+                    ft.setCustomAnimations(R.animator.slide_in_up, R.animator.slide_out_down, R.animator.slide_in_up, R.animator.slide_out_down);
+                    ft.replace(R.id.container, fragment);
+                    ft.addToBackStack(null);
+                    ft.commit();
+                }
             }
         });
         mAccountsCardView.setCard(mAccountCard);
@@ -112,15 +116,15 @@ public class SpendingFragment extends Fragment {
             @Override
             public void itemClicked(int position) {
                 CategoryPieFragment pieFragment = CategoryPieFragment.newInstance(grandTotal);
-                pieFragment.setmCategories(categories);
-                pieFragment.setmIndex(position);
+                pieFragment.setCategories(categories);
+                pieFragment.setIndex(position);
                 launchPie(pieFragment);
             }
 
             @Override
             public void pieClicked() {
                 CategoryPieFragment pieFragment = CategoryPieFragment.newInstance(grandTotal);
-                pieFragment.setmCategories(categories);
+                pieFragment.setCategories(categories);
                 launchPie(pieFragment);
             }
         });

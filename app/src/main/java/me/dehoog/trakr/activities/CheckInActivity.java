@@ -379,7 +379,8 @@ public class CheckInActivity extends Activity implements PlacesService.PlacesInt
         });
 
         mCurrentLocation = mTracker.getLocation(this);
-        setLocation(convertLocation(mCurrentLocation), true);
+        mMap.moveCamera(CameraUpdateFactory.zoomTo(MAP_ZOOM));
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(convertLocation(mCurrentLocation)));
     }
 
     private LatLng convertLocation(Location location) {
