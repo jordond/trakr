@@ -59,11 +59,6 @@ public class AccountsFragment extends Fragment {
             mUser = (User) getArguments().getSerializable(ARG_USER);
         }
 
-        //TODO REMOVE DEBUG CODE
-//        Account.deleteAll(Account.class);
-//        SeedDatabase seed = new SeedDatabase();
-//        seed.accounts();
-
         ButterKnife.inject(this, view);
 
         TextView empty = (TextView) view.findViewById(R.id.empty_list);
