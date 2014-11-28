@@ -72,11 +72,11 @@ public class CategoryPieFragment extends Fragment {
         setupPieChart();
     }
 
-    public void setmCategories(List<CategoryInformation> mCategories) {
+    public void setCategories(List<CategoryInformation> mCategories) {
         this.mCategories = mCategories;
     }
 
-    public void setmIndex(int index) {
+    public void setIndex(int index) {
         this.mIndex = index;
     }
 

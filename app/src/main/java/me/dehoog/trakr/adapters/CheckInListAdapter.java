@@ -97,7 +97,6 @@ public class CheckInListAdapter extends BaseAdapter {
         ViewHolder viewHolder;
         int rowType = getItemViewType(position);
         if (convertView == null) {
-            viewHolder = new ViewHolder();
             if (rowType == TYPE_SEPARATOR) {
                 viewHolder = new ViewHolder();
                 convertView = mInflater.inflate(R.layout.check_in_list_header, parent, false);

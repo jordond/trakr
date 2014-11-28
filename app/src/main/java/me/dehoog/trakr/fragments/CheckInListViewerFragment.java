@@ -1,15 +1,16 @@
 package me.dehoog.trakr.fragments;
 
-import android.app.Activity;
+
+import android.media.audiofx.AcousticEchoCanceler;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import com.melnykov.fab.FloatingActionButton;
 
@@ -22,57 +23,72 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 import me.dehoog.trakr.R;
 import me.dehoog.trakr.adapters.CheckInListAdapter;
-import me.dehoog.trakr.interfaces.CheckInsInteraction;
+import me.dehoog.trakr.models.Account;
 import me.dehoog.trakr.models.Purchase;
-import me.dehoog.trakr.models.User;
 
-public class CheckInsFragment extends Fragment {
+public class CheckInListViewerFragment extends Fragment {
 
-    private static final String ARG_USER = "user";
+    private static final String ARG_TYPE = "type";
+
+    private String mType;
+    private Account mAccount;
+    private List<Purchase> mCheckIns;
 
     @InjectView(R.id.check_in_list) ListView mListView;
     private CheckInListAdapter mAdapter;
 
-    private User mUser;
-    private List<Purchase> mCheckIns;
-
-    private CheckInsInteraction mListener;
-
-    public static CheckInsFragment newInstance(User user) {
-        CheckInsFragment fragment = new CheckInsFragment();
+    public static CheckInListViewerFragment newInstance(String type) {
+        CheckInListViewerFragment fragment = new CheckInListViewerFragment();
         Bundle args = new Bundle();
-        args.putSerializable(ARG_USER, user);
+        args.putString(ARG_TYPE, type);
         fragment.setArguments(args);
         return fragment;
     }
 
-    public CheckInsFragment() { }
+    public CheckInListViewerFragment() {}
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (getArguments() != null) {
+            mType = getArguments().getString(ARG_TYPE);
+        }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_check_ins, container, false);
-        if (getArguments() != null) {
-            mUser = (User) getArguments().getSerializable(ARG_USER);
-        }
+        View view = inflater.inflate(R.layout.fragment_check_in_list_viewer, container, false);
 
         ButterKnife.inject(this, view);
 
+        if (mType.equals("account")) {
+            mCheckIns = mAccount.getPurchases();
+            if (mCheckIns.isEmpty()) {
+                mCheckIns = mAccount.getAllPurchases();
+            }
+        } else if (mType.equals("category")) {
+
+        }
         mAdapter = new CheckInListAdapter(getActivity());
         setupList();
-        TextView empty = (TextView) view.findViewById(R.id.empty_list);
-        empty.setVisibility(View.VISIBLE);
-        mListView.setEmptyView(empty);
-
         return view;
     }
 
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        FloatingActionButton fab = (FloatingActionButton) getActivity().findViewById(R.id.action_close);
+        fab.attachToListView(mListView);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getFragmentManager().popBackStackImmediate();
+            }
+        });
+    }
+
     public void setupList() {
-        mCheckIns = mUser.getAllPurchases();
         if (mCheckIns != null && mCheckIns.size() != 0) {
             setupAdapter();
             mListView.setAdapter(mAdapter);
@@ -81,44 +97,16 @@ public class CheckInsFragment extends Fragment {
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                     if (mAdapter.getType(position) == CheckInListAdapter.TYPE_ITEM) {
                         Purchase p = mAdapter.getPurchase(position);
-                        mListener.onShowViewer(p);
+                        CheckInViewerFragment fragment = CheckInViewerFragment.newInstance(p);
+                        FragmentTransaction ft  = getFragmentManager().beginTransaction();
+                        ft.setCustomAnimations(R.animator.slide_in_up, R.animator.slide_out_down, R.animator.slide_in_up, R.animator.slide_out_down);
+                        ft.replace(R.id.container, fragment);
+                        ft.addToBackStack(null);
+                        ft.commit();
                     }
                 }
             });
         }
-    }
-
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-
-        FloatingActionButton fab = (FloatingActionButton) getActivity().findViewById(R.id.button_new_checkin);
-        fab.attachToListView(mListView);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (mListener != null) {
-                    mListener.onCheckInsInteraction();
-                }
-            }
-        });
-    }
-
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        try {
-            mListener = (CheckInsInteraction) activity;
-        } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString()
-                    + " must implement CheckInsInteraction");
-        }
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
     }
 
     private void setupAdapter() {
@@ -158,5 +146,9 @@ public class CheckInsFragment extends Fragment {
             }
         }
         return false;
+    }
+
+    public void setmAccount(Account mAccount) {
+        this.mAccount = mAccount;
     }
 }

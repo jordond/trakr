@@ -42,14 +42,6 @@ public class AccountListCard extends CardWithList {
 
     @Override
     protected CardHeader initCardHeader() {
-
-//        CardHeader header = new AccountListCardHeader(getContext(), R.layout.account_list_card_inner_header, "Accounts");
-//        header.setPopupMenu(R.menu.card_popup, new CardHeader.OnClickCardHeaderPopupMenuListener() {
-//            @Override
-//            public void onMenuItemClick(BaseCard baseCard, MenuItem menuItem) {
-//
-//            }
-//        });
         CardHeader header = new AccountListCardHeader(getContext(), R.layout.account_list_card_inner_header, "Accounts");
         return header;
     }
