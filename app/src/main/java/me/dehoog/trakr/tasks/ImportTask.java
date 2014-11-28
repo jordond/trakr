@@ -31,7 +31,7 @@ public class ImportTask extends AsyncTask<Void, Void, ImportResult> {
     @Override
     protected ImportResult doInBackground(Void... params) {
         // Introduce fake network lag, to represent external call
-        
+
 
         return null;
     }

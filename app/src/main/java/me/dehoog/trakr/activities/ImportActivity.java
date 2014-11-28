@@ -37,6 +37,16 @@ public class ImportActivity extends ActionBarActivity {
         ButterKnife.inject(this);
 
         mFab.attachToListView(mListView);
+
+        contactServer();
+    }
+
+    private void contactServer() {
+
+        // Simulate network lag
+
+        // Get
+
     }
 
     @Override
