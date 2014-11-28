@@ -82,6 +82,7 @@
         </activity>
         <activity
             android:name="me.dehoog.trakr.activities.ImportActivity"
+            android:icon="@drawable/logo_all_white"
             android:label="@string/title_activity_import" >
         </activity>
     </application>

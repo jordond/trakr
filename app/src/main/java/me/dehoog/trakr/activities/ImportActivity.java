@@ -4,37 +4,53 @@ import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ListView;
 
+import com.melnykov.fab.FloatingActionButton;
+
+import java.util.List;
+
+import butterknife.ButterKnife;
+import butterknife.InjectView;
 import me.dehoog.trakr.R;
+import me.dehoog.trakr.adapters.CheckInListAdapter;
+import me.dehoog.trakr.models.Purchase;
+import me.dehoog.trakr.models.User;
 
 public class ImportActivity extends ActionBarActivity {
+
+    @InjectView(R.id.check_in_list)
+    ListView mListView;
+    private CheckInListAdapter mAdapter;
+
+    @InjectView(R.id.action_done) FloatingActionButton mFab;
+
+    private User mUser;
+    private List<Purchase> mCheckIns;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_import);
-    }
 
+        ButterKnife.inject(this);
+
+        mFab.attachToListView(mListView);
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_import, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 }
