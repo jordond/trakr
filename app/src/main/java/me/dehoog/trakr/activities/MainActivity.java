@@ -56,7 +56,7 @@ public class MainActivity extends FragmentActivity implements AccountsInteractio
         setContentView(R.layout.activity_main);
         mSettings = getSharedPreferences(PREFS_NAME, 0);
 
-        String email = mSettings.getString("email", "none"); //TODO replaced intent extras with shared prefs, keep?
+        String email = mSettings.getString("email", "none");
         mUser = new User().findUser(email);
         if (mUser == null) {
             logout();
