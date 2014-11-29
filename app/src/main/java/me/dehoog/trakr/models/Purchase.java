@@ -106,4 +106,11 @@ public class Purchase extends SugarRecord<Purchase> implements Serializable, Com
         this.notes = notes;
     }
 
+    public String getKey() {
+        return key;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
+    }
 }

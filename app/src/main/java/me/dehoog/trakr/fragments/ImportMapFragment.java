@@ -138,25 +138,7 @@ public class ImportMapFragment extends Fragment {
     // Panel Content - Buttons
     @OnClick(R.id.action_save)
     public void addTransaction() {
-        boolean cancel = false;
-        View focusView = null;
-        if (TextUtils.isEmpty(mPanelAmount.getText())) {
-            focusView = mPanelAmount;
-            cancel = true;
-        }
-        if (mPanelAccount.getSelectedItemPosition() == 0) {
-            focusView = mPanelAccount;
-            cancel = true;
-        }
-
-        if (cancel) {
-            focusView.requestFocus();
-            YoYo.with(Techniques.Shake)
-                    .duration(500)
-                    .playOn(focusView);
-        } else {
-            //saveTransaction();
-        }
+        saveTransaction();
     }
 
     @OnClick(R.id.action_cancel)
@@ -320,8 +302,9 @@ public class ImportMapFragment extends Fragment {
                         Account account = mCheckIn.getAccount();
                        if (account != null) {
                             Purchase transaction = new Purchase(account,
-                                    Double.valueOf(mPanelAmount.getText().toString()));
+                            mCheckIn.getAmount());
                             transaction.setDate(mDate);
+                            transaction.setKey(mCheckIn.getKey());
 
                             mMerchant.getCategory().save();
                             transaction.setCategory(mMerchant.getCategory());
@@ -331,12 +314,13 @@ public class ImportMapFragment extends Fragment {
                             transaction.setMerchant(mMerchant);
                             transaction.save();
 
-                            double total = account.getTotal() + Double.valueOf(mPanelAmount.getText().toString());
+                            double total = account.getTotal() + mCheckIn.getAmount();
                             account.setTotal(total);
                             account.save();
-
-                            mListener.onConfirmCheckIn();
                             dialog.dismiss();
+                            close();
+                            mListener.onConfirmCheckIn();
+
                         }
                     }
                 }).show();
