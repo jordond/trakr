@@ -51,6 +51,8 @@ public class AccountManagerFragment extends Fragment {
     private String mCategory;
     private String mType; //amex, visa, mastercard
 
+    private boolean mHideCancelButton;
+
     // UI - Text fields
     @InjectView(R.id.account_number) EditText mAccountNumber;
     @InjectView(R.id.expires) EditText mExpiry;
@@ -119,6 +121,7 @@ public class AccountManagerFragment extends Fragment {
         startActivityForResult(intent, NFC_CARD_READ_REQUEST);
     }
 
+    @InjectView(R.id.action_cancel) Button mCancel;
     @OnClick(R.id.action_cancel)
     public void onCancel() { close(); }
 
@@ -212,6 +215,12 @@ public class AccountManagerFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_account_manager, container, false);
         ButterKnife.inject(this, view);
 
+        if (mHideCancelButton) {
+            mCancel.setVisibility(View.INVISIBLE);
+        } else {
+            mCancel.setVisibility(View.VISIBLE);
+        }
+
         mToggleGroup.setOnCheckedChangeListener(ToggleListener);
         if (mAction.equals("add")) {
             mConfirm.setText("Add");
@@ -231,15 +240,17 @@ public class AccountManagerFragment extends Fragment {
             mName.setText(mAccount.getDescription());
 
             mCategory = mAccount.getCategory();
-            if (mCategory.equals("Cash")) {
-                mCash.toggle();
-                mAccountNumber.setText("");
-                mAccountNumber.setEnabled(false);
-                mExpiry.setText("");
-            } else if (mCategory.equals("Debit")) {
-                mDebit.toggle();
-            } else if (mCategory.equals("Credit")) {
-                mCredit.toggle();
+            if (mCategory != null) {
+                if (mCategory.equals("Cash")) {
+                    mCash.toggle();
+                    mAccountNumber.setText("");
+                    mAccountNumber.setEnabled(false);
+                    mExpiry.setText("");
+                } else if (mCategory.equals("Debit")) {
+                    mDebit.toggle();
+                } else if (mCategory.equals("Credit")) {
+                    mCredit.toggle();
+                }
             }
         }
         return view;
@@ -367,6 +378,10 @@ public class AccountManagerFragment extends Fragment {
             String exp = String.valueOf(month) + "/" + String.valueOf(year).substring(2, 4);
             mExpiry.setText(exp);
         }
+    }
+
+    public void hideCloseButton(boolean hide) {
+        mHideCancelButton = hide;
     }
 
     public void setmListener(AddAccountInteraction mListener) {

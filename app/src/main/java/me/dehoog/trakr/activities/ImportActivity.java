@@ -153,6 +153,7 @@ public class ImportActivity extends FragmentActivity {
         account.setNumber(accountNumber);
 
         AccountManagerFragment fragment = AccountManagerFragment.newInstance(mUser, "add", account);
+        fragment.hideCloseButton(true);
         fragment.setmListener(new AddAccountInteraction() {
             @Override
             public void onAddInteraction() {
