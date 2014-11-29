@@ -64,7 +64,7 @@ public class ImportMapFragment extends Fragment {
     private static final String ARG_USER_ID = "userID";
     private static final String ARG_CHECK_IN = "checkIn";
 
-    private static final int MAP_ZOOM = 11;
+    private static final int MAP_ZOOM = 13;
 
     private GoogleMap mMap;
     private FragmentManager fragmentManager;
@@ -75,7 +75,7 @@ public class ImportMapFragment extends Fragment {
 
     private long mUserID;
     private User mUser;
-    private Merchant mMerchant;
+    private Merchant mMerchant = new Merchant();
     private Purchase mCheckIn;
     private OnCheckedIn mListener;
     private Marker mSelectedMarker;
@@ -261,6 +261,7 @@ public class ImportMapFragment extends Fragment {
                 return true;
             }
         });
+        mPlacesService.textSearch(mCheckIn.getMerchant().getName(), 3000, null);
         mMap.moveCamera(CameraUpdateFactory.zoomTo(MAP_ZOOM));
     }
 

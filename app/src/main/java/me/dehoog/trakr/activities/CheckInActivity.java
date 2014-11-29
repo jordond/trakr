@@ -126,7 +126,7 @@ public class CheckInActivity extends Activity implements PlacesService.PlacesInt
         startActivity(i);
     }
 
-    @InjectView(R.id.panel_transaction_date) TextView mPanelDate;   //TODO add in a date picker
+    @InjectView(R.id.panel_transaction_date) TextView mPanelDate;
     @OnClick(R.id.panel_transaction_date)
     public void selectDate() {
         Calendar calendar = Calendar.getInstance();
