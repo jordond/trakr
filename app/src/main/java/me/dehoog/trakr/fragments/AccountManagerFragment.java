@@ -375,7 +375,6 @@ public class AccountManagerFragment extends Fragment {
             int year = calendar.get(Calendar.YEAR);
             String exp = String.valueOf(month) + "/" + String.valueOf(year).substring(2, 4);
             mExpiry.setText(exp);
-
         }
     }
 

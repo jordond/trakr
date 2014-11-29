@@ -16,6 +16,7 @@ import com.melnykov.fab.FloatingActionButton;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.ButterKnife;
@@ -96,19 +97,19 @@ public class ImportActivity extends ActionBarActivity {
         if (exists == null) {
             addAccount(response.getAccount_num(), response.getTag().getTransactions());
         } else {
-            processCheckIns(response.getTag().getTransactions());
+            processCheckIns(exists, response.getTag().getTransactions());
         }
     }
 
     private void addAccount(String accountNumber, final List<Transaction> transactions) {
-        Account account = new Account(mUser);
+        final Account account = new Account(mUser);
         account.setNumber(accountNumber);
 
         AccountManagerFragment fragment = AccountManagerFragment.newInstance(mUser, "add", account);
         fragment.setmListener(new AddAccountInteraction() {
             @Override
             public void onAddInteraction() {
-                processCheckIns(transactions);
+                processCheckIns(account, transactions);
             }
         });
 
@@ -119,10 +120,17 @@ public class ImportActivity extends ActionBarActivity {
         ft.commit();
     }
 
-    private void processCheckIns(List<Transaction> transactions) {
+    private void processCheckIns(Account account, List<Transaction> transactions) {
         // process the list of results
+        List<Purchase> checkIns = new ArrayList<Purchase>();
+        for (Transaction t : transactions) {
+            double amount = Double.valueOf(t.getAmount());
+            Purchase p = new Purchase(account, amount);
+            checkIns.add(p);
+        }
 
         // setup the list adapter
+        mAdapter = new ImportAdapter(this, checkIns);
     }
 
 }
