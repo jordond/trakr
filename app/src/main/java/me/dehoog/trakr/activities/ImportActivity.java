@@ -37,6 +37,7 @@ import me.dehoog.trakr.interfaces.AddAccountInteraction;
 import me.dehoog.trakr.models.Account;
 import me.dehoog.trakr.models.ImportResult;
 import me.dehoog.trakr.models.ImportResult.Transaction;
+import me.dehoog.trakr.models.Merchant;
 import me.dehoog.trakr.models.Purchase;
 import me.dehoog.trakr.models.User;
 import me.dehoog.trakr.tasks.ImportTask;
@@ -133,7 +134,7 @@ public class ImportActivity extends FragmentActivity {
     public void processResult(ImportResult result) {
         final ImportResult.Message response = result.getSCSMSG();
 
-        Account exists = new Account().findAccount(response.getAccount_num());
+        final Account exists = new Account().findAccount(response.getAccount_num());
         if (exists == null) {
             MaterialDialog dialog = new MaterialDialog.Builder(this)
                     .title("New Account Found!")
@@ -150,12 +151,20 @@ public class ImportActivity extends FragmentActivity {
             dialog.setCanceledOnTouchOutside(false);
             dialog.show();
         } else {
-            new MaterialDialog.Builder(this)
+           final MaterialDialog dialog = new MaterialDialog.Builder(this)
                     .title("New Transactions Found!")
                     .content("Adding new transactions to '" + exists.getDescription() + "'")
                     .positiveText("OK")
-                    .show();
-            processCheckIns(exists, response.getTag().getTransactions());
+                    .callback(new MaterialDialog.SimpleCallback() {
+                        @Override
+                        public void onPositive(MaterialDialog materialDialog) {
+                            materialDialog.dismiss();
+                            processCheckIns(exists, response.getTag().getTransactions());
+                        }
+                    }).build();
+            dialog.setCancelable(false);
+            dialog.setCanceledOnTouchOutside(false);
+            dialog.show();
         }
     }
 
@@ -185,6 +194,8 @@ public class ImportActivity extends FragmentActivity {
             if (!Purchase.exists(t.getKey())) {
                 double amount = Double.valueOf(t.getAmount());
                 Purchase p = new Purchase(account, amount);
+                Merchant m = new Merchant(t.getDescription());
+                p.setMerchant(m);
                 checkIns.add(p);
             } else {
                 Log.d(TAG, "ProcessCheckIns: Skipping existing purchase " + t.getDescription() + " with key: " + t.getKey());

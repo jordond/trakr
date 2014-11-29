@@ -8,6 +8,8 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import org.w3c.dom.Text;
+
 import java.text.DecimalFormat;
 import java.util.List;
 
@@ -54,6 +56,7 @@ public class ImportAdapter extends BaseAdapter {
             viewHolder = new ViewHolder();
             convertView = mInflater.inflate(R.layout.check_in_list_item, parent, false);
             viewHolder.title = (TextView) convertView.findViewById(R.id.merchant_name);
+            viewHolder.subtitle = (TextView) convertView.findViewById(R.id.merchant_address);
             viewHolder.amount = (TextView) convertView.findViewById(R.id.check_in_amount);
             convertView.setTag(viewHolder);
         } else {
@@ -62,6 +65,7 @@ public class ImportAdapter extends BaseAdapter {
 
         Purchase p = mPurchases.get(position);
         viewHolder.title.setText(p.getMerchant().getName());
+        viewHolder.subtitle.setVisibility(View.GONE);
         viewHolder.amount.setText(mDecimalFormat.format(p.getAmount()));
 
         return convertView;
@@ -69,6 +73,7 @@ public class ImportAdapter extends BaseAdapter {
 
     public static class ViewHolder {
         public TextView title;
+        public TextView subtitle;
         public TextView amount;
     }
 

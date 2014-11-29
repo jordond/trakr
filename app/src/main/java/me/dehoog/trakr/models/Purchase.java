@@ -53,7 +53,7 @@ public class Purchase extends SugarRecord<Purchase> implements Serializable, Com
 
     public static boolean exists(String key) {
         List<Purchase> request = Purchase.find(Purchase.class, "key = ?", String.valueOf(key));
-        return request.isEmpty();
+        return !request.isEmpty();
     }
 
 
