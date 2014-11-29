@@ -162,7 +162,7 @@ public class ImportActivity extends FragmentActivity {
 
         ft = getSupportFragmentManager().beginTransaction();
         ft.setCustomAnimations(R.animator.fade_in, R.animator.fade_out, R.animator.fade_in, R.animator.fade_out);
-        ft.replace(R.id.container, fragment);
+        ft.replace(R.id.content, fragment);
         ft.addToBackStack(null);
         ft.commit();
     }
