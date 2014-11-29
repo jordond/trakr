@@ -77,7 +77,6 @@ public class ImportMapFragment extends Fragment {
     private List<Marker> mMarkers = new ArrayList<Marker>();
 
     private long mUserID;
-    private User mUser;
     private Merchant mMerchant = new Merchant();
     private Purchase mCheckIn;
     private OnCheckedIn mListener;
@@ -181,8 +180,6 @@ public class ImportMapFragment extends Fragment {
             Log.d(TAG, "InflateException: Map already exists returning existing");
         }
         ButterKnife.inject(this, view);
-
-        mUser = User.findById(User.class, mUserID);
 
         int resultCode = GooglePlayServicesUtil.isGooglePlayServicesAvailable(getActivity());
         if (ConnectionResult.SUCCESS != resultCode) {
