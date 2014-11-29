@@ -2,11 +2,14 @@ package me.dehoog.trakr.activities;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.util.AttributeSet;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -25,6 +28,7 @@ import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import butterknife.OnClick;
 import me.dehoog.trakr.R;
 import me.dehoog.trakr.adapters.CheckInListAdapter;
 import me.dehoog.trakr.adapters.ImportAdapter;
@@ -45,6 +49,12 @@ public class ImportActivity extends FragmentActivity {
     private ImportAdapter mAdapter;
 
     @InjectView(R.id.action_done) FloatingActionButton mFab;
+    @OnClick(R.id.action_done)
+    public void done() {
+        Intent intent = new Intent();
+        setResult(RESULT_OK, intent);
+        finish();
+    }
 
     private User mUser;
     private List<Purchase> mCheckIns;
@@ -62,13 +72,18 @@ public class ImportActivity extends FragmentActivity {
 
         ButterKnife.inject(this);
         mFab.attachToListView(mListView);
+    }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
         contactServer();
     }
 
     private void contactServer() {
         ProgressDialog dialog = new ProgressDialog(this);
         dialog.setMessage("Contacting bank...");
+        dialog.show();
         try {
 
             Thread.sleep(2000); // Simulate network lag
