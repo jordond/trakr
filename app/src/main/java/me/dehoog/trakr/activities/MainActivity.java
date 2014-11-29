@@ -30,13 +30,13 @@ import me.dehoog.trakr.models.User;
 
 
 public class MainActivity extends FragmentActivity implements AccountsInteraction,                  // Interface callback for Accounts Card view fragment
-                                                              AddAccountInteraction,                // Callback for adding, and editing account
                                                               EditAccountCallback,                  // Button click inside AccountCard
                                                               CheckInsInteraction,                  // Action performed in check in tab
                                                               ExpandAccountCard.ExpandListClick {   // Check clicked in expanded card
 
     public static final String PREFS_NAME = "TrakrPrefs";
     public static final int CHECK_IN_REQUEST = 1;
+    public static final int IMPORT_REQUEST = 2;
     public SharedPreferences mSettings;
 
     public User mUser;
@@ -56,7 +56,7 @@ public class MainActivity extends FragmentActivity implements AccountsInteractio
         setContentView(R.layout.activity_main);
         mSettings = getSharedPreferences(PREFS_NAME, 0);
 
-        String email = mSettings.getString("email", "none"); //TODO replaced intent extras with shared prefs, keep?
+        String email = mSettings.getString("email", "none");
         mUser = new User().findUser(email);
         if (mUser == null) {
             logout();
@@ -104,7 +104,9 @@ public class MainActivity extends FragmentActivity implements AccountsInteractio
         switch (id) {
             case R.id.action_settings:
                 return true;
-            case R.id.action_profile:
+            case R.id.action_sync:
+                Intent intent = new Intent(this, ImportActivity.class);
+                startActivityForResult(intent, IMPORT_REQUEST);
                 break;
             case R.id.action_logout:
                 logout();
@@ -125,12 +127,17 @@ public class MainActivity extends FragmentActivity implements AccountsInteractio
         if (getActionBar() != null) {
             getActionBar().setTitle("");
         }
-        mPager.getAdapter().notifyDataSetChanged();
     }
 
     @Override
     public void onAccountsInteraction(String action, Account account) { // Accounts Fragment
         mAccountManager = AccountManagerFragment.newInstance(mUser, action, account);
+        mAccountManager.setmListener(new AddAccountInteraction() {
+            @Override
+            public void onAddInteraction() {
+                mPager.getAdapter().notifyDataSetChanged();
+            }
+        });
         ft = getSupportFragmentManager().beginTransaction();
         ft.setCustomAnimations(R.animator.fade_in, R.animator.fade_out, R.animator.fade_in, R.animator.fade_out);
         ft.replace(R.id.container, mAccountManager);
@@ -139,12 +146,6 @@ public class MainActivity extends FragmentActivity implements AccountsInteractio
     }
 
     // Fragment callbacks
-
-    @Override
-    public void onAddInteraction() {    // Accounts Manager Fragment
-        mPager.getAdapter().notifyDataSetChanged();
-    }
-
     @Override
     public void editButton(Account account) {   // Accounts Fragment, AccountCard edit button
         onAccountsInteraction("edit", account);
@@ -181,11 +182,13 @@ public class MainActivity extends FragmentActivity implements AccountsInteractio
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == CHECK_IN_REQUEST) {
             if (resultCode == RESULT_OK) {
-
-                //mAdapter.getCheckInsFragment().setupList();
                 mPager.getAdapter().notifyDataSetChanged();
             }
             mPager.setCurrentItem(1);
+        } else if (requestCode == IMPORT_REQUEST) {
+            if (resultCode == RESULT_OK) {
+                mPager.getAdapter().notifyDataSetChanged();
+            }
         }
     }
 }

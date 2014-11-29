@@ -24,18 +24,20 @@ public class UserLoginTask extends AsyncTask<Void, Void, User> {
     private OnTaskResult mListener;
 
     public UserLoginTask(Context context, String email, String password, OnTaskResult listener) {
-        mUser = new User();
+        this.mUser = new User();
         this.mEmail = email;
         this.mPassword = password;
         this.mListener = listener;
 
-        mDialog = new ProgressDialog(context);
+        this.mDialog = new ProgressDialog(context);
     }
 
     @Override
     protected void onPreExecute() {
-        mDialog.setMessage("Please wait");
-        mDialog.show();
+        this.mDialog.setMessage("Please wait");
+        this.mDialog.setCanceledOnTouchOutside(false);
+        this.mDialog.setCancelable(false);
+        this.mDialog.show();
         super.onPreExecute();
     }
 

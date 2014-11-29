@@ -76,9 +76,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:inputType="number"
-                android:ems="10"
                 android:enabled="false"
-                android:maxLength="16"
+                android:maxLength="19"
                 android:hint="@string/add_account_hint_account_number"
                 android:id="@+id/account_number" />
 

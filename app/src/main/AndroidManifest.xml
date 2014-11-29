@@ -24,7 +24,7 @@
             android:value="trakr_dev2.db" />
         <meta-data
             android:name="VERSION"
-            android:value="16" />
+            android:value="20" />
         <meta-data
             android:name="QUERY_LOG"
             android:value="true" />
@@ -67,21 +67,25 @@
         </activity>
         <activity
             android:name="me.dehoog.trakr.activities.CardReaderActivity"
+            android:icon="@drawable/logo_all_white"
             android:label="@string/title_activity_card_reader"
-            android:theme="@style/AppTheme"
-            android:icon="@drawable/logo_all_white">
-
+            android:theme="@style/AppTheme" >
             <intent-filter>
                 <action android:name="android.nfc.action.TECH_DISCOVERED" />
+
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
 
             <meta-data
                 android:name="android.nfc.action.TECH_DISCOVERED"
                 android:resource="@xml/nfc_list" />
-
         </activity>
-
+        <activity
+            android:name="me.dehoog.trakr.activities.ImportActivity"
+            android:icon="@drawable/logo_all_white"
+            android:screenOrientation="portrait"
+            android:label="@string/title_activity_import" >
+        </activity>
     </application>
 
 </manifest>

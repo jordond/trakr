@@ -1,0 +1,327 @@
+{
+    "SCSMSG": {
+        "SCS-MSG-LENGTH": "000014177",
+        "SCS-APP-RETCODE": "00000000",
+        "SCS-APP-REASCODE": "00000000",
+        "SCS-COM-RETCODE": "00000000",
+        "SCS-COM-REASCODE": "00000000",
+        "PAC-BAC": "5892971305273077696",
+        "ORIGIN-INDICATOR": "3",
+        "BRANCH": "01020",
+        "ACCOUNT-NUM": "0000000000003100223",
+        "ACCT-TYPE": "",
+        "REQUEST-TYPE": "F",
+        "TYPE-OF-STMT": "O",
+        "I-BKI-DATE": "000000000",
+        "I-BKI-CPU-DATE": "00000",
+        "I-BKI-CPU-TIME-LONG": "000000000000",
+        "NUMBER-OF-BKI": "000",
+        "DAS-RQST-START-DATE": "020030801",
+        "DAS-RQST-END-DATE": "020030831",
+        "RESPONSE-CODE": "AA000",
+        "RESPONSE-TYPE": "F",
+        "RESPONSE-DESCRIPTION": "",
+        "NUM-BKI-SENT": "033",
+        "BLN-GRP-TAG2": {
+            "BLN-GRP-TAG2-ROW": [
+                {
+                    "BKI-KEY-LONG": "02003080103213120504351000",
+                    "BKI-TXN-AMT": "00000063000",
+                    "BKI-TXN-AMT-ID": "-",
+                    "BKI-TXN-ACCT-BAL-AMT": "0000000068329",
+                    "BKI-TXN-ACCT-BAL-ID": "-",
+                    "BKI-TXN-DESC": "Target Corporation",
+                    "BKI-TXN-DESC-EXPANDED": "Target Corporation"
+                },
+                {
+                    "BKI-KEY-LONG": "02003080103213130054061000",
+                    "BKI-TXN-AMT": "00000085477",
+                    "BKI-TXN-AMT-ID": "-",
+                    "BKI-TXN-ACCT-BAL-AMT": "0000000153806",
+                    "BKI-TXN-ACCT-BAL-ID": "-",
+                    "BKI-TXN-DESC": "Sears Hometown and Outlet Stores Inc",
+                    "BKI-TXN-DESC-EXPANDED": "Sears Hometown and Outlet Stores Inc"
+                },
+                {
+                    "BKI-KEY-LONG": "02003080103213215028951000",
+                    "BKI-TXN-AMT": "00000031641",
+                    "BKI-TXN-AMT-ID": "-",
+                    "BKI-TXN-ACCT-BAL-AMT": "0000000185447",
+                    "BKI-TXN-ACCT-BAL-ID": "-",
+                    "BKI-TXN-DESC": "Burger King Worldwide Inc",
+                    "BKI-TXN-DESC-EXPANDED": "Burger King Worldwide Inc"
+                },
+                {
+                    "BKI-KEY-LONG": "02003080103214014150421000",
+                    "BKI-TXN-AMT": "00000000300",
+                    "BKI-TXN-AMT-ID": "-",
+                    "BKI-TXN-ACCT-BAL-AMT": "0000000185747",
+                    "BKI-TXN-ACCT-BAL-ID": "-",
+                    "BKI-TXN-DESC": "Tim Hortons Inc.",
+                    "BKI-TXN-DESC-EXPANDED": "Tim Hortons Inc."
+                },
+                {
+                    "BKI-KEY-LONG": "02003080503214123747071000",
+                    "BKI-TXN-AMT": "00000014175",
+                    "BKI-TXN-AMT-ID": "-",
+                    "BKI-TXN-ACCT-BAL-AMT": "0000000199922",
+                    "BKI-TXN-ACCT-BAL-ID": "-",
+                    "BKI-TXN-DESC": "Costco Wholesale Corporation",
+                    "BKI-TXN-DESC-EXPANDED": "Costco Wholesale Corporation"
+                },
+                {
+                    "BKI-KEY-LONG": "02003080503218014214431000",
+                    "BKI-TXN-AMT": "00000000300",
+                    "BKI-TXN-AMT-ID": "-",
+                    "BKI-TXN-ACCT-BAL-AMT": "0000000200222",
+                    "BKI-TXN-ACCT-BAL-ID": "-",
+                    "BKI-TXN-DESC": "Tim Hortons Inc.",
+                    "BKI-TXN-DESC-EXPANDED": "Tim Hortons Inc."
+                },
+                {
+                    "BKI-KEY-LONG": "02003081203225023954901000",
+                    "BKI-TXN-AMT": "00000040172",
+                    "BKI-TXN-AMT-ID": "-",
+                    "BKI-TXN-ACCT-BAL-AMT": "0000000240394",
+                    "BKI-TXN-ACCT-BAL-ID": "-",
+                    "BKI-TXN-DESC": "Dollarama Inc",
+                    "BKI-TXN-DESC-EXPANDED": "Dollarama Inc"
+                },
+                {
+                    "BKI-KEY-LONG": "02003081303225035140501000",
+                    "BKI-TXN-AMT": "00000221257",
+                    "BKI-TXN-AMT-ID": "+",
+                    "BKI-TXN-ACCT-BAL-AMT": "0000000019137",
+                    "BKI-TXN-ACCT-BAL-ID": "-",
+                    "BKI-TXN-DESC": "Dell Inc.",
+                    "BKI-TXN-DESC-EXPANDED": "Dell Inc."
+                },
+                {
+                    "BKI-KEY-LONG": "02003081403226134432911000",
+                    "BKI-TXN-AMT": "00000070087",
+                    "BKI-TXN-AMT-ID": "-",
+                    "BKI-TXN-ACCT-BAL-AMT": "0000000089224",
+                    "BKI-TXN-ACCT-BAL-ID": "-",
+                    "BKI-TXN-DESC": "Green Mountain Coffee Roasters Inc.",
+                    "BKI-TXN-DESC-EXPANDED": "Green Mountain Coffee Roasters Inc."
+                },
+                {
+                    "BKI-KEY-LONG": "02003081403226150959421000",
+                    "BKI-TXN-AMT": "00000300000",
+                    "BKI-TXN-AMT-ID": "+",
+                    "BKI-TXN-ACCT-BAL-AMT": "0000000210776",
+                    "BKI-TXN-ACCT-BAL-ID": "+",
+                    "BKI-TXN-DESC": "Groupon Inc",
+                    "BKI-TXN-DESC-EXPANDED": "Groupon Inc"
+                },
+                {
+                    "BKI-KEY-LONG": "02003081403226151344221000",
+                    "BKI-TXN-AMT": "00000000500",
+                    "BKI-TXN-AMT-ID": "-",
+                    "BKI-TXN-ACCT-BAL-AMT": "0000000210276",
+                    "BKI-TXN-ACCT-BAL-ID": "+",
+                    "BKI-TXN-DESC": "Lululemon Athletica inc.",
+                    "BKI-TXN-DESC-EXPANDED": "Lululemon Athletica inc."
+                },
+                {
+                    "BKI-KEY-LONG": "02003081403227013932601000",
+                    "BKI-TXN-AMT": "00000000300",
+                    "BKI-TXN-AMT-ID": "-",
+                    "BKI-TXN-ACCT-BAL-AMT": "0000000209976",
+                    "BKI-TXN-ACCT-BAL-ID": "+",
+                    "BKI-TXN-DESC": "The Home Depot, Inc.",
+                    "BKI-TXN-DESC-EXPANDED": "The Home Depot, Inc."
+                },
+                {
+                    "BKI-KEY-LONG": "02003081803229095628911000",
+                    "BKI-TXN-AMT": "00000084440",
+                    "BKI-TXN-AMT-ID": "-",
+                    "BKI-TXN-ACCT-BAL-AMT": "0000000125536",
+                    "BKI-TXN-ACCT-BAL-ID": "+",
+                    "BKI-TXN-DESC": "The Walt Disney Company",
+                    "BKI-TXN-DESC-EXPANDED": "Amazon.com, Inc."
+                },
+                {
+                    "BKI-KEY-LONG": "02003081803230171537181000",
+                    "BKI-TXN-AMT": "00000070367",
+                    "BKI-TXN-AMT-ID": "-",
+                    "BKI-TXN-ACCT-BAL-AMT": "0000000055169",
+                    "BKI-TXN-ACCT-BAL-ID": "+",
+                    "BKI-TXN-DESC": "Ralph Lauren Corp",
+                    "BKI-TXN-DESC-EXPANDED": "Ralph Lauren Corp"
+                },
+                {
+                    "BKI-KEY-LONG": "02003081803231014011461000",
+                    "BKI-TXN-AMT": "00000000300",
+                    "BKI-TXN-AMT-ID": "-",
+                    "BKI-TXN-ACCT-BAL-AMT": "0000000054869",
+                    "BKI-TXN-ACCT-BAL-ID": "+",
+                    "BKI-TXN-DESC": "McDonald's Corporation",
+                    "BKI-TXN-DESC-EXPANDED": "McDonald's Corporation"
+                },
+                {
+                    "BKI-KEY-LONG": "02003081803231014011491000",
+                    "BKI-TXN-AMT": "00000000300",
+                    "BKI-TXN-AMT-ID": "-",
+                    "BKI-TXN-ACCT-BAL-AMT": "0000000054569",
+                    "BKI-TXN-ACCT-BAL-ID": "+",
+                    "BKI-TXN-DESC": "Pier 1 Imports Inc",
+                    "BKI-TXN-DESC-EXPANDED": "Pier 1 Imports Inc"
+                },
+                {
+                    "BKI-KEY-LONG": "02003082103233170058741000",
+                    "BKI-TXN-AMT": "00000030000",
+                    "BKI-TXN-AMT-ID": "-",
+                    "BKI-TXN-ACCT-BAL-AMT": "0000000024569",
+                    "BKI-TXN-ACCT-BAL-ID": "+",
+                    "BKI-TXN-DESC": "The Gap Inc.",
+                    "BKI-TXN-DESC-EXPANDED": "The Gap Inc."
+                },
+                {
+                    "BKI-KEY-LONG": "02003082203234193301351000",
+                    "BKI-TXN-AMT": "00000071320",
+                    "BKI-TXN-AMT-ID": "-",
+                    "BKI-TXN-ACCT-BAL-AMT": "0000000046751",
+                    "BKI-TXN-ACCT-BAL-ID": "-",
+                    "BKI-TXN-DESC": "Cogeco Cable Inc.",
+                    "BKI-TXN-DESC-EXPANDED": "Cogeco Cable Inc."
+                },
+                {
+                    "BKI-KEY-LONG": "02003082203235013810111000",
+                    "BKI-TXN-AMT": "00000000300",
+                    "BKI-TXN-AMT-ID": "-",
+                    "BKI-TXN-ACCT-BAL-AMT": "0000000047051",
+                    "BKI-TXN-ACCT-BAL-ID": "-",
+                    "BKI-TXN-DESC": "Staples, Inc.",
+                    "BKI-TXN-DESC-EXPANDED": "Staples, Inc."
+                },
+                {
+                    "BKI-KEY-LONG": "02003082503236102901751000",
+                    "BKI-TXN-AMT": "00000402095",
+                    "BKI-TXN-AMT-ID": "+",
+                    "BKI-TXN-ACCT-BAL-AMT": "0000000355044",
+                    "BKI-TXN-ACCT-BAL-ID": "+",
+                    "BKI-TXN-DESC": "Honda Motor Co Ltd (ADR)",
+                    "BKI-TXN-DESC-EXPANDED": "Honda Motor Co Ltd (ADR)"
+                },
+                {
+                    "BKI-KEY-LONG": "02003082503236102950531000",
+                    "BKI-TXN-AMT": "00000004000",
+                    "BKI-TXN-AMT-ID": "-",
+                    "BKI-TXN-ACCT-BAL-AMT": "0000000351044",
+                    "BKI-TXN-ACCT-BAL-ID": "+",
+                    "BKI-TXN-DESC": "Starbucks Corporation",
+                    "BKI-TXN-DESC-EXPANDED": "Starbucks Corporation"
+                },
+                {
+                    "BKI-KEY-LONG": "02003082503237122423231000",
+                    "BKI-TXN-AMT": "00000085584",
+                    "BKI-TXN-AMT-ID": "-",
+                    "BKI-TXN-ACCT-BAL-AMT": "0000000265460",
+                    "BKI-TXN-ACCT-BAL-ID": "+",
+                    "BKI-TXN-DESC": "Great-West Lifeco Inc.",
+                    "BKI-TXN-DESC-EXPANDED": "Great-West Lifeco Inc."
+                },
+                {
+                    "BKI-KEY-LONG": "02003082503238014345711000",
+                    "BKI-TXN-AMT": "00000000300",
+                    "BKI-TXN-AMT-ID": "-",
+                    "BKI-TXN-ACCT-BAL-AMT": "0000000265160",
+                    "BKI-TXN-ACCT-BAL-ID": "+",
+                    "BKI-TXN-DESC": "Elizabeth Arden, Inc.",
+                    "BKI-TXN-DESC-EXPANDED": "Elizabeth Arden, Inc."
+                },
+                {
+                    "BKI-KEY-LONG": "02003082703239032619451000",
+                    "BKI-TXN-AMT": "00000220031",
+                    "BKI-TXN-AMT-ID": "+",
+                    "BKI-TXN-ACCT-BAL-AMT": "0000000485191",
+                    "BKI-TXN-ACCT-BAL-ID": "+",
+                    "BKI-TXN-DESC": "Dell Inc.",
+                    "BKI-TXN-DESC-EXPANDED": "Dell Inc."
+                },
+                {
+                    "BKI-KEY-LONG": "02003082703239131542911000",
+                    "BKI-TXN-AMT": "00000315000",
+                    "BKI-TXN-AMT-ID": "-",
+                    "BKI-TXN-ACCT-BAL-AMT": "0000000170191",
+                    "BKI-TXN-ACCT-BAL-ID": "+",
+                    "BKI-TXN-DESC": "TD VISA R2H8I0",
+                    "BKI-TXN-DESC-EXPANDED": "TD VISA R2H8I0"
+                },
+                {
+                    "BKI-KEY-LONG": "02003082703240013934541000",
+                    "BKI-TXN-AMT": "00000027446",
+                    "BKI-TXN-AMT-ID": "-",
+                    "BKI-TXN-ACCT-BAL-AMT": "0000000142745",
+                    "BKI-TXN-ACCT-BAL-ID": "+",
+                    "BKI-TXN-DESC": "The Southern Company",
+                    "BKI-TXN-DESC-EXPANDED": "The Southern Company"
+                },
+                {
+                    "BKI-KEY-LONG": "02003082803240174114061000",
+                    "BKI-TXN-AMT": "00000084681",
+                    "BKI-TXN-AMT-ID": "-",
+                    "BKI-TXN-ACCT-BAL-AMT": "0000000058064",
+                    "BKI-TXN-ACCT-BAL-ID": "+",
+                    "BKI-TXN-DESC": "Sears Canada Inc",
+                    "BKI-TXN-DESC-EXPANDED": "Sears Canada Inc"
+                },
+                {
+                    "BKI-KEY-LONG": "02003082803241013817341000",
+                    "BKI-TXN-AMT": "00000000300",
+                    "BKI-TXN-AMT-ID": "-",
+                    "BKI-TXN-ACCT-BAL-AMT": "0000000057764",
+                    "BKI-TXN-ACCT-BAL-ID": "+",
+                    "BKI-TXN-DESC": "Sprint Corp",
+                    "BKI-TXN-DESC-EXPANDED": "Sprint Corp"
+                },
+                {
+                    "BKI-KEY-LONG": "02003082903241161326291000",
+                    "BKI-TXN-AMT": "00000062100",
+                    "BKI-TXN-AMT-ID": "-",
+                    "BKI-TXN-ACCT-BAL-AMT": "0000000004336",
+                    "BKI-TXN-ACCT-BAL-ID": "-",
+                    "BKI-TXN-DESC": "ADT Corp",
+                    "BKI-TXN-DESC-EXPANDED": "ADT Corp"
+                },
+                {
+                    "BKI-KEY-LONG": "02003082903242014512871000",
+                    "BKI-TXN-AMT": "00000000300",
+                    "BKI-TXN-AMT-ID": "-",
+                    "BKI-TXN-ACCT-BAL-AMT": "0000000004636",
+                    "BKI-TXN-ACCT-BAL-ID": "-",
+                    "BKI-TXN-DESC": "Sprint Corp",
+                    "BKI-TXN-DESC-EXPANDED": "Sprint Corp"
+                },
+                {
+                    "BKI-KEY-LONG": "02003082903242034836801000",
+                    "BKI-TXN-AMT": "00000001472",
+                    "BKI-TXN-AMT-ID": "-",
+                    "BKI-TXN-ACCT-BAL-AMT": "0000000006108",
+                    "BKI-TXN-ACCT-BAL-ID": "-",
+                    "BKI-TXN-DESC": "Domino's Pizza Group PLC.",
+                    "BKI-TXN-DESC-EXPANDED": "Domino's Pizza Group PLC."
+                },
+                {
+                    "BKI-KEY-LONG": "02003082903242034836802000",
+                    "BKI-TXN-AMT": "00000000200",
+                    "BKI-TXN-AMT-ID": "-",
+                    "BKI-TXN-ACCT-BAL-AMT": "0000000006308",
+                    "BKI-TXN-ACCT-BAL-ID": "-",
+                    "BKI-TXN-DESC": "The Southern Company",
+                    "BKI-TXN-DESC-EXPANDED": "The Southern Company"
+                },
+                {
+                    "BKI-KEY-LONG": "02003082903242034836803000",
+                    "BKI-TXN-AMT": "00000000995",
+                    "BKI-TXN-AMT-ID": "-",
+                    "BKI-TXN-ACCT-BAL-AMT": "0000000007303",
+                    "BKI-TXN-ACCT-BAL-ID": "-",
+                    "BKI-TXN-DESC": "Canadian Tire Corporation Limited",
+                    "BKI-TXN-DESC-EXPANDED": "Canadian Tire CorporationLimited"
+                }
+            ]
+        }
+    }
+}

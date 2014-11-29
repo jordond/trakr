@@ -59,8 +59,10 @@ public class PlacesService extends Service {
         if (mInstance == null) {
             mInstance = new PlacesService();
             mInstance.setmContext(context);
+        } else {
+            mInstance.setmContext(context);
         }
-        return  mInstance;
+        return mInstance;
     }
 
     // Searchers
@@ -158,6 +160,7 @@ public class PlacesService extends Service {
 //                                }
                                 } else {
                                     Log.e(TAG, "Google replied with: " + result.getStatus());
+                                    mListener.onPlacesReturned(null);
                                 }
                             }
                         }
