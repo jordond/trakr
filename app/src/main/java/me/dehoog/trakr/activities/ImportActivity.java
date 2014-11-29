@@ -1,7 +1,9 @@
 package me.dehoog.trakr.activities;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.SharedPreferences;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -34,7 +36,7 @@ import me.dehoog.trakr.models.ImportResult.Transaction;
 import me.dehoog.trakr.models.Purchase;
 import me.dehoog.trakr.models.User;
 
-public class ImportActivity extends ActionBarActivity {
+public class ImportActivity extends FragmentActivity {
 
     private static final String TAG = ImportActivity.class.getName();
 
