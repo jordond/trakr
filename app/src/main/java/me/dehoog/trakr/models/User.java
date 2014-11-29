@@ -6,13 +6,10 @@ import com.orm.SugarRecord;
 import com.orm.dsl.Ignore;
 
 import java.io.Serializable;
-import java.lang.reflect.Array;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
 import java.util.List;
 import java.util.regex.Pattern;
 

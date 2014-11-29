@@ -1,7 +1,6 @@
 package me.dehoog.trakr.cards;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
@@ -12,7 +11,6 @@ import com.koushikdutta.ion.Ion;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 
 import it.gmariotti.cardslib.library.internal.Card;
@@ -20,10 +18,7 @@ import it.gmariotti.cardslib.library.internal.CardHeader;
 import it.gmariotti.cardslib.library.prototypes.CardWithList;
 import it.gmariotti.cardslib.library.prototypes.LinearListView;
 import me.dehoog.trakr.R;
-import me.dehoog.trakr.fragments.SpendingFragment;
 import me.dehoog.trakr.models.CategoryInformation;
-import me.dehoog.trakr.models.Purchase;
-import me.dehoog.trakr.models.User;
 
 /**
  * Author:  jordon

@@ -1,12 +1,9 @@
 package me.dehoog.trakr.fragments;
 
-import android.app.Activity;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,9 +15,8 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 import it.gmariotti.cardslib.library.view.CardViewNative;
 import me.dehoog.trakr.R;
-import me.dehoog.trakr.cards.CategoryListCard;
 import me.dehoog.trakr.cards.AccountListCard;
-import me.dehoog.trakr.interfaces.SpendingInteraction;
+import me.dehoog.trakr.cards.CategoryListCard;
 import me.dehoog.trakr.models.Account;
 import me.dehoog.trakr.models.Category;
 import me.dehoog.trakr.models.CategoryInformation;

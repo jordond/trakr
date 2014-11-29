@@ -5,7 +5,6 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 
-import me.dehoog.trakr.activities.LoginActivity;
 import me.dehoog.trakr.interfaces.OnTaskResult;
 import me.dehoog.trakr.models.User;
 

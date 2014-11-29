@@ -1,25 +1,18 @@
 package me.dehoog.trakr.cards;
 
 import android.content.Context;
-import android.util.Log;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.InjectView;
 import it.gmariotti.cardslib.library.internal.Card;
 import it.gmariotti.cardslib.library.internal.CardHeader;
-import it.gmariotti.cardslib.library.internal.base.BaseCard;
 import it.gmariotti.cardslib.library.prototypes.CardWithList;
 import it.gmariotti.cardslib.library.prototypes.LinearListView;
-import it.gmariotti.cardslib.library.view.CardListView;
-import it.gmariotti.cardslib.library.view.CardView;
 import me.dehoog.trakr.R;
 import me.dehoog.trakr.models.Account;
 import me.dehoog.trakr.models.User;

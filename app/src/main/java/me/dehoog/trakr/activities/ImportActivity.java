@@ -1,30 +1,19 @@
 package me.dehoog.trakr.activities;
 
-import android.app.Activity;
-import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.ActionBarActivity;
-import android.os.Bundle;
-import android.util.AttributeSet;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.google.android.gms.maps.MapFragment;
-import com.google.gson.Gson;
 import com.melnykov.fab.FloatingActionButton;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,7 +21,6 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
 import me.dehoog.trakr.R;
-import me.dehoog.trakr.adapters.CheckInListAdapter;
 import me.dehoog.trakr.adapters.ImportAdapter;
 import me.dehoog.trakr.fragments.AccountManagerFragment;
 import me.dehoog.trakr.fragments.ImportMapFragment;
