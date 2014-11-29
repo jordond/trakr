@@ -71,7 +71,7 @@ public class ImportResult {
     public class Transaction {
 
         @SerializedName("BKI-KEY-LONG")
-        private long key;
+        private String key;
         @SerializedName("BKI-TXN-AMT")
         private String amount;
         @SerializedName("BKI-TXN-DESC")
@@ -79,7 +79,7 @@ public class ImportResult {
         @SerializedName("BKI-TXN-DESC-EXPANDED")
         private String expanded;
 
-        public long getKey() {
+        public String getKey() {
             return key;
         }
 

@@ -22,7 +22,7 @@ public class Purchase extends SugarRecord<Purchase> implements Serializable, Com
     private Date date;
     private String notes;
 
-    private long key;
+    private String key;
 
     // Constructors
     public Purchase() {
@@ -31,7 +31,7 @@ public class Purchase extends SugarRecord<Purchase> implements Serializable, Com
     public Purchase(Account account, double amount) {
         this.account = account;
         this.amount = amount;
-        this.key = new Random().nextLong();
+        this.key = String.valueOf(new Random().nextLong());
     }
 
     public Purchase(double amount, Category category, Date date, Merchant merchant) {
@@ -39,7 +39,7 @@ public class Purchase extends SugarRecord<Purchase> implements Serializable, Com
         this.category = category;
         this.date = date;
         this.merchant = merchant;
-        this.key = new Random().nextLong();
+        this.key = String.valueOf(new Random().nextLong());
     }
 
     // Helper methods
@@ -51,7 +51,7 @@ public class Purchase extends SugarRecord<Purchase> implements Serializable, Com
         return getDate().compareTo(another.getDate());
     }
 
-    public static boolean exists(long key) {
+    public static boolean exists(String key) {
         List<Purchase> request = Purchase.find(Purchase.class, "key = ?", String.valueOf(key));
         return request.isEmpty();
     }
