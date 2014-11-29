@@ -182,6 +182,7 @@ public class ImportActivity extends FragmentActivity {
                 double amount = Double.valueOf(t.getAmount());
                 Purchase p = new Purchase(account, amount);
                 Merchant m = new Merchant(t.getDescription());
+                p.setKey(t.getKey());
                 p.setAccount(account);
                 p.setMerchant(m);
                 checkIns.add(p);
