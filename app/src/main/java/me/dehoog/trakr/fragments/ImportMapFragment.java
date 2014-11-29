@@ -317,6 +317,9 @@ public class ImportMapFragment extends Fragment {
                             double total = account.getTotal() + mCheckIn.getAmount();
                             account.setTotal(total);
                             account.save();
+
+                            mMerchantLayout.collapsePanel();
+                            mMerchantLayout.hidePanel();
                             dialog.dismiss();
                             close();
                             mListener.onConfirmCheckIn();
