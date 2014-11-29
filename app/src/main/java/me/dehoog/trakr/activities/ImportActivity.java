@@ -19,6 +19,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.google.android.gms.maps.MapFragment;
 import com.google.gson.Gson;
 import com.melnykov.fab.FloatingActionButton;
 
@@ -229,6 +230,7 @@ public class ImportActivity extends FragmentActivity {
                 dialog.setCancelable(false);
                 dialog.setCanceledOnTouchOutside(false);
                 dialog.show();
+                removeMapId();
             }
             @Override
             public void onCancelCheckIn() {
@@ -293,12 +295,24 @@ public class ImportActivity extends FragmentActivity {
         dialog.show();
     }
 
+    public void removeMapId() {
+        MapFragment fragment = (MapFragment) getFragmentManager().findFragmentById(R.id.map);
+        if (fragment != null) {
+            Log.d(TAG, "Removing existing Map from the fragment stack");
+            getFragmentManager()
+                    .beginTransaction()
+                    .remove(fragment)
+                    .commit();
+        }
+    }
+
     @Override
     public void onBackPressed() {
         final ImportMapFragment fragment = (ImportMapFragment) getSupportFragmentManager().findFragmentByTag("ImportMap");
 
         if (fragment != null) {
             fragment.onBackPressed();
+            removeMapId();
         } else {
             Log.d(TAG, "onBack Pressed: Map fragment null, passing to super");
             super.onBackPressed();
