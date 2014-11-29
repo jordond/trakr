@@ -60,6 +60,7 @@ public class ImportResult {
 
     public class Tag {
 
+        @SerializedName("BLN-GRP-TAG2-ROW")
         List<Transaction> transactions;
 
         public List<Transaction> getTransactions() {

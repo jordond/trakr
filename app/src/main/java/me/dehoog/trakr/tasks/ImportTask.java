@@ -62,11 +62,11 @@ public class ImportTask extends AsyncTask<Void, Void, ImportResult> {
         } catch (InterruptedException e) {
             Log.e(TAG, "InterruptedException: " + e.getMessage());
             importResult.setStatus(500);
-            importResult.setStatus_message(e.getMessage());
+            importResult.setStatus_message("InterruptedException: " + e.getMessage());
         } catch (IOException e) {
             Log.e(TAG, "IOException: " + e.getMessage());
             importResult.setStatus(500);
-            importResult.setStatus_message(e.getMessage());
+            importResult.setStatus_message("IOException: " + e.getMessage());
         }
 
         return importResult;
