@@ -13,8 +13,27 @@ public class ImportResult {
 
     private Message SCSMSG;
 
+    private int status;
+    private String status_message;
+
     public Message getSCSMSG() {
         return SCSMSG;
+    }
+
+    public int getStatus() {
+        return status;
+    }
+
+    public String getStatus_message() {
+        return status_message;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
+
+    public void setStatus_message(String status_message) {
+        this.status_message = status_message;
     }
 
     public class Message {

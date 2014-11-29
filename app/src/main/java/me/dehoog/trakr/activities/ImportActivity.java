@@ -39,6 +39,7 @@ import me.dehoog.trakr.models.ImportResult;
 import me.dehoog.trakr.models.ImportResult.Transaction;
 import me.dehoog.trakr.models.Purchase;
 import me.dehoog.trakr.models.User;
+import me.dehoog.trakr.tasks.ImportTask;
 
 public class ImportActivity extends FragmentActivity {
 
@@ -77,36 +78,48 @@ public class ImportActivity extends FragmentActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        contactServer();
+        new MaterialDialog.Builder(this)
+                .title("Sync Accounts")
+                .content("Would you like to sync your accounts?")
+                .positiveText("Yes")
+                .negativeText("Cancel")
+                .callback(new MaterialDialog.Callback() {
+                  @Override
+                  public void onNegative(MaterialDialog materialDialog) {
+                      setResult(RESULT_CANCELED);
+                      finish();
+                  }
+
+                  @Override
+                  public void onPositive(MaterialDialog materialDialog) {
+                      contactServer();
+                  }
+                })
+                .show();
     }
 
     private void contactServer() {
-        ProgressDialog dialog = new ProgressDialog(this);
-        dialog.setMessage("Contacting bank...");
-        dialog.show();
-        try {
-
-            Thread.sleep(2000); // Simulate network lag
-
-            InputStream inputStream = getAssets().open("bank_response.json");
-            byte[] buffer = new byte[inputStream.available()];
-
-            inputStream.read(buffer);
-            inputStream.close();
-
-            String json = new String(buffer, "UTF-8");
-
-            Gson gson = new Gson();
-            ImportResult importResult = gson.fromJson(json, ImportResult.class);
-
-            processResult(importResult);
-
-        } catch (InterruptedException e) {
-            Log.e(TAG, "InterruptedException: " + e.getMessage());
-        } catch (IOException e) {
-            Log.e(TAG, "IOException: " + e.getMessage());
-        }
-        dialog.dismiss();
+        ImportTask importTask = new ImportTask(this, new ImportTask.OnImportResult() {
+            @Override
+            public void onResult(ImportResult importResult) {
+                if (importResult.getStatus() == 200) {
+                    processResult(importResult);
+                } else {
+                    new MaterialDialog.Builder(ImportActivity.this)
+                            .title("Error")
+                            .content("Something went wrong: " + importResult.getStatus_message())
+                            .positiveText("OK")
+                            .callback(new MaterialDialog.SimpleCallback() {
+                                @Override
+                                public void onPositive(MaterialDialog materialDialog) {
+                                    setResult(RESULT_CANCELED);
+                                    finish();
+                                }
+                            }).show();
+                }
+            }
+        });
+        importTask.execute();
     }
 
     public void processResult(ImportResult result) {
@@ -118,15 +131,12 @@ public class ImportActivity extends FragmentActivity {
                     .title("New Account Found!")
                     .content("A new account was found, press OK to add this account, then import the new transactions.")
                     .positiveText("OK")
-                    .callback(new MaterialDialog.Callback() {
+                    .callback(new MaterialDialog.SimpleCallback() {
                         @Override
-                        public void onNegative(MaterialDialog materialDialog) {
+                        public void onPositive(MaterialDialog materialDialog) {
                             addAccount(response.getAccount_num(), response.getTag().getTransactions());
                             materialDialog.dismiss();
                         }
-
-                        @Override
-                        public void onPositive(MaterialDialog materialDialog) {}
                     }).show();
         } else {
             new MaterialDialog.Builder(this)
