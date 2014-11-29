@@ -9,8 +9,10 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.google.gson.Gson;
 import com.melnykov.fab.FloatingActionButton;
 
@@ -91,12 +93,30 @@ public class ImportActivity extends ActionBarActivity {
     }
 
     public void processResult(ImportResult result) {
-        ImportResult.Message response = result.getSCSMSG();
+        final ImportResult.Message response = result.getSCSMSG();
 
         Account exists = new Account().findAccount(response.getAccount_num());
         if (exists == null) {
-            addAccount(response.getAccount_num(), response.getTag().getTransactions());
+            new MaterialDialog.Builder(this)
+                    .title("New Account Found!")
+                    .content("A new account was found, press OK to add this account, then import the new transactions.")
+                    .positiveText("OK")
+                    .callback(new MaterialDialog.Callback() {
+                        @Override
+                        public void onNegative(MaterialDialog materialDialog) {
+                            addAccount(response.getAccount_num(), response.getTag().getTransactions());
+                            materialDialog.dismiss();
+                        }
+
+                        @Override
+                        public void onPositive(MaterialDialog materialDialog) {}
+                    }).show();
         } else {
+            new MaterialDialog.Builder(this)
+                    .title("New Transactions Found!")
+                    .content("Adding new transactions to '" + exists.getDescription() + "'")
+                    .positiveText("OK")
+                    .show();
             processCheckIns(exists, response.getTag().getTransactions());
         }
     }
@@ -121,16 +141,27 @@ public class ImportActivity extends ActionBarActivity {
     }
 
     private void processCheckIns(Account account, List<Transaction> transactions) {
-        // process the list of results
         List<Purchase> checkIns = new ArrayList<Purchase>();
         for (Transaction t : transactions) {
-            double amount = Double.valueOf(t.getAmount());
-            Purchase p = new Purchase(account, amount);
-            checkIns.add(p);
+            if (!Purchase.exists(t.getKey())) {
+                double amount = Double.valueOf(t.getAmount());
+                Purchase p = new Purchase(account, amount);
+                checkIns.add(p);
+            } else {
+                Log.d(TAG, "ProcessCheckIns: Skipping existing purchase " + t.getDescription() + " with key: " + t.getKey());
+            }
         }
 
-        // setup the list adapter
+        Log.d(TAG, "ProcessCheckIns: Found " + checkIns.size() + " new transactions");
+
         mAdapter = new ImportAdapter(this, checkIns);
+        mListView.setAdapter(mAdapter);
+        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                // call fragment
+            }
+        });
     }
 
 }

@@ -105,8 +105,6 @@ public class MainActivity extends FragmentActivity implements AccountsInteractio
         switch (id) {
             case R.id.action_settings:
                 return true;
-            case R.id.action_profile:
-                break;
             case R.id.action_sync:
                 Intent intent = new Intent(this, ImportActivity.class);
                 startActivityForResult(intent, IMPORT_REQUEST);
