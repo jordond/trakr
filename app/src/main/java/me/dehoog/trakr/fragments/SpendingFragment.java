@@ -37,8 +37,6 @@ public class SpendingFragment extends Fragment {
     private User mUser;
     private List<Category> mCategories;
 
-    private SpendingInteraction mListener;
-
     public static SpendingFragment newInstance(User user) {
         SpendingFragment fragment = new SpendingFragment();
         Bundle args = new Bundle();
@@ -129,7 +127,6 @@ public class SpendingFragment extends Fragment {
             }
         });
         mCategoriesCardView.setCard(mCategoryCard);
-
     }
 
     public void launchPie(CategoryPieFragment fragment) {
@@ -139,28 +136,4 @@ public class SpendingFragment extends Fragment {
         ft.addToBackStack(null);
         ft.commit();
     }
-
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onSpendingInteraction();
-        }
-    }
-
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-//        try {
-//            mListener = (SpendingInteraction) activity;
-//        } catch (ClassCastException e) {
-//            throw new ClassCastException(activity.toString()
-//                    + " must implement OnFragmentInteractionListener");
-//        }
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
-    }
-
 }

@@ -41,10 +41,7 @@ public class MainActivity extends FragmentActivity implements AccountsInteractio
 
     public User mUser;
 
-    private MainPagerAdapter mAdapter;
-
     private FragmentTransaction ft;
-    private AccountManagerFragment mAccountManager;
 
     // Tab pager components
     @InjectView(R.id.tabs) public PagerSlidingTabStrip mTabs;
@@ -63,7 +60,7 @@ public class MainActivity extends FragmentActivity implements AccountsInteractio
         }
 
         ButterKnife.inject(this); // get all dem views
-        mAdapter = new MainPagerAdapter(getSupportFragmentManager(), mUser);
+        MainPagerAdapter mAdapter = new MainPagerAdapter(getSupportFragmentManager(), mUser);
         mPager.setAdapter(mAdapter);
         mPager.setOffscreenPageLimit(2);
         mTabs.setViewPager(mPager);
@@ -131,7 +128,7 @@ public class MainActivity extends FragmentActivity implements AccountsInteractio
 
     @Override
     public void onAccountsInteraction(String action, Account account) { // Accounts Fragment
-        mAccountManager = AccountManagerFragment.newInstance(mUser, action, account);
+        AccountManagerFragment mAccountManager = AccountManagerFragment.newInstance(mUser, action, account);
         mAccountManager.setmListener(new AddAccountInteraction() {
             @Override
             public void onAddInteraction() {
