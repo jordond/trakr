@@ -319,9 +319,8 @@
                     "BKI-TXN-ACCT-BAL-AMT": "0000000007303",
                     "BKI-TXN-ACCT-BAL-ID": "-",
                     "BKI-TXN-DESC": "Canadian Tire Corporation Limited",
-                    "BKI-TXN-DESC-EXPANDED": "Canadian Tire Corporation Limited"
-                },
-                ""
+                    "BKI-TXN-DESC-EXPANDED": "Canadian Tire CorporationLimited"
+                }
             ]
         }
     }
