@@ -59,8 +59,10 @@ public class PlacesService extends Service {
         if (mInstance == null) {
             mInstance = new PlacesService();
             mInstance.setmContext(context);
+        } else {
+            mInstance.setmContext(context);
         }
-        return  mInstance;
+        return mInstance;
     }
 
     // Searchers
