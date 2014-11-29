@@ -30,7 +30,6 @@ import me.dehoog.trakr.models.User;
 
 
 public class MainActivity extends FragmentActivity implements AccountsInteraction,                  // Interface callback for Accounts Card view fragment
-                                                              AddAccountInteraction,                // Callback for adding, and editing account
                                                               EditAccountCallback,                  // Button click inside AccountCard
                                                               CheckInsInteraction,                  // Action performed in check in tab
                                                               ExpandAccountCard.ExpandListClick {   // Check clicked in expanded card
@@ -134,6 +133,12 @@ public class MainActivity extends FragmentActivity implements AccountsInteractio
     @Override
     public void onAccountsInteraction(String action, Account account) { // Accounts Fragment
         mAccountManager = AccountManagerFragment.newInstance(mUser, action, account);
+        mAccountManager.setmListener(new AddAccountInteraction() {
+            @Override
+            public void onAddInteraction() {
+                mPager.getAdapter().notifyDataSetChanged();
+            }
+        });
         ft = getSupportFragmentManager().beginTransaction();
         ft.setCustomAnimations(R.animator.fade_in, R.animator.fade_out, R.animator.fade_in, R.animator.fade_out);
         ft.replace(R.id.container, mAccountManager);
@@ -142,12 +147,6 @@ public class MainActivity extends FragmentActivity implements AccountsInteractio
     }
 
     // Fragment callbacks
-
-    @Override
-    public void onAddInteraction() {    // Accounts Manager Fragment
-        mPager.getAdapter().notifyDataSetChanged();
-    }
-
     @Override
     public void editButton(Account account) {   // Accounts Fragment, AccountCard edit button
         onAccountsInteraction("edit", account);

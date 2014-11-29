@@ -6,9 +6,11 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonParseException;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Arrays;
 
 import me.dehoog.trakr.models.ImportResult;
 
@@ -57,8 +59,6 @@ public class ImportTask extends AsyncTask<Void, Void, ImportResult> {
             importResult.setStatus(200);
             importResult.setStatus_message("OK");
 
-            return importResult;
-
         } catch (InterruptedException e) {
             Log.e(TAG, "InterruptedException: " + e.getMessage());
             importResult.setStatus(500);
@@ -67,6 +67,10 @@ public class ImportTask extends AsyncTask<Void, Void, ImportResult> {
             Log.e(TAG, "IOException: " + e.getMessage());
             importResult.setStatus(500);
             importResult.setStatus_message("IOException: " + e.getMessage());
+        } catch (JsonParseException e) {
+            Log.e(TAG, "JSON Parse: " + Arrays.toString(e.getStackTrace()));
+            importResult.setStatus(400);
+            importResult.setStatus_message("Server returned an invalid response.");
         }
 
         return importResult;

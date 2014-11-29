@@ -245,16 +245,7 @@ public class AccountManagerFragment extends Fragment {
         return view;
     }
 
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        try {
-            mListener = (AddAccountInteraction) activity;
-        } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString()
-                    + " must implement AddActionInteraction");
-        }
-    }
+
 
     @Override
     public void onResume() {
