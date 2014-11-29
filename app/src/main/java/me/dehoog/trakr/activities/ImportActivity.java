@@ -34,6 +34,7 @@ import me.dehoog.trakr.R;
 import me.dehoog.trakr.adapters.CheckInListAdapter;
 import me.dehoog.trakr.adapters.ImportAdapter;
 import me.dehoog.trakr.fragments.AccountManagerFragment;
+import me.dehoog.trakr.fragments.ImportMapFragment;
 import me.dehoog.trakr.interfaces.AddAccountInteraction;
 import me.dehoog.trakr.models.Account;
 import me.dehoog.trakr.models.ImportResult;
@@ -109,21 +110,7 @@ public class ImportActivity extends FragmentActivity {
                 if (importResult.getStatus() == 200) {
                     processResult(importResult);
                 } else {
-                   MaterialDialog dialog = new MaterialDialog.Builder(ImportActivity.this)
-                            .title("Error")
-                            .content("Something went wrong: " + importResult.getStatus_message())
-                            .positiveText("OK")
-                            .callback(new MaterialDialog.SimpleCallback() {
-                                @Override
-                                public void onPositive(MaterialDialog materialDialog) {
-                                    materialDialog.dismiss();
-                                    setResult(RESULT_CANCELED);
-                                    finish();
-                                }
-                            }).build();
-                    dialog.setCancelable(false);
-                    dialog.setCanceledOnTouchOutside(false);
-                    dialog.show();
+                   displayErrorDialog(importResult.getStatus_message());
                 }
             }
         });
@@ -194,6 +181,7 @@ public class ImportActivity extends FragmentActivity {
                 double amount = Double.valueOf(t.getAmount());
                 Purchase p = new Purchase(account, amount);
                 Merchant m = new Merchant(t.getDescription());
+                p.setAccount(account);
                 p.setMerchant(m);
                 checkIns.add(p);
             } else {
@@ -210,12 +198,54 @@ public class ImportActivity extends FragmentActivity {
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Log.d(TAG, "Clicked on item: " + mAdapter.getItem(position).toString());
-                // Launch check in activity/fragment (map)
-
-                // On result delete slected check from the list, and reset the adapter
+                launchMap((Purchase) mAdapter.getItem(position));
             }
         });
+    }
+
+    private void launchMap(Purchase checkIn) {
+        ImportMapFragment fragment = ImportMapFragment.newInstance(mUser.getId(), checkIn);
+        fragment.setFragmentManager(getFragmentManager());
+        fragment.setOnCheckIn(new ImportMapFragment.OnCheckedIn() {
+            @Override
+            public void onConfirmCheckIn() {
+                // On result delete slected check from the list, and reset the adapter
+            }
+
+            @Override
+            public void onCancelCheckIn() {
+
+            }
+
+            @Override
+            public void onError(String message) {
+                displayErrorDialog(message);
+            }
+        });
+        ft = getSupportFragmentManager().beginTransaction();
+        ft.setCustomAnimations(R.animator.fade_in, R.animator.fade_out, R.animator.fade_in, R.animator.fade_out);
+        ft.replace(R.id.content, fragment);
+        ft.addToBackStack(null);
+        ft.commit();
+
+    }
+
+    public void displayErrorDialog(String message) {
+        MaterialDialog dialog = new MaterialDialog.Builder(ImportActivity.this)
+                .title("Error")
+                .content("Something went wrong: " + message)
+                .positiveText("OK")
+                .callback(new MaterialDialog.SimpleCallback() {
+                    @Override
+                    public void onPositive(MaterialDialog materialDialog) {
+                        materialDialog.dismiss();
+                        setResult(RESULT_CANCELED);
+                        finish();
+                    }
+                }).build();
+        dialog.setCancelable(false);
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.show();
     }
 
 }

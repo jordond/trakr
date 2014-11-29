@@ -1,7 +1,11 @@
 package me.dehoog.trakr.tasks;
 
+import android.accounts.NetworkErrorException;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.Network;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.util.Log;
 
@@ -46,6 +50,10 @@ public class ImportTask extends AsyncTask<Void, Void, ImportResult> {
     protected ImportResult doInBackground(Void... params) {
         ImportResult importResult = new ImportResult();
         try {
+            if (!checkForNetwork()) {
+                throw new NetworkErrorException();
+            }
+
             Thread.sleep(3500); // Simulate network lag
 
             InputStream inputStream = mContext.getAssets().open("bank_response.json");
@@ -60,7 +68,6 @@ public class ImportTask extends AsyncTask<Void, Void, ImportResult> {
             importResult = gson.fromJson(json, ImportResult.class);
             importResult.setStatus(200);
             importResult.setStatus_message("OK");
-
         } catch (InterruptedException e) {
             Log.e(TAG, "InterruptedException: " + e.getMessage());
             importResult.setStatus(500);
@@ -73,6 +80,10 @@ public class ImportTask extends AsyncTask<Void, Void, ImportResult> {
             Log.e(TAG, "JSON Parse: " + Arrays.toString(e.getStackTrace()));
             importResult.setStatus(400);
             importResult.setStatus_message("Server returned an invalid response.");
+        } catch (NetworkErrorException e) {
+            Log.e(TAG, "Network Error: " + Arrays.toString(e.getStackTrace()));
+            importResult.setStatus(500);
+            importResult.setStatus_message("Unable to connect to the internet.");
         }
 
         return importResult;
@@ -88,6 +99,12 @@ public class ImportTask extends AsyncTask<Void, Void, ImportResult> {
     protected void onCancelled() {
         this.mDialog = null;
         mListener = null;
+    }
+
+    public boolean checkForNetwork() {
+        ConnectivityManager connectivityManager = (ConnectivityManager) mContext.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 
     public interface OnImportResult {
