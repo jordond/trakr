@@ -199,6 +199,7 @@ public class ImportActivity extends FragmentActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 launchMap((Purchase) mAdapter.getItem(position));
+                // TODO perform text search before launching fragment, if no results prompt and delete
             }
         });
     }
@@ -224,7 +225,7 @@ public class ImportActivity extends FragmentActivity {
         });
         ft = getSupportFragmentManager().beginTransaction();
         ft.setCustomAnimations(R.animator.fade_in, R.animator.fade_out, R.animator.fade_in, R.animator.fade_out);
-        ft.replace(R.id.content, fragment);
+        ft.replace(R.id.content, fragment, "ImportMap");
         ft.addToBackStack(null);
         ft.commit();
 
@@ -248,4 +249,15 @@ public class ImportActivity extends FragmentActivity {
         dialog.show();
     }
 
+    @Override
+    public void onBackPressed() {
+        final ImportMapFragment fragment = (ImportMapFragment) getSupportFragmentManager().findFragmentByTag("ImportMap");
+
+        if (fragment != null) {
+            fragment.onBackPressed();
+        } else {
+            Log.d(TAG, "onBack Pressed: Map fragment null, passing to super");
+            super.onBackPressed();
+        }
+    }
 }

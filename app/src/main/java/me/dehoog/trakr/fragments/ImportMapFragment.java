@@ -9,6 +9,8 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.app.FragmentManager;
 import android.text.TextUtils;
+import android.util.Log;
+import android.view.InflateException;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +22,7 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
 import com.google.android.gms.common.ConnectionResult;
@@ -64,7 +67,7 @@ public class ImportMapFragment extends Fragment {
     private static final String ARG_USER_ID = "userID";
     private static final String ARG_CHECK_IN = "checkIn";
 
-    private static final int MAP_ZOOM = 13;
+    private static final int MAP_ZOOM = 12;
 
     private GoogleMap mMap;
     private FragmentManager fragmentManager;
@@ -180,9 +183,21 @@ public class ImportMapFragment extends Fragment {
         }
     }
 
+    private static View view;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.activity_check_in, container, false);
+
+        if (view != null) {
+            ViewGroup parent = (ViewGroup) view.getParent();
+            if (parent != null) {
+                parent.removeView(view);
+            }
+        }
+        try {
+            view = inflater.inflate(R.layout.activity_check_in, container, false);
+        } catch (InflateException e) {
+            Log.d(TAG, "InflateException: Map already exists returning existing");
+        }
         ButterKnife.inject(this, view);
 
         mUser = User.findById(User.class, mUserID);
@@ -218,6 +233,7 @@ public class ImportMapFragment extends Fragment {
         if (mMap == null && fragmentManager != null) {
             mMap = ((MapFragment) fragmentManager.findFragmentById(R.id.map)).getMap();
             if (mMap != null) {
+                mMap.clear(); // if the map is an existing one clear all current markers.
                 setUpMap();
             }
         }
@@ -232,6 +248,16 @@ public class ImportMapFragment extends Fragment {
             @Override
             public void onMapClick(LatLng latLng) {
                 mMerchantLayout.hidePanel();
+            }
+        });
+
+        mMap.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
+            @Override
+            public void onMapLongClick(LatLng latLng) {
+                mMerchantLayout.hidePanel();
+                mPlaces.clear();
+                clearMarkers();
+                mPlacesService.textSearch(mCheckIn.getMerchant().getName(), 10000, null);
             }
         });
 
@@ -261,7 +287,7 @@ public class ImportMapFragment extends Fragment {
                 return true;
             }
         });
-        mPlacesService.textSearch(mCheckIn.getMerchant().getName(), 3000, null);
+        mPlacesService.textSearch(mCheckIn.getMerchant().getName(), 10000, null);
         mMap.moveCamera(CameraUpdateFactory.zoomTo(MAP_ZOOM));
     }
 
@@ -285,12 +311,17 @@ public class ImportMapFragment extends Fragment {
         mPlacesService.setmListener(new PlacesService.PlacesInterface() {
             @Override
             public void onPlacesReturned(List<Place> places) {
-                LatLng location = places.get(0).getLatLng();
-                mMap.animateCamera(CameraUpdateFactory.newLatLng(location), 1800, null);
-                for (Place place : places) {
-                    if (!place.shouldExclude()) {
-                        mPlaces.add(place);
-                        addMarker(place);
+                if (places.isEmpty()) {
+                    mListener.onError("Google returned zero results for '" + mCheckIn.getMerchant().getName() + "'");
+                    close();
+                } else {
+                    LatLng location = places.get(0).getLatLng();
+                    mMap.animateCamera(CameraUpdateFactory.newLatLng(location), 1800, null);
+                    for (Place place : places) {
+                        if (!place.shouldExclude()) {
+                            mPlaces.add(place);
+                            addMarker(place);
+                        }
                     }
                 }
             }
@@ -408,6 +439,20 @@ public class ImportMapFragment extends Fragment {
     public void onDestroy() {
         super.onDestroy();
         mPlacesService.setmListener(null);
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+    }
+
+    public void close() {
+        getFragmentManager().popBackStackImmediate();
+    }
+
+    public void onBackPressed() {
+        Log.d(TAG, "onBack Pressed: Closing fragment");
+        close();
     }
 
     public void setOnCheckIn(OnCheckedIn onCheckIn) {
