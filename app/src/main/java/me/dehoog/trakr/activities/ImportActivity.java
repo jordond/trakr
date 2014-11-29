@@ -201,7 +201,6 @@ public class ImportActivity extends FragmentActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 launchMap((Purchase) mAdapter.getItem(position));
-                // TODO perform text search before launching fragment, if no results prompt and delete
             }
         });
     }
@@ -212,7 +211,23 @@ public class ImportActivity extends FragmentActivity {
         fragment.setOnCheckIn(new ImportMapFragment.OnCheckedIn() {
             @Override
             public void onConfirmCheckIn() {
-                // On result delete slected check from the list, and reset the adapter
+                MaterialDialog dialog = new MaterialDialog.Builder(ImportActivity.this)
+                        .title("Success!")
+                        .content("Successfully checked in at '" + checkIn.getMerchant().getName() + "'")
+                        .positiveText("OK")
+                        .callback(new MaterialDialog.SimpleCallback() {
+                            @Override
+                            public void onPositive(MaterialDialog materialDialog) {
+                                mCheckins.remove(checkIn);
+                                mAdapter = new ImportAdapter(ImportActivity.this, mCheckins);
+                                mListView.setAdapter(mAdapter);
+                                materialDialog.dismiss();
+
+                            }
+                        }).build();
+                dialog.setCancelable(false);
+                dialog.setCanceledOnTouchOutside(false);
+                dialog.show();
             }
             @Override
             public void onCancelCheckIn() {

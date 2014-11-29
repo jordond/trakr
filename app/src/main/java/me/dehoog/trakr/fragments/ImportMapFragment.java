@@ -49,7 +49,9 @@ import java.util.List;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
+import cn.pedant.SweetAlert.SweetAlertDialog;
 import me.dehoog.trakr.R;
+import me.dehoog.trakr.models.Account;
 import me.dehoog.trakr.models.Address;
 import me.dehoog.trakr.models.Category;
 import me.dehoog.trakr.models.Merchant;
@@ -66,6 +68,7 @@ public class ImportMapFragment extends Fragment {
     private static final String TAG = ImportMapFragment.class.getSimpleName();
     private static final String ARG_USER_ID = "userID";
     private static final String ARG_CHECK_IN = "checkIn";
+    private static final int MAP_RADIUS = 8000;
 
     private static final int MAP_ZOOM = 12;
 
@@ -257,7 +260,7 @@ public class ImportMapFragment extends Fragment {
                 mMerchantLayout.hidePanel();
                 mPlaces.clear();
                 clearMarkers();
-                mPlacesService.textSearch(mCheckIn.getMerchant().getName(), 10000, null);
+                mPlacesService.textSearch(mCheckIn.getMerchant().getName(), MAP_RADIUS, null);
             }
         });
 
@@ -287,7 +290,7 @@ public class ImportMapFragment extends Fragment {
                 return true;
             }
         });
-        mPlacesService.textSearch(mCheckIn.getMerchant().getName(), 10000, null);
+        mPlacesService.textSearch(mCheckIn.getMerchant().getName(), MAP_RADIUS, null);
         mMap.moveCamera(CameraUpdateFactory.zoomTo(MAP_ZOOM));
     }
 
@@ -304,7 +307,40 @@ public class ImportMapFragment extends Fragment {
         }
     }
 
-    //TODO save transaction
+    public void saveTransaction() {
+        new SweetAlertDialog(getActivity(), SweetAlertDialog.NORMAL_TYPE)
+                .setTitleText("Want to Check In?")
+                .setContentText("Are you sure you want to add this Check In")
+                .setConfirmText("Check In!")
+                .setCancelText("Nope")
+                .showCancelButton(true)
+                .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                    @Override
+                    public void onClick(SweetAlertDialog dialog) {
+                        Account account = mCheckIn.getAccount();
+                       if (account != null) {
+                            Purchase transaction = new Purchase(account,
+                                    Double.valueOf(mPanelAmount.getText().toString()));
+                            transaction.setDate(mDate);
+
+                            mMerchant.getCategory().save();
+                            transaction.setCategory(mMerchant.getCategory());
+
+                            mMerchant.getLocation().save();
+                            mMerchant.save();
+                            transaction.setMerchant(mMerchant);
+                            transaction.save();
+
+                            double total = account.getTotal() + Double.valueOf(mPanelAmount.getText().toString());
+                            account.setTotal(total);
+                            account.save();
+
+                            mListener.onConfirmCheckIn();
+                            dialog.dismiss();
+                        }
+                    }
+                }).show();
+    }
 
     // Listeners
     public void setupListeners() {
