@@ -160,6 +160,7 @@ public class PlacesService extends Service {
 //                                }
                                 } else {
                                     Log.e(TAG, "Google replied with: " + result.getStatus());
+                                    mListener.onPlacesReturned(null);
                                 }
                             }
                         }

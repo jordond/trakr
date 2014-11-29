@@ -587,29 +587,31 @@ public class CheckInActivity extends Activity implements PlacesService.PlacesInt
     // Places Service handler + map helpers
     @Override
     public void onPlacesReturned(List<Place> places) {
-        for (Place place : places) {
-            if (!place.shouldExclude()) {
+        if (places != null) {
+            for (Place place : places) {
+                if (!place.shouldExclude()) {
 
-                Category type = new Category();
-                type.setIcon(place.getIcon());
-                type.setName(type.parseTypeFromURL(place.getIcon()));
+                    Category type = new Category();
+                    type.setIcon(place.getIcon());
+                    type.setName(type.parseTypeFromURL(place.getIcon()));
 
-                if (mIconUrls.contains(type.getIcon())) {
-                    for (Category c : mCategories) {
-                        if (c.getIcon().equals(type.getIcon())) {
-                            mCategories.set(mCategories.indexOf(c), type);
-                            break;
+                    if (mIconUrls.contains(type.getIcon())) {
+                        for (Category c : mCategories) {
+                            if (c.getIcon().equals(type.getIcon())) {
+                                mCategories.set(mCategories.indexOf(c), type);
+                                break;
+                            }
                         }
+                    } else {
+                        mCategories.add(type);
+                        mIconUrls.add(type.getIcon());
                     }
-                } else {
-                    mCategories.add(type);
-                    mIconUrls.add(type.getIcon());
+                    mPlaces.add(place);
+                    addMarker(place);
                 }
-                mPlaces.add(place);
-                addMarker(place);
             }
+            mSelectedFilters = null;
         }
-        mSelectedFilters = null;
     }
 
     public void clearMarkers() {

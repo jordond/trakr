@@ -311,8 +311,8 @@ public class ImportMapFragment extends Fragment {
         mPlacesService.setmListener(new PlacesService.PlacesInterface() {
             @Override
             public void onPlacesReturned(List<Place> places) {
-                if (places.isEmpty()) {
-                    mListener.onError("Google returned zero results for '" + mCheckIn.getMerchant().getName() + "'");
+                if (places == null) {
+                    mListener.onNoResults("Google returned zero results for '" + mCheckIn.getMerchant().getName() + "'");
                     close();
                 } else {
                     LatLng location = places.get(0).getLatLng();
@@ -466,6 +466,7 @@ public class ImportMapFragment extends Fragment {
     public interface OnCheckedIn {
         public void onConfirmCheckIn();
         public void onCancelCheckIn();
+        public void onNoResults(String message);
         public void onError(String message);
     }
 

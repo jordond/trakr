@@ -51,6 +51,7 @@ public class ImportActivity extends FragmentActivity {
     @InjectView(R.id.check_in_list)
     ListView mListView;
     private ImportAdapter mAdapter;
+    private List<Purchase> mCheckins;
 
     @InjectView(R.id.action_done) FloatingActionButton mFab;
     @OnClick(R.id.action_done)
@@ -193,7 +194,8 @@ public class ImportActivity extends FragmentActivity {
     }
 
     private void setupAdapter(List<Purchase> checkIns) {
-        mAdapter = new ImportAdapter(this, checkIns);
+        mCheckins = checkIns;
+        mAdapter = new ImportAdapter(this, mCheckins);
         mListView.setAdapter(mAdapter);
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -204,7 +206,7 @@ public class ImportActivity extends FragmentActivity {
         });
     }
 
-    private void launchMap(Purchase checkIn) {
+    private void launchMap(final Purchase checkIn) {
         ImportMapFragment fragment = ImportMapFragment.newInstance(mUser.getId(), checkIn);
         fragment.setFragmentManager(getFragmentManager());
         fragment.setOnCheckIn(new ImportMapFragment.OnCheckedIn() {
@@ -212,12 +214,14 @@ public class ImportActivity extends FragmentActivity {
             public void onConfirmCheckIn() {
                 // On result delete slected check from the list, and reset the adapter
             }
-
             @Override
             public void onCancelCheckIn() {
 
             }
-
+            @Override
+            public void onNoResults(String message) {
+                displayNoResultsDialog(checkIn, message);
+            }
             @Override
             public void onError(String message) {
                 displayErrorDialog(message);
@@ -242,6 +246,30 @@ public class ImportActivity extends FragmentActivity {
                         materialDialog.dismiss();
                         setResult(RESULT_CANCELED);
                         finish();
+                    }
+                }).build();
+        dialog.setCancelable(false);
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.show();
+    }
+
+    public void displayNoResultsDialog(final Purchase checkIn, String message) {
+        MaterialDialog dialog = new MaterialDialog.Builder(ImportActivity.this)
+                .title("No Results")
+                .content(message)
+                .positiveText("Keep")
+                .negativeText("Delete")
+                .callback(new MaterialDialog.Callback() {
+                    @Override
+                    public void onNegative(MaterialDialog materialDialog) {
+                        mCheckins.remove(checkIn);
+                        mAdapter = new ImportAdapter(ImportActivity.this, mCheckins);
+                        mListView.setAdapter(mAdapter);
+                    }
+
+                    @Override
+                    public void onPositive(MaterialDialog materialDialog) {
+                        materialDialog.dismiss();
                     }
                 }).build();
         dialog.setCancelable(false);
