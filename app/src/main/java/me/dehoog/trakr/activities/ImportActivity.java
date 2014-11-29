@@ -78,7 +78,7 @@ public class ImportActivity extends FragmentActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        new MaterialDialog.Builder(this)
+        MaterialDialog dialog = new MaterialDialog.Builder(this)
                 .title("Sync Accounts")
                 .content("Would you like to sync your accounts?")
                 .positiveText("Yes")
@@ -86,16 +86,20 @@ public class ImportActivity extends FragmentActivity {
                 .callback(new MaterialDialog.Callback() {
                   @Override
                   public void onNegative(MaterialDialog materialDialog) {
+                      materialDialog.dismiss();
                       setResult(RESULT_CANCELED);
                       finish();
                   }
 
                   @Override
                   public void onPositive(MaterialDialog materialDialog) {
+                      materialDialog.dismiss();
                       contactServer();
                   }
-                })
-                .show();
+                }).build();
+        dialog.setCancelable(false);
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.show();
     }
 
     private void contactServer() {
@@ -105,17 +109,21 @@ public class ImportActivity extends FragmentActivity {
                 if (importResult.getStatus() == 200) {
                     processResult(importResult);
                 } else {
-                    new MaterialDialog.Builder(ImportActivity.this)
+                   MaterialDialog dialog = new MaterialDialog.Builder(ImportActivity.this)
                             .title("Error")
                             .content("Something went wrong: " + importResult.getStatus_message())
                             .positiveText("OK")
                             .callback(new MaterialDialog.SimpleCallback() {
                                 @Override
                                 public void onPositive(MaterialDialog materialDialog) {
+                                    materialDialog.dismiss();
                                     setResult(RESULT_CANCELED);
                                     finish();
                                 }
-                            }).show();
+                            }).build();
+                    dialog.setCancelable(false);
+                    dialog.setCanceledOnTouchOutside(false);
+                    dialog.show();
                 }
             }
         });
@@ -127,7 +135,7 @@ public class ImportActivity extends FragmentActivity {
 
         Account exists = new Account().findAccount(response.getAccount_num());
         if (exists == null) {
-            new MaterialDialog.Builder(this)
+            MaterialDialog dialog = new MaterialDialog.Builder(this)
                     .title("New Account Found!")
                     .content("A new account was found, press OK to add this account, then import the new transactions.")
                     .positiveText("OK")
@@ -137,7 +145,10 @@ public class ImportActivity extends FragmentActivity {
                             addAccount(response.getAccount_num(), response.getTag().getTransactions());
                             materialDialog.dismiss();
                         }
-                    }).show();
+                    }).build();
+            dialog.setCancelable(false);
+            dialog.setCanceledOnTouchOutside(false);
+            dialog.show();
         } else {
             new MaterialDialog.Builder(this)
                     .title("New Transactions Found!")

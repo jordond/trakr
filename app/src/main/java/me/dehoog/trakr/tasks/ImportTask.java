@@ -36,6 +36,8 @@ public class ImportTask extends AsyncTask<Void, Void, ImportResult> {
     @Override
     protected void onPreExecute() {
         this.mDialog.setMessage("Synchronizing data...");
+        this.mDialog.setCanceledOnTouchOutside(false);
+        this.mDialog.setCancelable(false);
         this.mDialog.show();
         super.onPreExecute();
     }

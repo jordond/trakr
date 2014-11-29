@@ -217,6 +217,7 @@ public class AccountManagerFragment extends Fragment {
 
         if (mHideCancelButton) {
             mCancel.setVisibility(View.INVISIBLE);
+            mCash.setEnabled(false);
         } else {
             mCancel.setVisibility(View.VISIBLE);
         }

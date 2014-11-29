@@ -24,17 +24,19 @@ public class UserRegisterTask extends AsyncTask<Void, Void, Bundle> {
     private OnTaskResult mListener;
 
     public UserRegisterTask(Context context, String username, String email, String password, OnTaskResult listener) {
-        mUser = new User();
+        this.mUser = new User();
         this.mUsername = username;
         this.mEmail = email;
         this.mPassword = password;
         this.mListener = listener;
-        mDialog = new ProgressDialog(context);
+        this.mDialog = new ProgressDialog(context);
     }
 
     @Override
     protected void onPreExecute() {
-        mDialog.setMessage("Please wait");
+        this.mDialog.setMessage("Please wait");
+        this.mDialog.setCanceledOnTouchOutside(false);
+        this.mDialog.setCancelable(false);
         mDialog.show();
         super.onPreExecute();
     }
@@ -73,14 +75,14 @@ public class UserRegisterTask extends AsyncTask<Void, Void, Bundle> {
 
     @Override
     protected void onPostExecute(final Bundle bundle) {
-        mDialog.dismiss();
+        this.mDialog.dismiss();
         bundle.putString("action", "register");
-        mListener.onTaskCompleted(bundle);
+        this.mListener.onTaskCompleted(bundle);
     }
 
     @Override
     protected void onCancelled() {
-        mDialog = null;
-        mListener.onTaskCancelled("register");
+        this.mDialog = null;
+        this.mListener.onTaskCancelled("register");
     }
 }
