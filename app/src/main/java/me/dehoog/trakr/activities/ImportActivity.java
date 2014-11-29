@@ -16,6 +16,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.google.gson.Gson;
@@ -59,8 +60,6 @@ public class ImportActivity extends FragmentActivity {
     }
 
     private User mUser;
-    private List<Purchase> mCheckIns;
-
     private FragmentTransaction ft;
 
     @Override
@@ -201,15 +200,20 @@ public class ImportActivity extends FragmentActivity {
                 Log.d(TAG, "ProcessCheckIns: Skipping existing purchase " + t.getDescription() + " with key: " + t.getKey());
             }
         }
-
         Log.d(TAG, "ProcessCheckIns: Found " + checkIns.size() + " new transactions");
+        setupAdapter(checkIns);
+    }
 
+    private void setupAdapter(List<Purchase> checkIns) {
         mAdapter = new ImportAdapter(this, checkIns);
         mListView.setAdapter(mAdapter);
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                // call fragment
+                Log.d(TAG, "Clicked on item: " + mAdapter.getItem(position).toString());
+                // Launch check in activity/fragment (map)
+
+                // On result delete slected check from the list, and reset the adapter
             }
         });
     }
