@@ -223,6 +223,10 @@ public class ImportMapFragment extends Fragment {
         mMap.getUiSettings().setTiltGesturesEnabled(false);
         mMap.getUiSettings().setZoomControlsEnabled(false);
 
+        String query = mCheckIn.getMerchant().getName();
+        String words[] = query.split(" ");
+        final String fQuery = words[0] + " " + words[1];
+
         mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
             @Override
             public void onMapClick(LatLng latLng) {
@@ -236,7 +240,7 @@ public class ImportMapFragment extends Fragment {
                 mMerchantLayout.hidePanel();
                 mPlaces.clear();
                 clearMarkers();
-                mPlacesService.textSearch(mCheckIn.getMerchant().getName(), MAP_RADIUS, null);
+                mPlacesService.textSearch(fQuery, MAP_RADIUS, null);
             }
         });
 
@@ -266,10 +270,9 @@ public class ImportMapFragment extends Fragment {
                 return true;
             }
         });
-        String query = mCheckIn.getMerchant().getName();
-        String words[] = query.split(" ");
-        query = words[0] + " " + words[1];
-        mPlacesService.textSearch(query, MAP_RADIUS, null);
+
+        mPlacesService.textSearch(fQuery, MAP_RADIUS, null);
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(mPlacesService.getmLatLng(), MAP_ZOOM));
         mMap.moveCamera(CameraUpdateFactory.zoomTo(MAP_ZOOM));
     }
 

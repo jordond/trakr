@@ -47,6 +47,7 @@ public class PlacesService extends Service {
     private Location mLocation;
     private double mLatitude;
     private double mLongitude;
+    private LatLng mLatLng;
 
     public PlacesService() { }
 
@@ -151,6 +152,7 @@ public class PlacesService extends Service {
                 .setCallback(new FutureCallback<PlacesResult>() {
                     @Override
                     public void onCompleted(Exception e, PlacesResult result) {
+                        Log.d(TAG, "Response: " + result);
                         if (mListener != null) {
                             if (result != null) {
                                 if (result.getStatus().equals("OK")) {
@@ -195,6 +197,7 @@ public class PlacesService extends Service {
     public boolean setToCurrentLocation() {
         GPSTracker tracker = GPSTracker.getInstance();
         mLocation = tracker.getLocation(mContext);
+        mLatLng = new LatLng(mLocation.getLatitude(), mLocation.getLongitude());
         return mLocation != null;
     }
 
@@ -239,6 +242,13 @@ public class PlacesService extends Service {
 
     public void setmContext(Context mContext) {
         this.mContext = mContext;
+    }
+
+    public LatLng getmLatLng() {
+        if (mLatLng == null) {
+            setToCurrentLocation();
+        }
+        return mLatLng;
     }
 
     public PlacesInterface getmListener() {
