@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
-    <string name="google_maps_key">AIzaSyDEedsYQzLtHaCgBekXbp2RkxO3_J9KITg</string>
     <string name="app_name">Trakr</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>

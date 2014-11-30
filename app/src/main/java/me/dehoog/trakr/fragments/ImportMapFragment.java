@@ -266,7 +266,10 @@ public class ImportMapFragment extends Fragment {
                 return true;
             }
         });
-        mPlacesService.textSearch(mCheckIn.getMerchant().getName(), MAP_RADIUS, null);
+        String query = mCheckIn.getMerchant().getName();
+        String words[] = query.split(" ");
+        query = words[0] + " " + words[1];
+        mPlacesService.textSearch(query, MAP_RADIUS, null);
         mMap.moveCamera(CameraUpdateFactory.zoomTo(MAP_ZOOM));
     }
 

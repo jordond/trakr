@@ -144,6 +144,7 @@ public class PlacesService extends Service {
     }
 
     public void sendRequest(String url) {
+        Log.d(TAG, "Trying request: " + url);
         Ion.with(mContext)
                 .load(url)
                 .as(PlacesResult.class)
@@ -170,7 +171,7 @@ public class PlacesService extends Service {
     }
 
     public void sendDetailsRequest(String url) {
-        Log.d(TAG, "Sending more detail request to google");
+        Log.d(TAG, "Sending more detail request: " + url);
         Ion.with(mContext)
                 .load(url)
                 .as(PlaceDetailsResult.class)
