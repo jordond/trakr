@@ -4,6 +4,7 @@
     android:layout_height="68dp"
     android:orientation="horizontal"
     android:gravity="center_vertical"
+    android:background="@drawable/card_item_selector"
     android:paddingEnd="10dp">
 
     <ImageView
