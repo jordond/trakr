@@ -28,7 +28,12 @@ import me.dehoog.trakr.models.Account;
 import me.dehoog.trakr.models.Purchase;
 import me.dehoog.trakr.models.User;
 
-
+/*
+    MainActivity
+    Ah yes, main activity.  It should really be called Shell Activity, as it really doesn't do much,
+    it just sets up the view pager and listens for events from those fragments.  One of the first
+    activities created, so it is mighty sloppy and confusing.
+ */
 public class MainActivity extends FragmentActivity implements AccountsInteraction,                  // Interface callback for Accounts Card view fragment
                                                               EditAccountCallback,                  // Button click inside AccountCard
                                                               CheckInsInteraction,                  // Action performed in check in tab
@@ -82,11 +87,6 @@ public class MainActivity extends FragmentActivity implements AccountsInteractio
     protected void onStart() {
         super.onStart();
         ButterKnife.inject(this);
-    }// onStart
-
-    @Override
-    protected void onStop() {
-        super.onStop();
     }
 
     @Override

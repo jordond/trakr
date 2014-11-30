@@ -22,18 +22,19 @@ import me.dehoog.trakr.models.Account;
  * Author:  jordon
  * Created: November, 15, 2014
  * 11:58 PM
- */
+ *
+ * One of my least favourite things in the world, this class, and any class relating to the cards view
+ * enjoy the tangled web that is the CardsLib.
+ *
+ **/
 public class AccountCard extends Card {
-
-    private Activity mParentActivity;
 
     protected Account mAccount;
     private EditAccountCallback mListener;
 
-    public AccountCard(Context context, Account account, Activity activity) {
+    public AccountCard(Context context, Account account) {
         super(context, R.layout.card_account);
         this.mAccount = account;
-        this.mParentActivity = activity;
         init();
     }
 
@@ -136,7 +137,7 @@ public class AccountCard extends Card {
     public AccountCard createExpandCard(Account account, Activity activity) {
 
         // Create objects
-        AccountCard card = new AccountCard(getContext(), account, activity);
+        AccountCard card = new AccountCard(getContext(), account);
         ExpandAccountCard expand = new ExpandAccountCard(getContext(), account);
 
         expand.setmListener((ExpandAccountCard.ExpandListClick) activity);

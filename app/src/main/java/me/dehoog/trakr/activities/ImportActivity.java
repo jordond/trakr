@@ -33,6 +33,13 @@ import me.dehoog.trakr.models.Purchase;
 import me.dehoog.trakr.models.User;
 import me.dehoog.trakr.tasks.ImportTask;
 
+/*
+    ImportActivity
+    A late addition to trakR, this allows the user to "import/sync" their information
+    with external sources.  Right now the Async task this uses simulates network lag,
+    and just reads in a local JSON file.  This activity can handle new or existing accounts
+    or transactions. Skipping the accounts, or transactions that already exist.
+ */
 public class ImportActivity extends FragmentActivity {
 
     private static final String TAG = ImportActivity.class.getName();
@@ -93,7 +100,7 @@ public class ImportActivity extends FragmentActivity {
         dialog.show();
     }
 
-    private void contactServer() {
+        private void contactServer() { // air quotes "server", don't lie to me Mr. Method, I know your truths
         ImportTask importTask = new ImportTask(this, new ImportTask.OnImportResult() {
             @Override
             public void onResult(ImportResult importResult) {
@@ -108,9 +115,9 @@ public class ImportActivity extends FragmentActivity {
     }
 
     public void processResult(ImportResult result) {
-        final ImportResult.Message response = result.getSCSMSG();
+        final ImportResult.Message response = result.getSCSMSG(); // Thats the JSON -> Java Model object, GSON ftw
 
-        final Account exists = new Account().findAccount(response.getAccount_num());
+        final Account exists = new Account().findAccount(response.getAccount_num()); // detect duplicate accounts
         if (exists == null) {
             MaterialDialog dialog = new MaterialDialog.Builder(this)
                     .title("New Account Found!")
@@ -167,11 +174,11 @@ public class ImportActivity extends FragmentActivity {
     private void processCheckIns(Account account, List<Transaction> transactions) {
         List<Purchase> checkIns = new ArrayList<Purchase>();
         for (Transaction t : transactions) {
-            if (!Purchase.exists(t.getKey())) {
+            if (!Purchase.exists(t.getKey())) {     // detect duplicate transactions
                 double amount = Double.valueOf(t.getAmount());
                 Purchase p = new Purchase(account, amount);
                 Merchant m = new Merchant(t.getDescription());
-                p.setKey(t.getKey());
+                p.setKey(t.getKey());   // the unique identifier for each transaction
                 p.setAccount(account);
                 p.setMerchant(m);
                 checkIns.add(p);

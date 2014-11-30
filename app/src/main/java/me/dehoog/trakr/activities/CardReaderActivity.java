@@ -31,6 +31,11 @@ import me.dehoog.trakr.providers.NFCProvider;
 import me.dehoog.trakr.tasks.NFCTask;
 import me.dehoog.trakr.utils.NFCUtils;
 
+/*
+    CardReaderActivity
+    This activity is actively waiting for the NFC tech discovered intent, once found it will read the
+    NFC card and return its resulys.
+ */
 public class CardReaderActivity extends Activity {
 
     private static final String TAG = CardReaderActivity.class.getSimpleName();

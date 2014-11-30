@@ -62,7 +62,12 @@ import me.dehoog.trakr.models.User;
 import me.dehoog.trakr.services.GPSTracker;
 import me.dehoog.trakr.services.PlacesService;
 
-// TODO add a "view" feature to this activity, so the user can view a previous transaction, only show the one marker on the map
+/*
+    CheckInActivity
+    Aka the BEAST, this 600+ lines monstrosity contains all the logic for setting up the map,
+    search the users location for nearby places.  Then allows the selection of a place, and saving
+    the information into a 'check-in'.
+ */
 public class CheckInActivity extends Activity implements PlacesService.PlacesInterface {
 
     private static final int MAP_ZOOM = 16;                             // Holds the zoom level for the map
