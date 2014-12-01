@@ -183,9 +183,7 @@ public class MainActivity extends FragmentActivity implements AccountsInteractio
             }
             mPager.setCurrentItem(1);
         } else if (requestCode == IMPORT_REQUEST) {
-            if (resultCode == RESULT_OK) {
-                mPager.getAdapter().notifyDataSetChanged();
-            }
+            mPager.getAdapter().notifyDataSetChanged();
         }
     }
 }
