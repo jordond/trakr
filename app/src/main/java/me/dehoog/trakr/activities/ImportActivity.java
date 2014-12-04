@@ -175,7 +175,9 @@ public class ImportActivity extends FragmentActivity {
         List<Purchase> checkIns = new ArrayList<Purchase>();
         for (Transaction t : transactions) {
             if (!Purchase.exists(t.getKey())) {     // detect duplicate transactions
-                double amount = Double.valueOf(t.getAmount());
+                String sAmount = t.getAmount();
+                sAmount = sAmount.substring(0, sAmount.length() - 2) + "." + sAmount.substring(sAmount.length() - 2, sAmount.length());
+                double amount = Double.valueOf(sAmount);
                 Purchase p = new Purchase(account, amount);
                 Merchant m = new Merchant(t.getDescription());
                 p.setKey(t.getKey());   // the unique identifier for each transaction
