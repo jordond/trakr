@@ -221,6 +221,7 @@ public class LoginActivity extends Activity implements LoginFragment.OnFragmentI
     public void taskCompleted(Bundle bundle) {
         String action = bundle.getString("action", "none");
         boolean success = bundle.getBoolean("success", false);
+        String message = bundle.getString("message", "none");
 
         if (action.equals("login")) {
             if (success) {
@@ -246,9 +247,11 @@ public class LoginActivity extends Activity implements LoginFragment.OnFragmentI
         }
 
         if (!success) {
-            YoYo.with(Techniques.Wobble)
-                .duration(500)
-                .playOn(findViewById(R.id.ui_container));
+            if (message.equals("none")) {
+                Crouton.makeText(this, "Error occurred, try again", Style.ALERT).show();
+            } else {
+                Crouton.makeText(this, message, Style.ALERT);
+            }
         }
     }
 
