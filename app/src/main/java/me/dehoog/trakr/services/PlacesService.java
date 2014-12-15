@@ -32,7 +32,7 @@ public class PlacesService extends Service {
 
     private static PlacesService mInstance;
 
-    private static final String PLACES_API = "AIzaSyATAz4Zi2av7206I5JFWqCBUzbzlpnLcdA";
+    private static final String PLACES_API = "API_KEY"; //TODO Enter api key
     private static final String PLACES_BASE = "https://maps.googleapis.com/maps/api/place/";
     private static final String PLACES_NEARBY = "nearbysearch/json?";
     private static final String PLACES_TEXT = "textsearch/json?";
