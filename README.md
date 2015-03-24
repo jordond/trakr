@@ -23,7 +23,7 @@ There are many features included in the trakR app.  Many libraries were used in 
 
 #### Technical
 
-Minimum Android version is API Level 19 - 4.4 Kit-Kat.
+Minimum and Maximum Android version is API Level 19 - 4.4 Kit-Kat.
 
 #### Note
  
