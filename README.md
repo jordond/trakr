@@ -1,6 +1,8 @@
 trakR
 ===================
 
+**Note:** Project was never updated for anything > 4.4, may not work properly anymore.
+
 This app was created for the 2014 Fanshawe College TD Coding Challenge.  The challenge was centered around the idea of financial information and location services.  
 
 ----------
